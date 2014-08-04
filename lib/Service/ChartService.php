@@ -19,7 +19,7 @@ class ChartService
     /**
      * @param ChartDataProvider $provider
      */
-    public function __construct()
+    public function __construct(ChartDataProvider $provider)
     {
         $this->provider = $provider;
     }

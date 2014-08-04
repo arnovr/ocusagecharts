@@ -13,7 +13,6 @@ use \OCP\AppFramework\Db\Mapper;
 class UsageChartRepository extends Mapper
 {
     public function __construct(IDb $db) {
-        //todo
         //parent::__construct($db, 'ocUsageCharts');
     }
 }
