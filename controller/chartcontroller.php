@@ -13,14 +13,26 @@ class ChartController extends Controller
 {
     private $chartService;
 
-    public function __construct(ChartService $chartService)
+    public function __construct()
     {
         $this->chartService = $chartService;
     }
+
+    /**
+     * @return array
+     */
     public function show()
     {
+
+        return 'x';
         $chartData = array();
         $chartData[] = $this->chartService->loadChart(new C3JS());
         return $chartData;
+    }
+
+    public function index()
+    {
+        return 'x';
+        exit;
     }
 }

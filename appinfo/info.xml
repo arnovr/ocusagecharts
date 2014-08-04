@@ -7,4 +7,10 @@
     <licence>MIT</licence>
     <author>Arno van Rossum</author>
     <requiremin>7</requiremin>
+
+    <types>
+        <type>authentication</type>
+        <type>filesystem</type>
+    </types>
+    <standalone>true</standalone>
 </info>

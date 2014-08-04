@@ -5,6 +5,10 @@
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
 */
 
+OCP\User::checkLoggedIn();
+OCP\App::checkAppEnabled('ocUsageCharts');
+OCP\App::setActiveNavigationEntry('ocUsageCharts');
+
 OCP\App::addNavigationEntry(Array(
     'id'	=> 'ocUsageCharts',
     'order'	=> 60,
@@ -13,9 +17,11 @@ OCP\App::addNavigationEntry(Array(
     'name'	=> \OC_L10N::get('ocUsageCharts')->t('ocUsageCharts')
 ));
 
+/*
 // Register navigation entries
 include_once('../lib/registerNavigationEntries.php');
 // Register background jobs
 include_once('../lib/registerBackgroundJobs.php');
 // Register hooks 
 include_once('../lib/registerHooks.php');
+*/
