@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<info>
+    <id>ocUsageCharts</id>
+    <name>Usage Charts</name>
+    <description>This app shows the usage per user or as grand total.</description>
+    <version>1.0</version>
+    <licence>MIT</licence>
+    <author>Arno van Rossum</author>
+    <requiremin>7</requiremin>
+</info>
