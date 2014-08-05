@@ -13,7 +13,7 @@ class ChartController extends Controller
 {
     private $chartService;
 
-    public function __construct()
+    public function __construct(ChartService $chartService)
     {
         $this->chartService = $chartService;
     }

@@ -17,11 +17,9 @@ OCP\App::addNavigationEntry(Array(
     'name'	=> \OC_L10N::get('ocUsageCharts')->t('ocUsageCharts')
 ));
 
-/*
 // Register navigation entries
-include_once('../lib/registerNavigationEntries.php');
+include_once('registerNavigationEntries.php');
 // Register background jobs
-include_once('../lib/registerBackgroundJobs.php');
+include_once('registerBackgroundJobs.php');
 // Register hooks 
-include_once('../lib/registerHooks.php');
-*/
+include_once('registerHooks.php');

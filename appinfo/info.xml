@@ -12,5 +12,4 @@
         <type>authentication</type>
         <type>filesystem</type>
     </types>
-    <standalone>true</standalone>
 </info>

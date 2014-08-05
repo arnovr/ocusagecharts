@@ -1,5 +1,6 @@
 <?php
 namespace OCA\ocUsageCharts\Service;
+
 /**
  * @TODO: Change config value methods
  *

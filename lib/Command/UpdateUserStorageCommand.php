@@ -1,5 +1,6 @@
 <?php
 namespace OCA\ocUsageCharts\Command;
+use OCA\ocUsageCharts\AppInfo\Chart;
 
 /**
 * @author    Arno van Rossum <arno@van-rossum.com>
@@ -8,5 +9,9 @@ namespace OCA\ocUsageCharts\Command;
 */
 class UpdateUserStorageCommand
 {
-
+    public static function run() {
+        $app = new Chart();
+        $container = $app->getContainer();
+        $container->query('ChartStorageUpdater')->updateUserStorage();
+    }
 }

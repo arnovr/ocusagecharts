@@ -1,15 +1,13 @@
 <?php
 namespace OCA\ocUsageCharts\Service;
 
-use OCA\ocUsageCharts\Dto\StorageUsage;
-use OCA\ocUsageCharts\Service\ChartType\ChartTypeInterface;
 
 /**
  * @author    Arno van Rossum <arno@van-rossum.com>
  * @copyright 2014 Arno van Rossum
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  */
-class ChartService
+class ChartStorageUpdater
 {
     /**
      * @var ChartDataProvider
@@ -25,14 +23,10 @@ class ChartService
     }
 
     /**
-     * @param ChartTypeInterface $chartType
-     *
-     * @return array
+     * @stub
      */
-    public function loadChart(ChartTypeInterface $chartType)
+    public function updateUserStorage()
     {
-        // Load chart with DTO or something?
-        $chartType->loadChart();
-        return array();
+        // Loop customers and update database
     }
 }
