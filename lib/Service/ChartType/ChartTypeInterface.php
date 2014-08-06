@@ -28,5 +28,30 @@ namespace OCA\ocUsageCharts\Service\ChartType;
  */
 interface ChartTypeInterface
 {
-    public function loadChart();
+    const CHART_PIE = 'pie';
+    const CHART_GRAPH = 'graph';
+
+    /**
+     * Set the specific type of graph ( should match consts )
+     *
+     * @param string $graphType
+     * @return void
+     */
+    public function setGraphType($graphType);
+
+    /**
+     * Load the frontend files needed, it should only call \OCP\Util::add* stuff
+     *
+     * @return void
+     */
+    public function loadFrontend();
+
+    /**
+     * Load up the chart with usage
+     *
+     * @param array $usage
+     * @return void
+     */
+    public function loadChart(array $usage);
+
 }

@@ -23,16 +23,26 @@
 
 namespace OCA\ocUsageCharts\Entity;
 
+use OCA\ocUsageCharts\Dto\FactoryStorageUsage;
 use \OCP\IDb;
 use \OCP\AppFramework\Db\Mapper;
 
 /**
  * @TODO, mapper stuff http://doc.owncloud.org/server/7.0/developer_manual/app/database.html
- * @author    Arno van Rossum <arno@van-rossum.com>
+ * @author Arno van Rossum <arno@van-rossum.com>
  */
 class UsageChartRepository extends Mapper
 {
     public function __construct(IDb $db) {
         //parent::__construct($db, 'ocUsageCharts');
+    }
+
+    /**
+     * @TODO make dto storageusage loadable
+     * @return array
+     */
+    public function getUsage()
+    {
+        return FactoryStorageUsage::getUsageList();
     }
 }

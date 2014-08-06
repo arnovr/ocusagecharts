@@ -26,7 +26,7 @@ namespace OCA\ocUsageCharts\Dto;
 /**
  * Single point in time of storage usage
  *
- * @author    Arno van Rossum <arno@van-rossum.com>
+ * @author Arno van Rossum <arno@van-rossum.com>
  */
 
 class StorageUsage

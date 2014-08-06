@@ -48,24 +48,7 @@ class Chart extends App
     private function registerServices()
     {
         $container = $this->getContainer();
-        /**
-         * Controllers
-         */
-        $container->registerService('ChartController', function($c) {
-            return new ChartController(
-                $c->query('UsageChartRepository')
-            );
-        });
 
-        /**
-         * Services
-         */
-        $container->registerService('c3js', function($c) {
-            return new C3JS();
-        });
-        $container->registerService('ChartConfigService', function($c) {
-            return new ChartConfigService();
-        });
         $container->registerService('UsageChartRepository', function($c) {
             return new UsageChartRepository(
                 $c->query('ServerContainer')->getDb()
@@ -76,16 +59,35 @@ class Chart extends App
                 $c->query('UsageChartRepository')
             );
         });
-
+        $container->registerService('c3js', function($c) {
+            return new c3js();
+        });
+        /*
+         * UNUSED for now
         $container->registerService('ChartService', function($c) {
             return new ChartService(
                 $c->query('ChartDataProvider')
             );
         });
 
+        $container->registerService('ChartConfigService', function($c) {
+            return new ChartConfigService();
+        });
         $container->registerService('ChartStorageUpdater', function($c) {
             return new ChartStorageUpdater(
                 $c->query('ChartDataProvider')
+            );
+        });
+        */
+
+
+        /**
+         * Controllers
+         */
+        $container->registerService('ChartController', function($c) {
+            return new ChartController(
+                $c->query('ChartDataProvider'),
+                $c->query('c3js') // @TODO, proper way of implementing other chart type
             );
         });
     }

@@ -22,9 +22,10 @@
  */
 
 namespace OCA\ocUsageCharts\Controller;
-use OCA\ocUsageCharts\Service\ChartService;
-use OCA\ocUsageCharts\Service\ChartType\C3JS;
+use OCA\ocUsageCharts\Service\ChartDataProvider;
+use OCA\ocUsageCharts\Service\ChartType\ChartTypeInterface;
 use \OCP\AppFramework\Controller;
+use \stdClass as ChartConfig;
 
 /**
  * Class ChartController
@@ -33,28 +34,95 @@ use \OCP\AppFramework\Controller;
  */
 class ChartController extends Controller
 {
-    private $chartService;
+    /**
+     * @var ChartDataProvider
+     */
+    private $chartDataProvider;
 
-    public function __construct(ChartService $chartService)
+    /**
+     * @var ChartTypeInterface
+     */
+    private $chartType;
+
+    /**
+     * @param ChartDataProvider $chartDataProvider
+     * @param ChartTypeInterface $chartType
+     */
+    public function __construct(ChartDataProvider $chartDataProvider, ChartTypeInterface $chartType)
     {
-        $this->chartService = $chartService;
+        $this->chartDataProvider = $chartDataProvider;
+        $this->chartType = $chartType;
     }
 
     /**
+     * JSON Ajax call
+     *
      * @return array
      */
     public function show()
     {
+        /*
+         * 1) Check configuration chart
+         * 2) Load from service layer
+         * 3) Add to View
+         */
+        // @TODO Load from given config on user interface
+        $chartConfig = new ChartConfig();
+        $chartConfig->type = ChartTypeInterface::CHART_GRAPH;
+        $chartConfig->days = 7;
+        $chartConfig->dtoType = 'StorageUsage';
 
-        return 'x';
-        $chartData = array();
-        $chartData[] = $this->chartService->loadChart(new C3JS());
-        return $chartData;
+        return $this->loadJsonData($chartConfig);
     }
 
+    /**
+     * Load the correct data
+     * @param \stdClass $chartConfig
+     * @return string
+     */
+    private function loadJsonData(ChartConfig $chartConfig)
+    {
+        return json_encode(
+            $this->chartDataProvider->getUsage($chartConfig)
+        );
+    }
+
+
+
+    /**
+     * Default charts to load, should be changed in the future for various chart types chosen
+     *
+     * @return array
+     */
+    private function chartsToLoad()
+    {
+        $pieChart = clone $this->chartType;
+        $pieChart->setGraphType(ChartTypeInterface::CHART_PIE);
+        $pieChart->loadFrontend();
+
+        $graphChart = clone $this->chartType;
+        $graphChart->setGraphType(ChartTypeInterface::CHART_GRAPH);
+        $graphChart->loadFrontend();
+
+        return array($pieChart, $graphChart);
+    }
+
+    /**
+     * Frontpage for charts
+     *
+     * @return array
+     */
     public function index()
     {
-        return 'x';
-        exit;
+        $chartTypes = $this->chartsToLoad();
+
+        $chartData = array('chart' => array());
+        foreach($chartTypes as $chartType)
+        {
+            $chartData['chart'][] = $chartType;
+        }
+
+        return $chartData;
+
     }
 }

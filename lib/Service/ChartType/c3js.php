@@ -24,12 +24,39 @@
 namespace OCA\ocUsageCharts\Service\ChartType;
 
 /**
- * @author    Arno van Rossum <arno@van-rossum.com>
+ * @author Arno van Rossum <arno@van-rossum.com>
  */
-class C3JS implements ChartTypeInterface
+class c3js implements ChartTypeInterface
 {
-    public function loadChart()
-    {
+    /**
+     * @var array
+     */
+    private $usage;
 
+    /**
+     * @var string
+     */
+    private $graphType;
+
+    /**
+     * @param string $graphType
+     */
+    public function setGraphType($graphType)
+    {
+        $this->graphType = $graphType;
+    }
+
+    /**
+     * Load the frontend files needed
+     */
+    public function loadFrontend()
+    {
+        \OCP\Util::addScript('ocUsageCharts', 'c3js/chart');  // add js/script.js
+        \OCP\Util::addStyle('ocUsageCharts', 'c3js/style');  // add css/style.css
+    }
+
+    public function loadChart(array $usage)
+    {
+        $this->usage = $usage;
     }
 }

@@ -31,7 +31,7 @@ namespace OCA\ocUsageCharts\Dto;
  * @author    Arno van Rossum <arno@van-rossum.com>
  */
 
-class StorageUsage
+class DownloadUsage
 {
     /**
      * @var String

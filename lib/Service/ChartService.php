@@ -23,11 +23,9 @@
 
 namespace OCA\ocUsageCharts\Service;
 
-use OCA\ocUsageCharts\Dto\StorageUsage;
-use OCA\ocUsageCharts\Service\ChartType\ChartTypeInterface;
-
 /**
- * @author    Arno van Rossum <arno@van-rossum.com>
+ * @author Arno van Rossum <arno@van-rossum.com>
+ * UNUSED?!?!!!
  */
 class ChartService
 {
@@ -45,14 +43,10 @@ class ChartService
     }
 
     /**
-     * @param ChartTypeInterface $chartType
-     *
      * @return array
      */
-    public function loadChart(ChartTypeInterface $chartType)
+    public function getChartUsage()
     {
-        // Load chart with DTO or something?
-        $chartType->loadChart();
-        return array();
+        return $this->provider->getUsage(new \stdClass());
     }
 }

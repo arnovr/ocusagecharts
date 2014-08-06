@@ -24,7 +24,7 @@
 namespace OCA\ocUsageCharts\Entity;
 
 /**
- * @author    Arno van Rossum <arno@van-rossum.com>
+ * @author Arno van Rossum <arno@van-rossum.com>
  */
 class UsageChart
 {

@@ -21,17 +21,20 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\Command;
-use OCA\ocUsageCharts\AppInfo\Chart;
+namespace OCA\ocUsageCharts\Dto;
 
 /**
-* @author Arno van Rossum <arno@van-rossum.com>
-*/
-class UpdateUserStorageCommand
+  * @author Arno van Rossum <arno@van-rossum.com>
+ */
+
+class FactoryStorageUsage
 {
-    public static function run() {
-        $app = new Chart();
-        $container = $app->getContainer();
-        $container->query('ChartStorageUpdater')->updateUserStorage();
+    public static function getUsageList()
+    {
+        // @TODO, retrieve from usagechart repository
+        $du = new StorageUsage(new \DateTime(), 500);
+        $du2 = new StorageUsage(new \DateTime(), 1000);
+        $du3 = new StorageUsage(new \DateTime(), 100);
+        return array($du, $du2, $du3);
     }
 }
