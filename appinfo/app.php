@@ -21,12 +21,13 @@
  * THE SOFTWARE.
  */
 
-OCP\User::checkLoggedIn();
+include_once('chart.php');
+//OCP\User::checkLoggedIn(); //csrf check error loop
 OCP\App::checkAppEnabled('ocUsageCharts');
-OCP\App::setActiveNavigationEntry('ocUsageCharts');
+OCP\App::setActiveNavigationEntry('ocusagecharts');
 
 OCP\App::addNavigationEntry(Array(
-    'id'	=> 'ocUsageCharts',
+    'id'	=> 'ocusagecharts',
     'order'	=> 60,
     'href' => \OCP\Util::linkToRoute('ocUsageCharts.chart.show'),
     'icon'	=> OCP\Util::imagePath('ocUsageCharts', 'chart.png'),
