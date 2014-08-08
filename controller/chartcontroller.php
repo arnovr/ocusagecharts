@@ -91,9 +91,6 @@ class ChartController extends Controller
 
 
 
-
-
-
     /**
      * Frontpage for charts
      * @return TemplateResponse
@@ -102,12 +99,7 @@ class ChartController extends Controller
     {
         $chartTypes = $this->chartService->getCharts();
 
-        $chartData = array('chart' => array());
-        foreach($chartTypes as $chartType)
-        {
-            $chartData['chart'][] = $chartType;
-        }
         $templateName = 'main';  // will use templates/main.php
-        return new TemplateResponse($this->appName, $templateName, $chartData);
+        return new TemplateResponse($this->appName, $templateName, array('charts' => $chartTypes));
     }
 }

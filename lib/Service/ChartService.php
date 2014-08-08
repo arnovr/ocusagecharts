@@ -28,7 +28,6 @@ use OCA\ocUsageCharts\Service\ChartType\ChartTypeInterface;
 
 /**
  * @author Arno van Rossum <arno@van-rossum.com>
- * UNUSED?!?!!!
  */
 class ChartService
 {
@@ -54,7 +53,7 @@ class ChartService
     }
 
     /**
-     * This should be loaded from the config
+     * @todo This should be loaded from the config
      *
      *
      * return list of default charts
@@ -69,7 +68,6 @@ class ChartService
 
         $graphChart = new c3js();
         $graphChart->setGraphType(ChartTypeInterface::CHART_GRAPH);
-        $graphChart->loadFrontend();
 
         return array($pieChart, $graphChart);
     }

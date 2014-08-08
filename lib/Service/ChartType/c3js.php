@@ -28,6 +28,9 @@ namespace OCA\ocUsageCharts\Service\ChartType;
  */
 class c3js implements ChartTypeInterface
 {
+    protected $templateName = 'c3js';
+
+
     /**
      * @var array
      */
@@ -46,17 +49,32 @@ class c3js implements ChartTypeInterface
         $this->graphType = $graphType;
     }
 
+    public function getGraphType()
+    {
+        return $this->graphType;
+    }
+
     /**
      * Load the frontend files needed
      */
     public function loadFrontend()
     {
-        \OCP\Util::addScript('ocUsageCharts', 'c3js/chart');  // add js/script.js
-        \OCP\Util::addStyle('ocUsageCharts', 'c3js/style');  // add css/style.css
+        \OCP\Util::addStyle('ocUsageCharts', 'c3js/c3');  // add css/style.css
+        \OCP\Util::addScript('ocUsageCharts', 'c3js/d3.min');  // add js/script.js
+        \OCP\Util::addScript('ocUsageCharts', 'c3js/c3.min');  // add js/script.js
     }
 
     public function loadChart(array $usage)
     {
         $this->usage = $usage;
+    }
+
+    /**
+     * Template name
+     * @return string
+     */
+    public function getTemplateName()
+    {
+        return $this->templateName;
     }
 }

@@ -1,2 +1,5 @@
 <?php
-echo $this->inc('c3js', $_['chart']);
+foreach($_['charts'] as $chart)
+{
+    echo $this->inc($chart->getTemplateName(), array('chart' => $chart));
+}

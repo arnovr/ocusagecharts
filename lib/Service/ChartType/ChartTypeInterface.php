@@ -28,6 +28,7 @@ namespace OCA\ocUsageCharts\Service\ChartType;
  */
 interface ChartTypeInterface
 {
+
     const CHART_PIE = 'pie';
     const CHART_GRAPH = 'graph';
 
@@ -38,6 +39,13 @@ interface ChartTypeInterface
      * @return void
      */
     public function setGraphType($graphType);
+
+    /**
+     * Get the specific type of graph
+     *
+     * @return string
+     */
+    public function getGraphType();
 
     /**
      * Load the frontend files needed, it should only call \OCP\Util::add* stuff
@@ -53,5 +61,13 @@ interface ChartTypeInterface
      * @return void
      */
     public function loadChart(array $usage);
+
+
+    /**
+     * Return what template to use.
+     *
+     * @return string
+     */
+    public function getTemplateName();
 
 }
