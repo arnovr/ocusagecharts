@@ -62,11 +62,11 @@ class ChartService
      */
     public function getCharts()
     {
-        $pieChart = new c3js();
+        $pieChart = new c3js("1");
         $pieChart->setGraphType(ChartTypeInterface::CHART_PIE);
         $pieChart->loadFrontend();
 
-        $graphChart = new c3js();
+        $graphChart = new c3js("2");
         $graphChart->setGraphType(ChartTypeInterface::CHART_GRAPH);
 
         return array($pieChart, $graphChart);

@@ -1,4 +1,4 @@
-<div id="chart_<?php p($_['chart']->getGraphType()); ?>">Stub</div>
+<div id="chart_<?php p($_['chart']->getId()); ?>">Stub</div>
 <script type="application/javascript">
     function generateChart(chartId)
     {
@@ -14,8 +14,10 @@
     }
 
     $.ajax({
-        url: "test.html",
+        url: "<?php echo \OCP\Util::linkToRoute('ocUsageCharts.chart.load_chart');
+        // @TODO, add chart ID to link, to let ajax know which chart it is.
+        ?>",
         context: document.body
-    }).done(generateChart("#chart_<?php p($_['chart']->getGraphType()); ?>")
+    }).done(generateChart("#chart_<?php p($_['chart']->getId()); ?>")
     );
 </script>

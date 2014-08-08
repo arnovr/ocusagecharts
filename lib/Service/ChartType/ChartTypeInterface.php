@@ -28,9 +28,15 @@ namespace OCA\ocUsageCharts\Service\ChartType;
  */
 interface ChartTypeInterface
 {
-
     const CHART_PIE = 'pie';
     const CHART_GRAPH = 'graph';
+
+    /**
+     * Constructor needs an ID to know which graph to load
+     *
+     * @param string $id
+     */
+    public function __construct($id);
 
     /**
      * Set the specific type of graph ( should match consts )
@@ -69,5 +75,13 @@ interface ChartTypeInterface
      * @return string
      */
     public function getTemplateName();
+
+
+    /**
+     * Return a unique identifier for this class instance
+     *
+     * @return string
+     */
+    public function getId();
 
 }

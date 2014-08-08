@@ -28,8 +28,9 @@ namespace OCA\ocUsageCharts\Service\ChartType;
  */
 class c3js implements ChartTypeInterface
 {
-    protected $templateName = 'c3js';
+    private $templateName = 'c3js';
 
+    private $id;
 
     /**
      * @var array
@@ -40,6 +41,11 @@ class c3js implements ChartTypeInterface
      * @var string
      */
     private $graphType;
+
+    public function __construct($id)
+    {
+        $this->id = $id;
+    }
 
     /**
      * @param string $graphType
@@ -76,5 +82,11 @@ class c3js implements ChartTypeInterface
     public function getTemplateName()
     {
         return $this->templateName;
+    }
+
+
+    public function getId()
+    {
+        return $this->id;
     }
 }
