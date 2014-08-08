@@ -82,6 +82,8 @@ class Chart extends App
          */
         $container->registerService('ChartController', function($c) {
             return new ChartController(
+                $c->query('AppName'),
+                $c->query('Request'),
                 $c->query('ChartDataProvider'),
                 $c->query('c3js') // @TODO, proper way of implementing other chart type
             );

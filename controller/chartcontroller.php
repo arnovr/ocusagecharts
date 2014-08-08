@@ -25,6 +25,9 @@ namespace OCA\ocUsageCharts\Controller;
 use OCA\ocUsageCharts\Service\ChartDataProvider;
 use OCA\ocUsageCharts\Service\ChartType\ChartTypeInterface;
 use \OCP\AppFramework\Controller;
+use OCP\AppFramework\Http\JSONResponse;
+use OCP\AppFramework\Http\TemplateResponse;
+use OCP\IRequest;
 use \stdClass as ChartConfig;
 
 /**
@@ -44,14 +47,18 @@ class ChartController extends Controller
      */
     private $chartType;
 
+
     /**
+     * @param string $appName
+     * @param IRequest $request
      * @param ChartDataProvider $chartDataProvider
      * @param ChartTypeInterface $chartType
      */
-    public function __construct(ChartDataProvider $chartDataProvider, ChartTypeInterface $chartType)
+    public function __construct($appName, IRequest $request, ChartDataProvider $chartDataProvider, ChartTypeInterface $chartType)
     {
         $this->chartDataProvider = $chartDataProvider;
         $this->chartType = $chartType;
+        parent::__construct($appName, $request);
     }
 
     /**
@@ -59,7 +66,7 @@ class ChartController extends Controller
      *
      * @return array
      */
-    public function show()
+    public function loadChart()
     {
         /*
          * 1) Check configuration chart
@@ -109,10 +116,9 @@ class ChartController extends Controller
 
     /**
      * Frontpage for charts
-     *
      * @return array
      */
-    public function index()
+    public function showCharts()
     {
         $chartTypes = $this->chartsToLoad();
 
@@ -121,8 +127,7 @@ class ChartController extends Controller
         {
             $chartData['chart'][] = $chartType;
         }
-
-        return $chartData;
-
+        $templateName = 'main';  // will use templates/main.php
+        return new TemplateResponse($this->appName, $templateName, $chartData);
     }
 }

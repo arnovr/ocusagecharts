@@ -1,1 +1,1 @@
-<div id="chart"></div>
+<div id="chart">Stub</div>

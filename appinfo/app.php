@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright (c) 2014 - Arno van Rossum <arno@van-rossum.com>
  *
@@ -20,20 +21,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
-include_once('chart.php');
 //OCP\User::checkLoggedIn(); //csrf check error loop
-OCP\App::checkAppEnabled('ocUsageCharts');
+OCP\App::checkAppEnabled('ocusagecharts');
 OCP\App::setActiveNavigationEntry('ocusagecharts');
 
 OCP\App::addNavigationEntry(Array(
     'id'	=> 'ocusagecharts',
     'order'	=> 60,
-    'href' => \OCP\Util::linkToRoute('ocUsageCharts.chart.show'),
-    'icon'	=> OCP\Util::imagePath('ocUsageCharts', 'chart.png'),
+    'href' => \OCP\Util::linkToRoute('ocUsageCharts.chart.charts'),
+    'icon'	=> OCP\Util::imagePath('ocusagecharts', 'chart.png'),
     'name'	=> \OC_L10N::get('ocUsageCharts')->t('ocUsageCharts')
 ));
-
 // Register navigation entries
 include_once('registerNavigationEntries.php');
 // Register background jobs

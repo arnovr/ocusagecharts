@@ -1,2 +1,2 @@
 <?php
-$this->inc('c3js', $_['chart']);
+echo $this->inc('c3js', $_['chart']);
