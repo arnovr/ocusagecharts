@@ -25,6 +25,7 @@ namespace OCA\ocUsageCharts\AppInfo;
 
 use OCA\ocUsageCharts\Controller\ChartController;
 use OCA\ocUsageCharts\Service\ChartDataProvider;
+use OCA\ocUsageCharts\Service\ChartService;
 use OCA\ocUsageCharts\Service\ChartType\C3JS;
 use OCA\ocUsageCharts\Entity\UsageChartRepository;
 use \OCP\AppFramework\App;
@@ -60,11 +61,7 @@ class Chart extends App
         });
         /*
          * UNUSED for now
-        $container->registerService('ChartService', function($c) {
-            return new ChartService(
-                $c->query('ChartDataProvider')
-            );
-        });
+
 
         $container->registerService('ChartConfigService', function($c) {
             return new ChartConfigService();
@@ -75,7 +72,11 @@ class Chart extends App
             );
         });
         */
-
+        $container->registerService('ChartService', function($c) {
+                return new ChartService(
+                    $c->query('ChartDataProvider')
+                );
+            });
 
         /**
          * Controllers
@@ -84,8 +85,7 @@ class Chart extends App
             return new ChartController(
                 $c->query('AppName'),
                 $c->query('Request'),
-                $c->query('ChartDataProvider'),
-                $c->query('c3js') // @TODO, proper way of implementing other chart type
+                $c->query('ChartService')
             );
         });
     }

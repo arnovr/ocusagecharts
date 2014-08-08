@@ -23,6 +23,7 @@
 
 namespace OCA\ocUsageCharts\Controller;
 use OCA\ocUsageCharts\Service\ChartDataProvider;
+use OCA\ocUsageCharts\Service\ChartService;
 use OCA\ocUsageCharts\Service\ChartType\ChartTypeInterface;
 use \OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\JSONResponse;
@@ -38,26 +39,19 @@ use \stdClass as ChartConfig;
 class ChartController extends Controller
 {
     /**
-     * @var ChartDataProvider
+     * @var ChartService
      */
-    private $chartDataProvider;
-
-    /**
-     * @var ChartTypeInterface
-     */
-    private $chartType;
+    private $chartService;
 
 
     /**
      * @param string $appName
      * @param IRequest $request
-     * @param ChartDataProvider $chartDataProvider
-     * @param ChartTypeInterface $chartType
+     * @param ChartService $chartService
      */
-    public function __construct($appName, IRequest $request, ChartDataProvider $chartDataProvider, ChartTypeInterface $chartType)
+    public function __construct($appName, IRequest $request, ChartService $chartService)
     {
-        $this->chartDataProvider = $chartDataProvider;
-        $this->chartType = $chartType;
+        $this->chartService = $chartService;
         parent::__construct($appName, $request);
     }
 
@@ -89,38 +83,24 @@ class ChartController extends Controller
      */
     private function loadJsonData(ChartConfig $chartConfig)
     {
-        return json_encode(
-            $this->chartDataProvider->getUsage($chartConfig)
+        // TODO
+        return json_encode($chartConfig
+            //$this->chartDataProvider->getUsage($chartConfig)
         );
     }
 
 
 
-    /**
-     * Default charts to load, should be changed in the future for various chart types chosen
-     *
-     * @return array
-     */
-    private function chartsToLoad()
-    {
-        $pieChart = clone $this->chartType;
-        $pieChart->setGraphType(ChartTypeInterface::CHART_PIE);
-        $pieChart->loadFrontend();
 
-        $graphChart = clone $this->chartType;
-        $graphChart->setGraphType(ChartTypeInterface::CHART_GRAPH);
-        $graphChart->loadFrontend();
 
-        return array($pieChart, $graphChart);
-    }
 
     /**
      * Frontpage for charts
-     * @return array
+     * @return TemplateResponse
      */
     public function showCharts()
     {
-        $chartTypes = $this->chartsToLoad();
+        $chartTypes = $this->chartService->getCharts();
 
         $chartData = array('chart' => array());
         foreach($chartTypes as $chartType)

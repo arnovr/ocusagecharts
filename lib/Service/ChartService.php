@@ -23,6 +23,9 @@
 
 namespace OCA\ocUsageCharts\Service;
 
+use OCA\ocUsageCharts\Service\ChartType\c3js;
+use OCA\ocUsageCharts\Service\ChartType\ChartTypeInterface;
+
 /**
  * @author Arno van Rossum <arno@van-rossum.com>
  * UNUSED?!?!!!
@@ -48,5 +51,26 @@ class ChartService
     public function getChartUsage()
     {
         return $this->provider->getUsage(new \stdClass());
+    }
+
+    /**
+     * This should be loaded from the config
+     *
+     *
+     * return list of default charts
+     *
+     * @return array
+     */
+    public function getCharts()
+    {
+        $pieChart = new c3js();
+        $pieChart->setGraphType(ChartTypeInterface::CHART_PIE);
+        $pieChart->loadFrontend();
+
+        $graphChart = new c3js();
+        $graphChart->setGraphType(ChartTypeInterface::CHART_GRAPH);
+        $graphChart->loadFrontend();
+
+        return array($pieChart, $graphChart);
     }
 }
