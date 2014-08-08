@@ -22,14 +22,11 @@
  */
 
 namespace OCA\ocUsageCharts\Controller;
-use OCA\ocUsageCharts\Service\ChartDataProvider;
 use OCA\ocUsageCharts\Service\ChartService;
-use OCA\ocUsageCharts\Service\ChartType\ChartTypeInterface;
 use \OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\IRequest;
-use \stdClass as ChartConfig;
 
 /**
  * Class ChartController
@@ -58,41 +55,19 @@ class ChartController extends Controller
     /**
      * JSON Ajax call
      *
-     * @return array
+     * @param string $id
+     * @return JSONResponse
      */
-    public function loadChart()
+    public function loadChart($id)
     {
-        /*
-         * 1) Check configuration chart
-         * 2) Load from service layer
-         * 3) Add to View
-         */
-        // @TODO Load from given config on user interface
-        $chartConfig = new ChartConfig();
-        $chartConfig->type = ChartTypeInterface::CHART_GRAPH;
-        $chartConfig->days = 7;
-        $chartConfig->dtoType = 'StorageUsage';
-
-        return $this->loadJsonData($chartConfig);
+        $chart = $this->chartService->getChart($id);
+        $response = new JSONResponse($chart->getUsage());
+        return $response;
     }
-
-    /**
-     * Load the correct data
-     * @param \stdClass $chartConfig
-     * @return string
-     */
-    private function loadJsonData(ChartConfig $chartConfig)
-    {
-        // TODO
-        return json_encode($chartConfig
-            //$this->chartDataProvider->getUsage($chartConfig)
-        );
-    }
-
-
 
     /**
      * Frontpage for charts
+     *
      * @return TemplateResponse
      */
     public function showCharts()

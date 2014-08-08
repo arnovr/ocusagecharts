@@ -23,6 +23,8 @@
 
 namespace OCA\ocUsageCharts\Service\ChartType;
 
+use OCA\ocUsageCharts\Service\ChartDataProvider;
+
 /**
  * @author    Arno van Rossum <arno@van-rossum.com>
  */
@@ -35,8 +37,9 @@ interface ChartTypeInterface
      * Constructor needs an ID to know which graph to load
      *
      * @param string $id
+     * @param ChartDataProvider $provider
      */
-    public function __construct($id);
+    public function __construct($id, ChartDataProvider $provider);
 
     /**
      * Set the specific type of graph ( should match consts )
@@ -83,5 +86,12 @@ interface ChartTypeInterface
      * @return string
      */
     public function getId();
+
+    /**
+     * Return the usage used
+     *
+     * @return mixed
+     */
+    public function getUsage();
 
 }

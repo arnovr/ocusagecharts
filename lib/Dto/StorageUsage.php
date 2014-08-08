@@ -29,7 +29,7 @@ namespace OCA\ocUsageCharts\Dto;
  * @author Arno van Rossum <arno@van-rossum.com>
  */
 
-class StorageUsage
+class StorageUsage implements UsageInterface
 {
     /**
      * @var \DateTime
@@ -61,5 +61,10 @@ class StorageUsage
     public function getStorage()
     {
         return $this->storage;
+    }
+
+    public function toJson()
+    {
+        return json_encode($this->getStorage());
     }
 }

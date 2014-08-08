@@ -21,55 +21,26 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\Service;
-
-use OCA\ocUsageCharts\Service\ChartType\c3js;
-use OCA\ocUsageCharts\Service\ChartType\ChartTypeInterface;
+namespace OCA\ocUsageCharts\Dto;
 
 /**
- * @author Arno van Rossum <arno@van-rossum.com>
+  * @author Arno van Rossum <arno@van-rossum.com>
  */
-class ChartService
+
+class FactoryStorageUsage
 {
     /**
-     * @var ChartDataProvider
-     */
-    private $provider;
-
-    /**
-     * @param ChartDataProvider $provider
-     */
-    public function __construct(ChartDataProvider $provider)
-    {
-        $this->provider = $provider;
-    }
-
-    /**
-     * @param string $id
-     * @return ChartTypeInterface
-     */
-    public function getChart($id)
-    {
-        return new c3js($id, $this->provider);;
-    }
-
-    /**
-     * @todo This should be loaded from the config
+     * Data for what ID
      *
-     *
-     * return list of default charts
-     *
+     * @param $id
      * @return array
      */
-    public function getCharts()
+    public static function getUsageList($id)
     {
-        $pieChart = new c3js("1", $this->provider);
-        $pieChart->setGraphType(ChartTypeInterface::CHART_PIE);
-        $pieChart->loadFrontend();
-
-        $graphChart = new c3js("2", $this->provider);
-        $graphChart->setGraphType(ChartTypeInterface::CHART_GRAPH);
-
-        return array($pieChart, $graphChart);
+        // @TODO, retrieve from usagechart repository
+        $du = new StorageUsage(new \DateTime("08-08-2014"), 500);
+        $du2 = new StorageUsage(new \DateTime("09-08-2014"), 1000);
+        $du3 = new StorageUsage(new \DateTime("10-08-2014"), 100);
+        return array($du, $du2, $du3);
     }
 }

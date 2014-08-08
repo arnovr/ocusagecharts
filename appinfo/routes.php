@@ -26,6 +26,6 @@ $application = new Chart();
 $application->registerRoutes($this, array(
     'routes' => array(
         array('name' => 'chart#show_charts', 'url' => '/', 'verb' => 'GET'),
-        array('name' => 'chart#load_chart', 'url' => '/load/', 'verb' => 'GET'),
+        array('name' => 'chart#load_chart', 'url' => '/load/{id}', 'verb' => 'GET'),
     )
 ));

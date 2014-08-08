@@ -24,7 +24,8 @@
 namespace OCA\ocUsageCharts\Service;
 
 use OCA\ocUsageCharts\Entity\UsageChartRepository;
-use \stdClass as ChartConfig;
+use \stdClass as ChartDataConfig;
+
 /**
  * @author Arno van Rossum <arno@van-rossum.com>
  */
@@ -41,13 +42,16 @@ class ChartDataProvider
     }
 
     /**
-     * @param ChartConfig $chartConfig
+     * @param ChartDataConfig $chartConfig
      * @return array
      */
-    public function getUsage(ChartConfig $chartConfig)
+    public function getUsage(ChartDataConfig $chartConfig)
     {
-        // Unparse the config here.
-        // And retrieve the correct usage
-        return $this->repository->getUsage();
+        // @TODO Retrieve correct stuff here
+        $user = $chartConfig->user;
+        return array(
+            $user => $this->repository->getUsage($chartConfig),
+            'lol' => $this->repository->getUsage($chartConfig)
+        );
     }
 }

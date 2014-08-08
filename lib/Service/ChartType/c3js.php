@@ -23,6 +23,9 @@
 
 namespace OCA\ocUsageCharts\Service\ChartType;
 
+use OCA\ocUsageCharts\Service\ChartDataProvider;
+use \stdClass as ChartDataConfig;
+
 /**
  * @author Arno van Rossum <arno@van-rossum.com>
  */
@@ -42,9 +45,15 @@ class c3js implements ChartTypeInterface
      */
     private $graphType;
 
-    public function __construct($id)
+    /**
+     * @var ChartDataProvider
+     */
+    private $provider;
+
+    public function __construct($id, ChartDataProvider $provider)
     {
         $this->id = $id;
+        $this->provider = $provider;
     }
 
     /**
@@ -65,9 +74,9 @@ class c3js implements ChartTypeInterface
      */
     public function loadFrontend()
     {
-        \OCP\Util::addStyle('ocUsageCharts', 'c3js/c3');  // add css/style.css
-        \OCP\Util::addScript('ocUsageCharts', 'c3js/d3.min');  // add js/script.js
-        \OCP\Util::addScript('ocUsageCharts', 'c3js/c3.min');  // add js/script.js
+        \OCP\Util::addStyle('ocUsageCharts', 'c3js/c3');
+        \OCP\Util::addScript('ocUsageCharts', 'c3js/d3.min');
+        \OCP\Util::addScript('ocUsageCharts', 'c3js/c3.min');
     }
 
     public function loadChart(array $usage)
@@ -89,4 +98,30 @@ class c3js implements ChartTypeInterface
     {
         return $this->id;
     }
+
+    /**
+     * Return the usage used
+     *
+     * @return mixed
+     */
+    public function getUsage()
+    {
+        //@TODO Retrieve correct config here
+        $config = new ChartDataConfig();
+        $config->type = 'storage';
+        $config->id = $this->getId();
+        $config->user = 'arno';
+        return $this->parse($this->provider->getUsage($config));
+    }
+
+    /**
+     * @param mixed $data
+     * @return mixed
+     */
+    private function parse($data)
+    {
+        $adapt = new c3jsAdapter();
+        return $adapt->parseData($data);
+    }
+
 }
