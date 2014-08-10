@@ -61,7 +61,7 @@ class ChartController extends Controller
     public function loadChart($id)
     {
         $chart = $this->chartService->getChart($id);
-        $response = new JSONResponse($chart->getUsage());
+        $response = new JSONResponse($this->chartService->getUsage($chart));
         return $response;
     }
 

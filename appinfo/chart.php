@@ -24,6 +24,7 @@
 namespace OCA\ocUsageCharts\AppInfo;
 
 use OCA\ocUsageCharts\Controller\ChartController;
+use OCA\ocUsageCharts\Service\ChartConfigService;
 use OCA\ocUsageCharts\Service\ChartDataProvider;
 use OCA\ocUsageCharts\Service\ChartService;
 use OCA\ocUsageCharts\Service\ChartType\C3JS;
@@ -63,18 +64,21 @@ class Chart extends App
          * UNUSED for now
 
 
-        $container->registerService('ChartConfigService', function($c) {
-            return new ChartConfigService();
-        });
+
         $container->registerService('ChartStorageUpdater', function($c) {
             return new ChartStorageUpdater(
                 $c->query('ChartDataProvider')
             );
         });
         */
+        $container->registerService('ChartConfigService', function($c) {
+                return new ChartConfigService();
+            });
         $container->registerService('ChartService', function($c) {
                 return new ChartService(
-                    $c->query('ChartDataProvider')
+                    $c->query('ChartDataProvider'),
+                    $c->query('ChartConfigService'),
+                    \OCP\User::getUser()
                 );
             });
 

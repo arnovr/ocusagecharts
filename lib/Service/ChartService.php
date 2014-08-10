@@ -23,8 +23,9 @@
 
 namespace OCA\ocUsageCharts\Service;
 
-use OCA\ocUsageCharts\Service\ChartType\c3js;
-use OCA\ocUsageCharts\Service\ChartType\ChartTypeInterface;
+use OCA\ocUsageCharts\ChartType\c3jsProvider;
+use OCA\ocUsageCharts\ChartType\c3jsProvider\c3js as c3js;
+use OCA\ocUsageCharts\ChartType\ChartTypeInterface;
 
 /**
  * @author Arno van Rossum <arno@van-rossum.com>
@@ -37,11 +38,37 @@ class ChartService
     private $provider;
 
     /**
-     * @param ChartDataProvider $provider
+     * @var ChartConfigService
      */
-    public function __construct(ChartDataProvider $provider)
+    private $config;
+
+    /**
+     * @var string
+     */
+    private $currentUserName;
+
+    /**
+     * What providers are already loaded
+     * @var array
+     */
+    private $isLoaded = array();
+
+    /**
+     * @param ChartDataProvider $provider
+     * @param ChartConfigService $config
+     * @param string $currentUserName
+     *
+     * @throws ChartServiceException
+     */
+    public function __construct(ChartDataProvider $provider, ChartConfigService $config, $currentUserName)
     {
         $this->provider = $provider;
+        $this->config = $config;
+        if ( empty($currentUserName) )
+        {
+            throw new ChartServiceException("Invalid user given");
+        }
+        $this->currentUserName = $currentUserName;
     }
 
     /**
@@ -50,7 +77,21 @@ class ChartService
      */
     public function getChart($id)
     {
-        return new c3js($id, $this->provider);;
+        //return new c3js($id, $this->provider);
+        $config = $this->config->getChartConfigById($id);
+
+        // Apparently namespace is needed
+        $className = '\OCA\ocUsageCharts\ChartType\c3jsProvider\\' . $config->chartProvider;
+
+        $chart = new $className($config);
+
+        if ( !in_array($config->chartProvider, $this->isLoaded) )
+        {
+            $chart->loadFrontend();
+            $this->isLoaded[] = $config->chartProvider;
+        }
+
+        return $chart;
     }
 
     /**
@@ -63,13 +104,18 @@ class ChartService
      */
     public function getCharts()
     {
-        $pieChart = new c3js("1", $this->provider);
-        $pieChart->setGraphType(ChartTypeInterface::CHART_PIE);
-        $pieChart->loadFrontend();
+        //$chartConfig = $this->config->getChartConfig($this->currentUserName);
+        return array($this->getChart(1), $this->getChart(2));
+    }
 
-        $graphChart = new c3js("2", $this->provider);
-        $graphChart->setGraphType(ChartTypeInterface::CHART_GRAPH);
 
-        return array($pieChart, $graphChart);
+    /**
+     * @param ChartTypeInterface $chart
+     *
+     * @return array
+     */
+    public function getUsage(ChartTypeInterface $chart)
+    {
+        return $this->provider->getUsage($chart->getConfig());
     }
 }

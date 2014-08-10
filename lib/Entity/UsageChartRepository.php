@@ -27,6 +27,7 @@ use OCA\ocUsageCharts\Dto\FactoryStorageUsage;
 use \OCP\IDb;
 use \OCP\AppFramework\Db\Mapper;
 use \stdClass as ChartDataConfig;
+
 /**
  * @TODO, mapper stuff http://doc.owncloud.org/server/7.0/developer_manual/app/database.html
  * @author Arno van Rossum <arno@van-rossum.com>
@@ -38,24 +39,36 @@ class UsageChartRepository extends Mapper
     }
 
     /**
+     * @param ChartDataConfig $config
      * @return array
      */
     public function getUsage(ChartDataConfig $config)
     {
-        switch($config->type)
+        switch($config->chartDataType)
         {
             default:
-            case 'storage':
-                $data = FactoryStorageUsage::getUsageList($config->id);
+            case 'StorageUsageList':
+                $data = FactoryStorageUsage::getUsageList($config->userName);        // @TODO nice parser...
+                $new = array();
+                foreach($data as $item)
+                {
+                    $new[] = $item->toJson();
+                }
+                $data = array($config->userName => $new);
+            break;
+            case 'StorageUsageFree':
+                $storageInfo = \OC_Helper::getStorageInfo('/');
+
+                $used = ceil($storageInfo['used'] / 1024 / 1024);
+                //$total = \OC_Helper::humanFileSize($storageInfo['total']);
+                $free = ceil($storageInfo['free'] / 1024 / 1024);
+                $data = array(
+                    'used' => $used,
+                    'free' => $free
+                );
             break;
         }
 
-        // @TODO nice parser...
-        $new = array();
-        foreach($data as $item)
-        {
-            $new[] = $item->toJson();
-        }
-        return $new;
+        return $data;
     }
 }

@@ -21,32 +21,79 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\Service;
+namespace OCA\ocUsageCharts\ChartType\c3jsProvider;
 
-use OCA\ocUsageCharts\Entity\UsageChartRepository;
+use OCA\ocUsageCharts\ChartType\ChartTypeInterface;
 use \stdClass as ChartConfig;
 
 /**
  * @author Arno van Rossum <arno@van-rossum.com>
  */
-class ChartDataProvider
+class c3js implements ChartTypeInterface
 {
-    /**
-     * @var UsageChartRepository
-     */
-    private $repository;
+    private $templateName = 'c3js';
 
-    public function __construct(UsageChartRepository $repository)
-    {
-        $this->repository = $repository;
-    }
+    /**
+     * @var array
+     */
+    private $usage;
+
+    /**
+     * @var ChartConfig
+     */
+    private $config;
 
     /**
      * @param ChartConfig $chartConfig
-     * @return array
      */
-    public function getUsage(ChartConfig $chartConfig)
+    public function __construct(ChartConfig $chartConfig)
     {
-        return $this->repository->getUsage($chartConfig);
+        $this->config = $chartConfig;
+    }
+
+    /**
+     * Load the frontend files needed
+     */
+    public function loadFrontend()
+    {
+        \OCP\Util::addStyle('ocUsageCharts', 'c3js/c3');
+        \OCP\Util::addScript('ocUsageCharts', 'c3js/d3.min');
+        \OCP\Util::addScript('ocUsageCharts', 'c3js/c3.min');
+    }
+
+    /**
+     * @param array $usage
+     */
+    public function loadChart(array $usage)
+    {
+        $this->usage = $usage;
+    }
+
+    /**
+     * @return string
+     */
+    public function getChartType()
+    {
+        return $this->config->chartType;
+    }
+
+    /**
+     * Template name
+     * @return string
+     */
+    public function getTemplateName()
+    {
+        return $this->templateName;
+    }
+
+
+    public function getId()
+    {
+        return $this->config->chartId;
+    }
+
+    public function getConfig()
+    {
+        return $this->config;
     }
 }

@@ -21,32 +21,67 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\Service;
-
-use OCA\ocUsageCharts\Entity\UsageChartRepository;
-use \stdClass as ChartConfig;
+namespace OCA\ocUsageCharts\ChartType;
 
 /**
- * @author Arno van Rossum <arno@van-rossum.com>
+ * @author    Arno van Rossum <arno@van-rossum.com>
  */
-class ChartDataProvider
+interface ChartTypeInterface
 {
-    /**
-     * @var UsageChartRepository
-     */
-    private $repository;
-
-    public function __construct(UsageChartRepository $repository)
-    {
-        $this->repository = $repository;
-    }
+    const CHART_PIE = 'pie';
+    const CHART_GRAPH = 'graph';
 
     /**
-     * @param ChartConfig $chartConfig
-     * @return array
+     * Set the specific type of graph ( should match consts )
+     *
+     * @param string $graphType
+     * @return void
      */
-    public function getUsage(ChartConfig $chartConfig)
-    {
-        return $this->repository->getUsage($chartConfig);
-    }
+    //public function setGraphType($graphType);
+
+    /**
+     * Get the specific type of graph
+     *
+     * @return string
+     */
+    //public function getGraphType();
+
+    /**
+     * Load the frontend files needed, it should only call \OCP\Util::add* stuff
+     *
+     * @return void
+     */
+    public function loadFrontend();
+
+    /**
+     * Load up the chart with usage
+     *
+     * @param array $usage
+     * @return void
+     */
+    public function loadChart(array $usage);
+
+
+    /**
+     * Return what template to use.
+     *
+     * @return string
+     */
+    public function getTemplateName();
+
+
+    /**
+     * Return a unique identifier for this class instance
+     *
+     * @return string
+     */
+    public function getId();
+
+    /**
+     * Return the usage used
+     *
+     * @return \stdClass
+     */
+    public function getConfig();
+
 }

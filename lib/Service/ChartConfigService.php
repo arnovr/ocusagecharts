@@ -23,19 +23,67 @@
 
 namespace OCA\ocUsageCharts\Service;
 
+use OCA\ocUsageCharts\ChartType\ChartTypeInterface;
+use \stdClass as ChartConfig;
+
 /**
- * @TODO: Change config value methods
- *
  * @author    Arno van Rossum <arno@van-rossum.com>
  */
 class ChartConfigService
 {
     /**
-     * Get configuration values stored in the database
-     * @param $key The conf key
-     * @param $default
-     * @return Array The conf value
+     * STUB, This method should retrieve config from database
+     *
+     * @param integer $id
+     *
+     * @return ChartConfig
      */
+    public function getChartConfigById($id)
+    {
+        $config = new ChartConfig();
+        $config->chartId = $id;
+        $config->userName = 'username' . $id;
+        $config->chartDataType = 'StorageUsageList';
+        $config2->chartType = ChartTypeInterface::CHART_GRAPH;
+        if ( $id == 1 )
+        {
+            $config->chartType = ChartTypeInterface::CHART_PIE;
+            $config->chartDataType = 'StorageUsageFree';
+        }
+        $config->chartProvider = 'c3js';
+        return $config;
+    }
+
+    /**
+     * Get chart config for a specific user
+     * @TODO retrieve config getChartConfigById
+     *
+     * @param string $userName
+     * @return array
+     */
+    public function getChartConfig($userName)
+    {
+        $config = new ChartConfig();
+        $config->chartId = '1';
+        $config->userName = $userName;
+        $config->chartType = ChartTypeInterface::CHART_PIE;
+        $config->chartProvider = 'c3js';
+        $config->chartDataType = 'StorageUsageFree';
+
+        $config2 = new ChartConfig();
+        $config2->chartId = '2';
+        $config2->userName = $userName . '2';
+        $config2->chartType = ChartTypeInterface::CHART_GRAPH;
+        $config2->chartProvider = 'c3js';
+        $config2->chartDataType = 'StorageUsageList';
+
+        return array($config, $config2);
+
+
+    }
+
+
+    /*
     public static function getUConfValue($key, $default = NULL){
         $query = \OCP\DB::prepare("SELECT uc_id,uc_val FROM *PREFIX*usage_charts_uconf WHERE oc_uid = ? AND uc_key = ?");
         $result = $query->execute(Array(\OCP\User::getUser(), $key))->fetchRow();
@@ -45,11 +93,6 @@ class ChartConfigService
         return $default;
     }
 
-    /**
-     * @brief Put configuration values into the database
-     * @param $key The conf key
-     * @param $val The conf value
-     */
     public static function setUConfValue($key,$val){
         $conf = self::getUConfValue($key);
         if(!is_null($conf)){
@@ -60,4 +103,5 @@ class ChartConfigService
             $query->execute(Array(\OCP\User::getUser(), $key, $val));
         }
     }
+    */
 }

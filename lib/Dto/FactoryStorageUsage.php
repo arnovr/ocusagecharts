@@ -32,15 +32,22 @@ class FactoryStorageUsage
     /**
      * Data for what ID
      *
-     * @param $id
+     * @param string $userName
      * @return array
      */
-    public static function getUsageList($id)
+    public static function getUsageList($userName)
     {
         // @TODO, retrieve from usagechart repository
-        $du = new StorageUsage(new \DateTime("08-08-2014"), 500);
-        $du2 = new StorageUsage(new \DateTime("09-08-2014"), 1000);
-        $du3 = new StorageUsage(new \DateTime("10-08-2014"), 100);
-        return array($du, $du2, $du3);
+        $total = array();
+        for($i = 1; $i < 30; $i++)
+        {
+            $t = $i;
+            if ( $i < 10 )
+            {
+                $t = '0' . $i;
+            }
+            $total[] = new StorageUsage(new \DateTime($t . '-08-2014'), rand(100, 1000));
+        }
+        return $total;
     }
 }
