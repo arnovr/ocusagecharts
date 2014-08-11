@@ -26,6 +26,7 @@ namespace OCA\ocUsageCharts\Service;
 use OCA\ocUsageCharts\ChartType\c3jsProvider;
 use OCA\ocUsageCharts\ChartType\c3jsProvider\c3js as c3js;
 use OCA\ocUsageCharts\ChartType\ChartTypeInterface;
+use OCA\ocUsageCharts\Exception\ChartServiceException;
 
 /**
  * @author Arno van Rossum <arno@van-rossum.com>

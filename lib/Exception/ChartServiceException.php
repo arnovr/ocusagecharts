@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\Service;
+namespace OCA\ocUsageCharts\Exception;
 
 /**
  * @author Arno van Rossum <arno@van-rossum.com>
