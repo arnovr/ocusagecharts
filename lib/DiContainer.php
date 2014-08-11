@@ -27,19 +27,19 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\Config\FileLocator;
 
-final class DiContainer extends ContainerBuilder
+final class DependencyInjectionContainer extends ContainerBuilder
 {
     /**
-     * @var DiContainer
+     * @var DependencyInjectionContainer
      */
     private static $instance;
 
     /**
-     * @return DiContainer
+     * @return DependencyInjectionContainer
      */
     public static function getInstance()
     {
-        if (!self::$instance instanceof DiContainer) {
+        if (!self::$instance instanceof DependencyInjectionContainer) {
             self::$instance = new self();
 
             // Set parameters
@@ -49,9 +49,9 @@ final class DiContainer extends ContainerBuilder
 
                 $loader = new YamlFileLoader(
                     self::$instance,
-                    new FileLocator(__DIR__ . '/Resources/config')
+                    new FileLocator(__DIR__ . '/config')
                 );
-                $loader->load($servicesFile);
+                $loader->load('services.yml');
 
         return self::$instance;
     }
