@@ -25,18 +25,26 @@ namespace OCA\ocUsageCharts\Entity;
 
 use OCA\ocUsageCharts\Dto\FactoryStorageUsage;
 use \OCP\IDb;
-use \OCP\AppFramework\Db\Mapper;
 use \stdClass as ChartDataConfig;
 
 /**
  * @TODO, mapper stuff http://doc.owncloud.org/server/7.0/developer_manual/app/database.html
  * @author Arno van Rossum <arno@van-rossum.com>
  */
-class UsageChartRepository extends Mapper
+class UsageChartRepository
 {
+    /**
+     * @var \OCP\IDb
+     */
+    private $db;
+
+    /**
+     * @param IDb $db
+     */
     public function __construct(IDb $db) {
-        //parent::__construct($db, 'ocUsageCharts');
+        $this->db = $db;
     }
+
 
     /**
      * @param ChartDataConfig $config
@@ -48,7 +56,8 @@ class UsageChartRepository extends Mapper
         {
             default:
             case 'StorageUsageList':
-                $data = FactoryStorageUsage::getUsageList($config->userName);        // @TODO nice parser...
+                $usage = new FactoryStorageUsage($this->db);
+                $data = $usage->getUsageList($config->userName);        // @TODO nice parser...
                 $new = array();
                 foreach($data as $item)
                 {
@@ -58,9 +67,7 @@ class UsageChartRepository extends Mapper
             break;
             case 'StorageUsageFree':
                 $storageInfo = \OC_Helper::getStorageInfo('/');
-
                 $used = ceil($storageInfo['used'] / 1024 / 1024);
-                //$total = \OC_Helper::humanFileSize($storageInfo['total']);
                 $free = ceil($storageInfo['free'] / 1024 / 1024);
                 $data = array(
                     'used' => $used,

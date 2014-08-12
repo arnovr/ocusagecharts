@@ -23,20 +23,41 @@
 
 namespace OCA\ocUsageCharts\Dto;
 
+use OCP\AppFramework\Db\DoesNotExistException;
+use OCP\AppFramework\Db\Mapper;
+use OCP\IDb;
+
 /**
   * @author Arno van Rossum <arno@van-rossum.com>
  */
-
-class FactoryStorageUsage
+class FactoryStorageUsage extends Mapper
 {
+    public function __construct(Idb $db)
+    {
+        parent::__construct($db, 'uc_storageusage', '\OCA\ocUsageCharts\Dto\StorageUsage');
+    }
+
+    public function find($userName) {
+        $sql = 'SELECT * FROM `oc_uc_storageusage` WHERE `username` = ?';
+        try {
+            return $this->findEntity($sql, array($userName));
+        }
+        catch(DoesNotExistException $e)
+        {
+
+        }
+    }
     /**
      * Data for what ID
      *
      * @param string $userName
      * @return array
      */
-    public static function getUsageList($userName)
+    public function getUsageList($userName)
     {
+        $result = $this->find($userName);
+        var_dump($result);
+        exit;
         // @TODO, retrieve from usagechart repository
         $total = array();
         for($i = 1; $i < 30; $i++)
