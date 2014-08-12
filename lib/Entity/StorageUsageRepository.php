@@ -23,9 +23,7 @@
 
 namespace OCA\ocUsageCharts\Entity;
 
-use OC_FileProxy;
-use OC_FileProxy_FileOperations;
-use OC_Hook;
+use OCA\ocUsageCharts\ChartType\ChartTypeViewInterface;
 use OCA\ocUsageCharts\Exception\StorageUsageRepositoryException;
 use OCP\AppFramework\Db\Mapper;
 use \OCP\IDb;
@@ -111,14 +109,16 @@ class StorageUsageRepository extends Mapper
      * @TODO refactor to proper code
      *
      * @param ChartDataConfig $config
-     * @return array
+     * @return ChartTypeViewInterface
+     *
+     * @throws \OCA\ocUsageCharts\Exception\StorageUsageRepositoryException
      */
     public function getUsage(ChartDataConfig $config)
     {
         switch($config->chartDataType)
         {
             default:
-            case 'StorageUsageList':
+            case 'StorageUsageGraph':
                 $new = array();
 
                 // TODO proper username find
@@ -131,9 +131,9 @@ class StorageUsageRepository extends Mapper
                     $data = $this->find($config->userName);
                     $data = array($config->userName => $data);
                 }
-                return $this->useAdapter($config, $data);
+
                 break;
-            case 'StorageUsageFree':
+            case 'StorageUsageInfo':
                 $new = array();
 
                 $storageInfo = \OC_Helper::getStorageInfo('/');
@@ -161,25 +161,16 @@ class StorageUsageRepository extends Mapper
                         'free' => $free
                     );
                 }
-                return $data;
                 break;
         }
 
+        $view = '\OCA\ocUsageCharts\ChartType\\' .  $config->chartProvider . '\Views\\' . $config->chartDataType . 'View';
 
-    }
-
-
-    private function useAdapter($config, $data)
-    {
-
-        $adapter = '\OCA\ocUsageCharts\ChartType\c3jsProvider\\' . $config->chartProvider . 'Adapter';
-
-        if ( !class_exists($adapter) )
+        if ( !class_exists($view) )
         {
-            throw new StorageUsageRepositoryException("Adapter for " . $config->chartProvider . ' does not exist.');
+            throw new StorageUsageRepositoryException("View for " . $config->chartDataType . ' does not exist.');
         }
-        $chartAdapter = new $adapter();
-
-        return $chartAdapter->parseData($data);
+        $chartView = new $view($config);
+        return $chartView->show($data);
     }
 }

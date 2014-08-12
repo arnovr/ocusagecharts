@@ -21,61 +21,41 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\Controller;
-use OCA\ocUsageCharts\Service\ChartService;
-use \OCP\AppFramework\Controller;
-use OCP\AppFramework\Http\JSONResponse;
-use OCP\AppFramework\Http\TemplateResponse;
-use OCP\IRequest;
+namespace OCA\ocUsageCharts\ChartType\c3js;
+
+use OCA\ocUsageCharts\ChartType\ChartTypeInterface;
+use \stdClass as ChartConfig;
 
 /**
- * Class ChartController
- * @package OCA\ocUsageCharts\Controller
  * @author Arno van Rossum <arno@van-rossum.com>
  */
-class ChartController extends Controller
+class c3jsBase
 {
     /**
-     * @var ChartService
+     * @var ChartConfig
      */
-    private $chartService;
-
+    private $config;
 
     /**
-     * @param string $appName
-     * @param IRequest $request
-     * @param ChartService $chartService
+     * @param ChartConfig $chartConfig
      */
-    public function __construct($appName, IRequest $request, ChartService $chartService)
+    public function __construct(ChartConfig $chartConfig)
     {
-        $this->chartService = $chartService;
-        parent::__construct($appName, $request);
+        $this->config = $chartConfig;
     }
 
     /**
-     * JSON Ajax call
-     *
-     * @param string $id
-     * @return JSONResponse
+     * Load the frontend files needed
      */
-    public function loadChart($id)
+    public function loadFrontend()
     {
-        $chart = $this->chartService->getChart($id);
-        $usage = $this->chartService->getUsage($chart);
-        $response = new JSONResponse($usage);
-        return $response;
+        \OCP\Util::addStyle('ocUsageCharts', 'c3js/c3');
+        \OCP\Util::addScript('ocUsageCharts', 'c3js/d3.min');
+        \OCP\Util::addScript('ocUsageCharts', 'c3js/c3.min');
     }
 
-    /**
-     * Frontpage for charts
-     *
-     * @return TemplateResponse
-     */
-    public function showCharts()
+    public function getConfig()
     {
-        $charts = $this->chartService->getCharts();
-
-        $templateName = 'main';  // will use templates/main.php
-        return new TemplateResponse($this->appName, $templateName, array('charts' => $charts));
+        return $this->config;
     }
 }

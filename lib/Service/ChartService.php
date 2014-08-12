@@ -23,8 +23,9 @@
 
 namespace OCA\ocUsageCharts\Service;
 
-use OCA\ocUsageCharts\ChartType\c3jsProvider;
+use OCA\ocUsageCharts\ChartType\c3js;
 use OCA\ocUsageCharts\ChartType\ChartTypeInterface;
+use OCA\ocUsageCharts\ChartType\ChartTypeViewInterface;
 use OCA\ocUsageCharts\Exception\ChartServiceException;
 
 /**
@@ -72,49 +73,49 @@ class ChartService
     }
 
     /**
-     * @param string $id
-     * @return ChartTypeInterface
+     * @param $id
+     * @return mixed
+     * @throws \OCA\ocUsageCharts\Exception\ChartServiceException
      */
     public function getChart($id)
     {
-        //return new c3js($id, $this->provider);
         $config = $this->config->getChartConfigById($id);
-
         // Apparently namespace is needed
-        $className = '\OCA\ocUsageCharts\ChartType\c3jsProvider\\' . $config->chartProvider;
+        $view = '\OCA\ocUsageCharts\ChartType\\' .  $config->chartProvider . '\Views\\' . $config->chartDataType . 'View';
 
-        $chart = new $className($config);
+        if ( !class_exists($view) )
+        {
+            throw new ChartServiceException("View for " . $config->chartDataType . ' does not exist.');
+        }
+        $chartView = new $view($config);
 
         if ( !in_array($config->chartProvider, $this->isLoaded) )
         {
-            $chart->loadFrontend();
+            $chartView->loadFrontend();
             $this->isLoaded[] = $config->chartProvider;
         }
 
-        return $chart;
+        return $chartView;
     }
 
     /**
-     * @todo This should be loaded from the config
-     *
-     *
+     * @TODO be fixed to load from personal config
      * return list of default charts
      *
      * @return array
      */
     public function getCharts()
     {
-        //$chartConfig = $this->config->getChartConfig($this->currentUserName);
         return array($this->getChart(1), $this->getChart(2));
     }
 
 
     /**
-     * @param ChartTypeInterface $chart
+     * @param ChartTypeViewInterface $chart
      *
      * @return array
      */
-    public function getUsage(ChartTypeInterface $chart)
+    public function getUsage(ChartTypeViewInterface $chart)
     {
         return $this->provider->getUsage($chart->getConfig());
     }

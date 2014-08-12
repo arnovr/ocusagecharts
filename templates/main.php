@@ -1,5 +1,6 @@
 <?php
 foreach($_['charts'] as $chart)
 {
-    echo $this->inc($chart->getTemplateName(), array('chart' => $chart));
+    $template = $chart->getConfig()->chartProvider .  '/' . $chart->getConfig()->chartDataType . 'View';
+    echo $this->inc($template, array('chart' => $chart));
 }

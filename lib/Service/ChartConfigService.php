@@ -23,7 +23,6 @@
 
 namespace OCA\ocUsageCharts\Service;
 
-use OCA\ocUsageCharts\ChartType\ChartTypeInterface;
 use \stdClass as ChartConfig;
 
 /**
@@ -43,12 +42,10 @@ class ChartConfigService
         $config = new ChartConfig();
         $config->chartId = $id;
         $config->userName = 'admin';
-        $config->chartDataType = 'StorageUsageList';
-        $config2->chartType = ChartTypeInterface::CHART_GRAPH;
+        $config->chartDataType = 'StorageUsageGraph';
         if ( $id == 1 )
         {
-            $config->chartType = ChartTypeInterface::CHART_PIE;
-            $config->chartDataType = 'StorageUsageFree';
+            $config->chartDataType = 'StorageUsageInfo';
         }
         $config->chartProvider = 'c3js';
         return $config;
@@ -66,16 +63,14 @@ class ChartConfigService
         $config = new ChartConfig();
         $config->chartId = '1';
         $config->userName = $userName;
-        $config->chartType = ChartTypeInterface::CHART_PIE;
         $config->chartProvider = 'c3js';
-        $config->chartDataType = 'StorageUsageFree';
+        $config->chartDataType = 'StorageUsageInfo';
 
         $config2 = new ChartConfig();
         $config2->chartId = '2';
         $config2->userName = $userName . '2';
-        $config2->chartType = ChartTypeInterface::CHART_GRAPH;
         $config2->chartProvider = 'c3js';
-        $config2->chartDataType = 'StorageUsageList';
+        $config2->chartDataType = 'StorageUsageGraph';
 
         return array($config, $config2);
 
