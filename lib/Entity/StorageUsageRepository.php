@@ -70,8 +70,6 @@ class StorageUsageRepository extends Mapper
         }
     }
 
-
-
     /**
      * @param ChartDataConfig $config
      * @return array
@@ -82,12 +80,15 @@ class StorageUsageRepository extends Mapper
         {
             default:
             case 'StorageUsageList':
-                $usage = new FactoryStorageUsage($this->db);
-                $data = $usage->getUsageList($config->userName);        // @TODO nice parser...
+                $data = array(
+                    new StorageUsage(new \DateTime($t . '-08-2014'), rand(100, 1000), $config->userName),
+                    new StorageUsage(new \DateTime($t . '-08-2014'), rand(100, 1000), $config->userName)
+                );
+
                 $new = array();
                 foreach($data as $item)
                 {
-                    $new[] = $item->toJson();
+                    $new[] = $item->getStorage();
                 }
                 $data = array($config->userName => $new);
                 break;
