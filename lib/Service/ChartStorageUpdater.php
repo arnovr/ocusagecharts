@@ -47,6 +47,8 @@ class ChartStorageUpdater
      */
     public function updateUserStorage()
     {
+        echo 'x';
+        exit;
         // Loop customers and update database
     }
 }

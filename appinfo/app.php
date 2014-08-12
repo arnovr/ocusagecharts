@@ -32,9 +32,6 @@ OCP\App::addNavigationEntry(Array(
     'icon'	=> OCP\Util::imagePath('ocusagecharts', 'chart.png'),
     'name'	=> \OC_L10N::get('ocUsageCharts')->t('ocUsageCharts')
 ));
-// Register navigation entries
-include_once('registerNavigationEntries.php');
-// Register background jobs
-include_once('registerBackgroundJobs.php');
-// Register hooks 
-include_once('registerHooks.php');
+
+
+\OCP\Backgroundjob::registerJob('OCA\ocUsageCharts\Command\UpdateUserStorageCommand');

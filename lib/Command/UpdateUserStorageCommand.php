@@ -27,9 +27,9 @@ use OCA\ocUsageCharts\AppInfo\Chart;
 /**
 * @author Arno van Rossum <arno@van-rossum.com>
 */
-class UpdateUserStorageCommand
+class UpdateUserStorageCommand extends \OC\BackgroundJob\Job
 {
-    public static function run() {
+    public function run($argument) {
         $app = new Chart();
         $container = $app->getContainer();
         $container->query('ChartStorageUpdater')->updateUserStorage();
