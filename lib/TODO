@@ -1,0 +1,9 @@
+- tests
+- @TODO fields
+- Proper storage update from cron
+- Correct select from update database
+- DiContainer?
+- refactor StorageUsageRepository::getUsage()
+- ChartConfigService refactor
+- Select optional charts
+- Design chart page, not so big
