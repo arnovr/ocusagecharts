@@ -23,6 +23,7 @@
 
 namespace OCA\ocUsageCharts\Dto;
 
+
 /**
  * Single point in time of storage usage
  *
@@ -41,10 +42,21 @@ class StorageUsage implements UsageInterface
      */
     private $storage;
 
-    public function __construct(\DateTime $date, $storage)
+    /**
+     * @var string
+     */
+    private $username;
+
+    /**
+     * @param \DateTime $date
+     * @param integer $storage
+     * @param string $username
+     */
+    public function __construct(\DateTime $date, $storage, $username)
     {
         $this->date = $date;
         $this->storage = $storage;
+        $this->username = $username;
     }
 
     /**
@@ -66,5 +78,10 @@ class StorageUsage implements UsageInterface
     public function toJson()
     {
         return json_encode($this->getStorage());
+    }
+
+    public function getUsername()
+    {
+        return $this->username;
     }
 }

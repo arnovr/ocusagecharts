@@ -89,9 +89,9 @@ class UsageChartRepository
             case 'StorageUsage':
                 \OC_Util::setupFS($config->userName);
                 $storageInfo = \OC_Helper::getStorageInfo('/', $dirInfo);
-                $usage = new StorageUsage(new \Datetime(), $storageInfo['used']);
+                $usage = new StorageUsage(new \Datetime(), $storageInfo['used'], $config->userName);
                 $factoryUsage = new FactoryStorageUsage($this->db);
-                $factoryUsage->update($usage);
+                $factoryUsage->save($usage);
                 break;
         }
     }

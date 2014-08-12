@@ -32,9 +32,18 @@ use OCP\IDb;
  */
 class FactoryStorageUsage extends Mapper
 {
+
     public function __construct(Idb $db)
     {
         parent::__construct($db, 'uc_storageusage', '\OCA\ocUsageCharts\Dto\StorageUsage');
+    }
+
+
+    public function save(StorageUsage $usage)
+    {
+        $query = $this->db->prepareQuery('INSERT INTO oc_uc_storageusage (created, username, `usage`) VALUES (?,?,?)');
+        $query->execute(Array($usage->getDate()->format('Y-m-d H:i:s'), $usage->getUsername(), $usage->getStorage()));
+
     }
 
     public function find($userName) {
@@ -71,4 +80,5 @@ class FactoryStorageUsage extends Mapper
         }
         return $total;
     }
+
 }
