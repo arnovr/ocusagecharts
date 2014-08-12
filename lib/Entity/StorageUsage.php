@@ -26,7 +26,56 @@ namespace OCA\ocUsageCharts\Entity;
 /**
  * @author Arno van Rossum <arno@van-rossum.com>
  */
-class UsageChart
+class StorageUsage
 {
+    /**
+     * @var \DateTime
+     */
+    private $date;
 
+    /**
+     * @var integer Kilobytes
+     */
+    private $storage;
+
+    /**
+     * @var string
+     */
+    private $username;
+
+    /**
+     * @param \DateTime $date
+     * @param integer $storage
+     * @param string $username
+     */
+    public function __construct(\DateTime $date, $storage, $username)
+    {
+        $this->date = $date;
+        $this->storage = $storage;
+        $this->username = $username;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getDate()
+    {
+        return $this->date;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getStorage()
+    {
+        return $this->storage;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUsername()
+    {
+        return $this->username;
+    }
 }

@@ -23,7 +23,7 @@
 
 namespace OCA\ocUsageCharts\Service;
 
-use OCA\ocUsageCharts\Entity\UsageChartRepository;
+use OCA\ocUsageCharts\Entity\StorageUsageRepository;
 use \stdClass as ChartConfig;
 
 /**
@@ -32,11 +32,11 @@ use \stdClass as ChartConfig;
 class ChartDataProvider
 {
     /**
-     * @var UsageChartRepository
+     * @var StorageUsageRepository
      */
     private $repository;
 
-    public function __construct(UsageChartRepository $repository)
+    public function __construct(StorageUsageRepository $repository)
     {
         $this->repository = $repository;
     }

@@ -23,29 +23,53 @@
 
 namespace OCA\ocUsageCharts\Entity;
 
-use OCA\ocUsageCharts\Dto\FactoryStorageUsage;
-use OCA\ocUsageCharts\Dto\StorageUsage;
+use OCP\AppFramework\Db\Mapper;
 use \OCP\IDb;
-use OpenCloud\Common\Constants\Datetime;
 use \stdClass as ChartDataConfig;
 
 /**
- * @TODO, mapper stuff http://doc.owncloud.org/server/7.0/developer_manual/app/database.html
  * @author Arno van Rossum <arno@van-rossum.com>
  */
-class UsageChartRepository
+class StorageUsageRepository extends Mapper
 {
     /**
      * @var \OCP\IDb
      */
-    private $db;
+    protected $db;
 
     /**
      * @param IDb $db
      */
     public function __construct(IDb $db) {
         $this->db = $db;
+        parent::__construct($db, 'uc_storageusage', '\OCA\ocUsageCharts\Entity\StorageUsage');
     }
+
+    public function save(StorageUsage $usage)
+    {
+        $query = $this->db->prepareQuery('INSERT INTO oc_uc_storageusage (created, username, `usage`) VALUES (?,?,?)');
+        $query->execute(Array($usage->getDate()->format('Y-m-d H:i:s'), $usage->getUsername(), $usage->getStorage()));
+
+    }
+
+    public function find($userName) {
+        $sql = 'SELECT * FROM `oc_uc_storageusage` WHERE `username` = ?';
+        return $this->findEntity($sql, array($userName));
+    }
+
+    public function updateUsage(ChartDataConfig $config)
+    {
+        switch($config->dataType)
+        {
+            case 'StorageUsage':
+                \OC_Util::setupFS($config->userName);
+                $storageInfo = \OC_Helper::getStorageInfo('/', $dirInfo);
+                $usage = new StorageUsage(new \Datetime(), $storageInfo['used'], $config->userName);
+                $this->save($usage);
+                break;
+        }
+    }
+
 
 
     /**
@@ -66,7 +90,7 @@ class UsageChartRepository
                     $new[] = $item->toJson();
                 }
                 $data = array($config->userName => $new);
-            break;
+                break;
             case 'StorageUsageFree':
                 $storageInfo = \OC_Helper::getStorageInfo('/');
                 $used = ceil($storageInfo['used'] / 1024 / 1024);
@@ -75,24 +99,9 @@ class UsageChartRepository
                     'used' => $used,
                     'free' => $free
                 );
-            break;
+                break;
         }
 
         return $data;
-    }
-
-
-    public function updateUsage(ChartDataConfig $config)
-    {
-        switch($config->dataType)
-        {
-            case 'StorageUsage':
-                \OC_Util::setupFS($config->userName);
-                $storageInfo = \OC_Helper::getStorageInfo('/', $dirInfo);
-                $usage = new StorageUsage(new \Datetime(), $storageInfo['used'], $config->userName);
-                $factoryUsage = new FactoryStorageUsage($this->db);
-                $factoryUsage->save($usage);
-                break;
-        }
     }
 }
