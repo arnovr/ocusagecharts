@@ -1,4 +1,4 @@
-<div id="chart_<?php p($_['chart']->getId()); ?>">Stub</div>
+<div id="chart_<?php p($_['chart']->getId()); ?>"></div>
 <script type="application/javascript">
     var chart<?php echo $_['chart']->getId();?> = c3.generate({
         bindto: '#chart_<?php echo $_['chart']->getId();?>',

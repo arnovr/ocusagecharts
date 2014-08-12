@@ -52,9 +52,31 @@ class StorageUsageRepository extends Mapper
 
     }
 
-    public function find($userName) {
-        $sql = 'SELECT * FROM `oc_uc_storageusage` WHERE `username` = ?';
-        return $this->findEntity($sql, array($userName));
+    public function findAll($limit = 30)
+    {
+        $sql = 'SELECT username FROM `oc_uc_storageusage` GROUP BY username';
+        $query = $this->db->prepareQuery($sql);
+        $result = $query->execute();
+        $entities = array();
+        while($row = $result->fetch()){
+            if ( !isset($entities[$row['username']]))
+            {
+                $entities[$row['username']] = array();
+            }
+            $entities[$row['username']] = array_merge($entities[$row['username']], $this->find($row['username'], $limit));
+        }
+        return $entities;
+    }
+
+    /**
+     * @TODO select on date specific
+     * @param $userName
+     * @param $limit
+     * @return array
+     */
+    public function find($userName, $limit = 30) {
+        $sql = 'SELECT * FROM `oc_uc_storageusage` WHERE `username` = ? ORDER BY created DESC LIMIT ' . $limit;
+        return $this->findEntities($sql, array($userName));
     }
 
     public function updateUsage(ChartDataConfig $config)
@@ -71,6 +93,8 @@ class StorageUsageRepository extends Mapper
     }
 
     /**
+     * @TODO refactor to proper code
+     *
      * @param ChartDataConfig $config
      * @return array
      */
@@ -80,26 +104,59 @@ class StorageUsageRepository extends Mapper
         {
             default:
             case 'StorageUsageList':
-                $data = array(
-                    new StorageUsage(new \DateTime($t . '-08-2014'), rand(100, 1000), $config->userName),
-                    new StorageUsage(new \DateTime($t . '-08-2014'), rand(100, 1000), $config->userName)
-                );
-
                 $new = array();
-                foreach($data as $item)
+
+                // TODO proper username find
+                if ( $config->userName == 'admin' )
                 {
-                    $new[] = $item->getStorage();
+                    $data = $this->findAll();
+                    foreach($data as $username => $items)
+                    {
+                        foreach($items as $item)
+                        {
+                            $new[$username][] = $item->getUsage();
+                        }
+                    }
+                    $data = $new;
                 }
-                $data = array($config->userName => $new);
+                else
+                {
+                    $data = $this->find($config->userName);
+                    foreach($data as $item)
+                    {
+                        $new[] = $item->getUsage();
+                    }
+                    $data = array($config->userName => $new);
+                }
                 break;
             case 'StorageUsageFree':
+                $new = array();
+
                 $storageInfo = \OC_Helper::getStorageInfo('/');
-                $used = ceil($storageInfo['used'] / 1024 / 1024);
                 $free = ceil($storageInfo['free'] / 1024 / 1024);
-                $data = array(
-                    'used' => $used,
-                    'free' => $free
-                );
+
+                // TODO proper username find
+                if ( $config->userName == 'admin' )
+                {
+                    $data = $this->findAll(1);
+                    foreach($data as $username => $items)
+                    {
+                        foreach($items as $item)
+                        {
+                            $new[$username] = ceil($item->getUsage() / 1024 / 1024);
+                        }
+                    }
+                    $new['free'] = $free;
+                    $data = $new;
+                }
+                else
+                {
+                    $free = ceil($storageInfo['free'] / 1024 / 1024);
+                    $data = array(
+                        'used' => $used,
+                        'free' => $free
+                    );
+                }
                 break;
         }
 

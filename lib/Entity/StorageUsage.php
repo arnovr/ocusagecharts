@@ -23,6 +23,8 @@
 
 namespace OCA\ocUsageCharts\Entity;
 
+use OpenCloud\Common\Constants\Datetime;
+
 /**
  * @author Arno van Rossum <arno@van-rossum.com>
  */
@@ -36,7 +38,7 @@ class StorageUsage
     /**
      * @var integer Kilobytes
      */
-    private $storage;
+    private $usage;
 
     /**
      * @var string
@@ -45,13 +47,13 @@ class StorageUsage
 
     /**
      * @param \DateTime $date
-     * @param integer $storage
+     * @param integer $usage
      * @param string $username
      */
-    public function __construct(\DateTime $date, $storage, $username)
+    public function __construct(\DateTime $date, $usage, $username)
     {
         $this->date = $date;
-        $this->storage = $storage;
+        $this->usage = $usage;
         $this->username = $username;
     }
 
@@ -66,9 +68,9 @@ class StorageUsage
     /**
      * @return integer
      */
-    public function getStorage()
+    public function getUsage()
     {
-        return $this->storage;
+        return $this->usage;
     }
 
     /**
@@ -77,5 +79,11 @@ class StorageUsage
     public function getUsername()
     {
         return $this->username;
+    }
+
+    public static function fromRow($row)
+    {
+        return new StorageUsage(new \Datetime($row['created']), $row['usage'], $row['username']);
+
     }
 }

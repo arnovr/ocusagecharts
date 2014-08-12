@@ -42,7 +42,7 @@ class ChartConfigService
     {
         $config = new ChartConfig();
         $config->chartId = $id;
-        $config->userName = 'username' . $id;
+        $config->userName = 'admin';
         $config->chartDataType = 'StorageUsageList';
         $config2->chartType = ChartTypeInterface::CHART_GRAPH;
         if ( $id == 1 )
