@@ -1,5 +1,5 @@
-ocUsageCharts
-=============
+ocUsageCharts ( STILL WORK IN PROGRESS )
+========================================
 ocUsageCharts is created due to the fact that the original usage_charts ( a fork from StorageCharts/ocStorage ) is no longer updated to work properly with owncloud7.
 
 This application is purely designed for owncloud7, it is in first integrated with c3js for rendering charts.
