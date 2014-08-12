@@ -1,6 +1,5 @@
 - tests
 - @TODO fields
-- Proper storage update from cron
 - Correct select from update database
 - DiContainer?
 - refactor StorageUsageRepository::getUsage()

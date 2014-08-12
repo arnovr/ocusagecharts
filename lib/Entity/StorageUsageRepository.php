@@ -23,6 +23,9 @@
 
 namespace OCA\ocUsageCharts\Entity;
 
+use OC_FileProxy;
+use OC_FileProxy_FileOperations;
+use OC_Hook;
 use OCP\AppFramework\Db\Mapper;
 use \OCP\IDb;
 use \stdClass as ChartDataConfig;
@@ -48,7 +51,7 @@ class StorageUsageRepository extends Mapper
     public function save(StorageUsage $usage)
     {
         $query = $this->db->prepareQuery('INSERT INTO oc_uc_storageusage (created, username, `usage`) VALUES (?,?,?)');
-        $query->execute(Array($usage->getDate()->format('Y-m-d H:i:s'), $usage->getUsername(), $usage->getStorage()));
+        $query->execute(Array($usage->getDate()->format('Y-m-d H:i:s'), $usage->getUsername(), $usage->getUsage()));
 
     }
 
@@ -84,9 +87,20 @@ class StorageUsageRepository extends Mapper
         switch($config->dataType)
         {
             case 'StorageUsage':
-                \OC_Util::setupFS($config->userName);
-                $storageInfo = \OC_Helper::getStorageInfo('/', $dirInfo);
-                $usage = new StorageUsage(new \Datetime(), $storageInfo['used'], $config->userName);
+                $userDir = '/'.$config->userName.'/files';
+                $view = new \OC\Files\View('/');
+                $data = $view->getFileInfo($userDir, false);
+                $used = 0;
+                if ( $data instanceof \OC\Files\FileInfo )
+                {
+                    $fileInfoData = $data->getData();
+                    $used = $fileInfoData['size'];
+                    if ( $used < 0 )
+                    {
+                        $used = 0;
+                    }
+                }
+                $usage = new StorageUsage(new \Datetime(), $used, $config->userName);
                 $this->save($usage);
                 break;
         }
