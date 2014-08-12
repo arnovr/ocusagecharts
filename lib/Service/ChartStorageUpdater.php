@@ -53,7 +53,6 @@ class ChartStorageUpdater
         {
             $this->updateUserStorageByUser($userName);
         }
-        // Loop customers and update database
     }
 
     /**

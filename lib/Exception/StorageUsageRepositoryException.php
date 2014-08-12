@@ -21,47 +21,9 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\ChartType\c3jsProvider;
-
-use OCA\ocUsageCharts\ChartType\ChartTypeAdapterInterface;
-
+namespace OCA\ocUsageCharts\Exception;
 
 /**
-* @author Arno van Rossum <arno@van-rossum.com>
-*/
-
-class c3jsAdapter implements ChartTypeAdapterInterface
-{
-    /**
-     * Do whatever you want with your data to make the JS work.
-     *
-     * @param mixed $data
-     * @return mixed $data
-     */
-    public function parseData($data)
-    {
-        $x = array('x');
-        $result = array();
-        $first = true;
-        foreach($data as $username => $items )
-        {
-            $row = array();
-            for($i = 0; $i < count($items); $i++)
-            {
-                if ( $first )
-                {
-                    $x[] = $items[$i]->getDate()->format('Y-m-d');
-                }
-                $row[] = $items[$i]->getUsage();
-            }
-            $first = false;
-            $row = array_reverse($row);
-            $row[] = $username;
-            $row = array_reverse($row);
-            $result[] = $row;
-        }
-        $result[] = $x;
-        $result = array_reverse($result);
-        return $result;
-    }
-}
+ * @author Arno van Rossum <arno@van-rossum.com>
+ */
+class StorageUsageRepositoryException extends \Exception{}

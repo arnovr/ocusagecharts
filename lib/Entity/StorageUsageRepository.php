@@ -26,6 +26,7 @@ namespace OCA\ocUsageCharts\Entity;
 use OC_FileProxy;
 use OC_FileProxy_FileOperations;
 use OC_Hook;
+use OCA\ocUsageCharts\Exception\StorageUsageRepositoryException;
 use OCP\AppFramework\Db\Mapper;
 use \OCP\IDb;
 use \stdClass as ChartDataConfig;
@@ -78,7 +79,7 @@ class StorageUsageRepository extends Mapper
      * @return array
      */
     public function find($userName, $limit = 30) {
-        $sql = 'SELECT * FROM `oc_uc_storageusage` WHERE `username` = ? ORDER BY created DESC LIMIT ' . $limit;
+        $sql = 'SELECT * FROM `oc_uc_storageusage` WHERE `username` = ? ORDER BY created ASC LIMIT ' . $limit;
         return $this->findEntities($sql, array($userName));
     }
 
@@ -124,24 +125,13 @@ class StorageUsageRepository extends Mapper
                 if ( $config->userName == 'admin' )
                 {
                     $data = $this->findAll();
-                    foreach($data as $username => $items)
-                    {
-                        foreach($items as $item)
-                        {
-                            $new[$username][] = $item->getUsage();
-                        }
-                    }
-                    $data = $new;
                 }
                 else
                 {
                     $data = $this->find($config->userName);
-                    foreach($data as $item)
-                    {
-                        $new[] = $item->getUsage();
-                    }
-                    $data = array($config->userName => $new);
+                    $data = array($config->userName => $data);
                 }
+                return $this->useAdapter($config, $data);
                 break;
             case 'StorageUsageFree':
                 $new = array();
@@ -171,9 +161,25 @@ class StorageUsageRepository extends Mapper
                         'free' => $free
                     );
                 }
+                return $data;
                 break;
         }
 
-        return $data;
+
+    }
+
+
+    private function useAdapter($config, $data)
+    {
+
+        $adapter = '\OCA\ocUsageCharts\ChartType\c3jsProvider\\' . $config->chartProvider . 'Adapter';
+
+        if ( !class_exists($adapter) )
+        {
+            throw new StorageUsageRepositoryException("Adapter for " . $config->chartProvider . ' does not exist.');
+        }
+        $chartAdapter = new $adapter();
+
+        return $chartAdapter->parseData($data);
     }
 }
