@@ -49,4 +49,10 @@ class ChartDataProvider
     {
         return $this->repository->getUsage($chartConfig);
     }
+
+
+    public function updateUsage(ChartConfig $chartConfig)
+    {
+        $this->repository->updateUsage($chartConfig);
+    }
 }

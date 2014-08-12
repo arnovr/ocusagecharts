@@ -27,6 +27,7 @@ use OCA\ocUsageCharts\Controller\ChartController;
 use OCA\ocUsageCharts\Service\ChartConfigService;
 use OCA\ocUsageCharts\Service\ChartDataProvider;
 use OCA\ocUsageCharts\Service\ChartService;
+use OCA\ocUsageCharts\Service\ChartStorageUpdater;
 use OCA\ocUsageCharts\Service\ChartType\C3JS;
 use OCA\ocUsageCharts\Entity\UsageChartRepository;
 use \OCP\AppFramework\App;
@@ -57,20 +58,12 @@ class Chart extends App
                 $c->query('UsageChartRepository')
             );
         });
-        $container->registerService('c3js', function($c) {
-            return new c3js();
-        });
-        /*
-         * UNUSED for now
-
-
 
         $container->registerService('ChartStorageUpdater', function($c) {
             return new ChartStorageUpdater(
                 $c->query('ChartDataProvider')
             );
         });
-        */
         $container->registerService('ChartConfigService', function($c) {
                 return new ChartConfigService();
             });

@@ -24,7 +24,9 @@
 namespace OCA\ocUsageCharts\Entity;
 
 use OCA\ocUsageCharts\Dto\FactoryStorageUsage;
+use OCA\ocUsageCharts\Dto\StorageUsage;
 use \OCP\IDb;
+use OpenCloud\Common\Constants\Datetime;
 use \stdClass as ChartDataConfig;
 
 /**
@@ -77,5 +79,20 @@ class UsageChartRepository
         }
 
         return $data;
+    }
+
+
+    public function updateUsage(ChartDataConfig $config)
+    {
+        switch($config->dataType)
+        {
+            case 'StorageUsage':
+                \OC_Util::setupFS($config->userName);
+                $storageInfo = \OC_Helper::getStorageInfo('/', $dirInfo);
+                $usage = new StorageUsage(new \Datetime(), $storageInfo['used']);
+                $factoryUsage = new FactoryStorageUsage($this->db);
+                $factoryUsage->update($usage);
+                break;
+        }
     }
 }
