@@ -1,4 +1,3 @@
-<div id="chart_<?php p($_['chart']->getConfig()->chartId); ?>"></div>
 <script type="application/javascript">
     var chart<?php echo $_['chart']->getConfig()->chartId;?> = c3.generate({
         bindto: '#chart_<?php echo $_['chart']->getConfig()->chartId;?>',

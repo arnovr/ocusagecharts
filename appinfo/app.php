@@ -29,7 +29,7 @@ OCP\App::addNavigationEntry(Array(
     'id'	=> 'ocusagecharts',
     'order'	=> 60,
     'href' => \OCP\Util::linkToRoute('ocUsageCharts.chart.show_charts'),
-    'icon'	=> OCP\Util::imagePath('ocusagecharts', 'chart.png'),
+    'icon'	=> OCP\Util::imagePath('ocusagecharts', 'iconchart.png'),
     'name'	=> \OC_L10N::get('ocUsageCharts')->t('ocUsageCharts')
 ));
 
