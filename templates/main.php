@@ -1,7 +1,7 @@
 <div class="container-fluid">
 <?php
 $flowLayout = 4;
-$imageLoading = \OCP\Util::imagePath('ocusagechart', 'iconloading.gif');
+$imageLoading = \OCP\Util::imagePath('ocusagecharts', 'iconloading.gif');
 
 
 $chartRows = array_chunk($_['charts'], $flowLayout);
@@ -16,7 +16,8 @@ for($i = 0; $i < count($chartRows); $i++)
     {
         $config = $chart->getConfig();
         $chartId = $config->chartId;
-        $template = $config->chartProvider .  '/' . $config->chartDataType . 'View';
+        // keep it string to lower, because owncloud forces it all over
+        $template = strtolower($config->chartProvider .  '/' . $config->chartDataType . 'View');
 
         echo '<div class="span' . $flowLayout . '">';
             echo '<div id="chart_' . $chartId . '"><img src="' . $imageLoading . '" alt="Loading" title="Loading" /></div>';

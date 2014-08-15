@@ -5,6 +5,6 @@
             x: 'x',
             x_format: '%Y-%m-%d',
             mimeType: 'json',
-            url: '<?php echo \OCP\Util::linkToRoute('ocUsageCharts.chart.load_chart', array('id' => $_['chart']->getConfig()->chartId));?>'
+            url: '<?php echo \OCP\Util::linkToRoute('ocusagecharts.chart.load_chart', array('id' => $_['chart']->getConfig()->chartId));?>'
         }
 </script>
