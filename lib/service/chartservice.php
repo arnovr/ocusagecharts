@@ -99,18 +99,6 @@ class ChartService
     }
 
     /**
-     * @TODO be fixed to load from personal config
-     * return list of default charts
-     *
-     * @return array
-     */
-    public function getCharts()
-    {
-        return array($this->getChart(1), $this->getChart(2));
-    }
-
-
-    /**
      * @param ChartTypeViewInterface $chart
      *
      * @return array

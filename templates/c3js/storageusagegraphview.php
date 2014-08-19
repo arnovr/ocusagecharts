@@ -12,6 +12,9 @@
                 tick: {
                     format: '%Y-%m-%d'
                 }
+            },
+            y: {
+                label: 'Kilobytes'
             }
         }
     });

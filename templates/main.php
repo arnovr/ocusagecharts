@@ -1,29 +1,31 @@
-<div class="container-fluid">
+<div id="app">
+    <div id="app-navigation">
+        <ul>
+            <li><a href="<?php echo \OCP\Util::linkToRoute('ocusagecharts.chart.display_chart', array('id' => 1)); ?>">Free space / Used space</a></li>
+            <li><a href="<?php echo \OCP\Util::linkToRoute('ocusagecharts.chart.display_chart', array('id' => 2)); ?>">Daily Usage</a></li>
+            <li><a href="<?php echo \OCP\Util::linkToRoute('ocusagecharts.chart.display_chart', array('id' => 3)); ?>">Weekly Usage</a></li>
+            <li><a href="<?php echo \OCP\Util::linkToRoute('ocusagecharts.chart.display_chart', array('id' => 4)); ?>">Monthly Usage</a></li>
+
+        </ul>
+    </div>
+    <div id="app-content">
 <?php
-$flowLayout = 4;
 $imageLoading = \OCP\Util::imagePath('ocusagecharts', 'iconloading.gif');
-$chartRows = array_chunk($_['charts'], $flowLayout);
 
-for($i = 0; $i < count($chartRows); $i++)
+foreach($_['charts'] as $chart)
 {
-    $chartRow = $chartRows[$i];
+    echo '<h1>Chart</h1>';
+    $config = $chart->getConfig();
+    $chartId = $config->chartId;
+    // keep it string to lower, because owncloud forces it all over
+    $template = strtolower($config->chartProvider .  '/' . $config->chartDataType . 'View');
 
-    echo '<div class="row-fluid">';
-
-    foreach($chartRow as $chart)
-    {
-        $config = $chart->getConfig();
-        $chartId = $config->chartId;
-        // keep it string to lower, because owncloud forces it all over
-        $template = strtolower($config->chartProvider .  '/' . $config->chartDataType . 'View');
-
-        echo '<div class="span' . $flowLayout . '">';
-            echo '<div id="chart_' . $chartId . '"><img src="' . $imageLoading . '" alt="Loading" title="Loading" /></div>';
-            echo $this->inc($template, array('chart' => $chart));
-        echo '</div>';
-    }
-
+    echo '<div>';
+        //echo '<div id="chart_' . $chartId . '"><img src="' . $imageLoading . '" alt="Loading" title="Loading" /></div>';
+        echo '<div id="chart_' . $chartId . '"><div class="icon-loading" style="height: 60px;"></div></div>';
+        echo $this->inc($template, array('chart' => $chart));
     echo '</div>';
 }
 ?>
+        </div>
 </div>

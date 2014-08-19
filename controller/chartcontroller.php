@@ -67,14 +67,24 @@ class ChartController extends Controller
     }
 
     /**
-     * Frontpage for charts
+     * Entry point for the chart system
      *
      * @return TemplateResponse
      */
-    public function showCharts()
+    public function frontpage()
     {
-        $charts = $this->chartService->getCharts();
+        return $this->displayChart(1);
+    }
 
+    /**
+     * Show for a single chart
+     *
+     * @param string $id
+     * @return TemplateResponse
+     */
+    public function displayChart($id)
+    {
+        $charts = array($this->chartService->getChart($id));
         $templateName = 'main';  // will use templates/main.php
         return new TemplateResponse($this->appName, $templateName, array('charts' => $charts));
     }
