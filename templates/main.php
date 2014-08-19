@@ -2,8 +2,6 @@
 <?php
 $flowLayout = 4;
 $imageLoading = \OCP\Util::imagePath('ocusagecharts', 'iconloading.gif');
-
-
 $chartRows = array_chunk($_['charts'], $flowLayout);
 
 for($i = 0; $i < count($chartRows); $i++)

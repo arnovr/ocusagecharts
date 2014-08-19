@@ -35,7 +35,7 @@ class StorageUsageGraphView extends c3jsBase implements ChartTypeViewInterface
 
     public function show($data)
     {
-        $x = array('x');
+        $x = array();
         $result = array();
         $first = true;
         foreach($data as $username => $items )
@@ -51,12 +51,12 @@ class StorageUsageGraphView extends c3jsBase implements ChartTypeViewInterface
             }
             $first = false;
             $row = array_reverse($row);
-            $row[] = $username;
             $row = array_reverse($row);
-            $result[] = $row;
+            $result[$username] = $row;
         }
-        $result[] = $x;
+        $result["x"] = $x;
         $result = array_reverse($result);
+
         return $result;
     }
 
