@@ -48,6 +48,7 @@ class ChartConfigService
             $config->chartDataType = 'StorageUsageInfo';
         }
         $config->chartProvider = 'c3js';
+        $config->extraConfig = $_GET;
         return $config;
     }
 
@@ -65,12 +66,14 @@ class ChartConfigService
         $config->userName = $userName;
         $config->chartProvider = 'c3js';
         $config->chartDataType = 'StorageUsageInfo';
+        $config->extraConfig = $_GET;
 
         $config2 = new ChartConfig();
         $config2->chartId = '2';
         $config2->userName = $userName . '2';
         $config2->chartProvider = 'c3js';
         $config2->chartDataType = 'StorageUsageGraph';
+        $config->extraConfig = $_GET;
 
         return array($config, $config2);
 

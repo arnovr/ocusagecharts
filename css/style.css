@@ -1,0 +1,10 @@
+#app-content h1
+{
+    font-size: 25px;
+    margin-left: 10px;
+    margin-top: 5px;
+}
+#app-content .chart
+{
+    margin-top: 50px;
+}

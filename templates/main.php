@@ -10,21 +10,15 @@
     </div>
     <div id="app-content">
 <?php
-$imageLoading = \OCP\Util::imagePath('ocusagecharts', 'iconloading.gif');
 
 foreach($_['charts'] as $chart)
 {
-    echo '<h1>Chart</h1>';
     $config = $chart->getConfig();
     $chartId = $config->chartId;
     // keep it string to lower, because owncloud forces it all over
     $template = strtolower($config->chartProvider .  '/' . $config->chartDataType . 'View');
 
-    echo '<div>';
-        //echo '<div id="chart_' . $chartId . '"><img src="' . $imageLoading . '" alt="Loading" title="Loading" /></div>';
-        echo '<div id="chart_' . $chartId . '"><div class="icon-loading" style="height: 60px;"></div></div>';
         echo $this->inc($template, array('chart' => $chart));
-    echo '</div>';
 }
 ?>
         </div>

@@ -33,4 +33,7 @@ OCP\App::addNavigationEntry(Array(
     'name'	=> \OC_L10N::get('ocUsageCharts')->t('ocUsageCharts')
 ));
 
+
+\OCP\Util::addStyle('ocusagecharts', 'style');
+
 \OCP\Backgroundjob::registerJob('OCA\ocUsageCharts\Command\UpdateUserStorageCommand');

@@ -28,9 +28,31 @@ use OCA\ocUsageCharts\ChartType\ChartTypeViewInterface;
 
 class StorageUsageGraphView extends c3jsBase implements ChartTypeViewInterface
 {
+    private $allowedSizes = array('kb', 'mb', 'gb');
+
     public function __construct(\stdClass $config)
     {
         parent::__construct($config);
+    }
+
+    private function parseUsage($usage)
+    {
+        $size = 'kb';
+        if ( in_array($this->getConfig()->extraConfig['size'], $this->allowedSizes) )
+        {
+            $size = $this->getConfig()->extraConfig['size'];
+        }
+        switch($size)
+        {
+            case 'gb':
+                $usage = $usage / 1024;
+            case 'mb':
+                $usage = $usage / 1024;
+            case 'kb':
+                $usage = $usage / 1024;
+                break;
+        }
+        return round($usage, 2);
     }
 
     public function show($data)
@@ -47,7 +69,7 @@ class StorageUsageGraphView extends c3jsBase implements ChartTypeViewInterface
                 {
                     $x[] = $items[$i]->getDate()->format('Y-m-d');
                 }
-                $row[] = $items[$i]->getUsage();
+                $row[] = $this->parseUsage($items[$i]->getUsage());
             }
             $first = false;
             $row = array_reverse($row);
