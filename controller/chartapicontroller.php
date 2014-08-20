@@ -23,22 +23,22 @@
 
 namespace OCA\ocUsageCharts\Controller;
 use OCA\ocUsageCharts\Service\ChartService;
-use \OCP\AppFramework\Controller;
+use OCP\AppFramework\ApiController;
 use OCP\AppFramework\Http\JSONResponse;
-use OCP\AppFramework\Http\TemplateResponse;
 use OCP\IRequest;
 
 /**
- * Class ChartController
+ * Class ChartApiController
  * @package OCA\ocUsageCharts\Controller
  * @author Arno van Rossum <arno@van-rossum.com>
  */
-class ChartController extends Controller
+class ChartApiController extends ApiController
 {
     /**
      * @var ChartService
      */
     private $chartService;
+
 
     /**
      * @param string $appName
@@ -48,29 +48,26 @@ class ChartController extends Controller
     public function __construct($appName, IRequest $request, ChartService $chartService)
     {
         $this->chartService = $chartService;
-        parent::__construct($appName, $request);
+        parent::__construct(
+            $appName,
+            $request,
+            'GET',
+            'Authorization, Content-Type, Accept',
+            1728000
+        );
     }
 
     /**
-     * Entry point for the chart system
-     *
-     * @return TemplateResponse
-     */
-    public function frontpage()
-    {
-        return $this->displayChart(1);
-    }
-
-    /**
-     * Show for a single chart
+     * JSON Ajax call
      *
      * @param string $id
-     * @return TemplateResponse
+     * @return JSONResponse
      */
-    public function displayChart($id)
+    public function loadChart($id)
     {
-        $charts = array($this->chartService->getChart($id));
-        $templateName = 'main';  // will use templates/main.php
-        return new TemplateResponse($this->appName, $templateName, array('charts' => $charts));
+        $chart = $this->chartService->getChart($id);
+        $usage = $this->chartService->getUsage($chart);
+        $response = new JSONResponse($usage);
+        return $response;
     }
 }

@@ -23,6 +23,7 @@
 
 namespace OCA\ocUsageCharts\AppInfo;
 
+use OCA\ocUsageCharts\Controller\ChartApiController;
 use OCA\ocUsageCharts\Controller\ChartController;
 use OCA\ocUsageCharts\Entity\StorageUsageRepository;
 use OCA\ocUsageCharts\Service\ChartConfigService;
@@ -79,6 +80,13 @@ class Chart extends App
          */
         $container->registerService('ChartController', function($c) {
             return new ChartController(
+                $c->query('AppName'),
+                $c->query('Request'),
+                $c->query('ChartService')
+            );
+        });
+        $container->registerService('ChartApiController', function($c) {
+            return new ChartApiController(
                 $c->query('AppName'),
                 $c->query('Request'),
                 $c->query('ChartService')

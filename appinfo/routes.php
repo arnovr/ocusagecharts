@@ -25,8 +25,20 @@ namespace OCA\ocUsageCharts\AppInfo;
 $application = new Chart();
 $application->registerRoutes($this, array(
     'routes' => array(
-        array('name' => 'chart#frontpage', 'url' => '/', 'verb' => 'GET'),
-        array('name' => 'chart#display_chart', 'url' => '/showChart/{id}', 'verb' => 'GET'),
-        array('name' => 'chart#load_chart', 'url' => '/load/{id}', 'verb' => 'GET'),
+        array(
+            'name' => 'chart#frontpage',
+            'url' => '/',
+            'verb' => 'GET'
+        ),
+        array(
+            'name' => 'chart#display_chart',
+            'url' => '/showChart/{id}',
+            'verb' => 'GET'
+        ),
+        array(
+            'name' => 'chart_api#load_chart',
+            'url' => '/load/{id}',
+            'verb' => 'GET'
+        ),
     )
 ));
