@@ -21,10 +21,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-//OCP\User::checkLoggedIn(); //csrf check error loop
+OCP\User::checkLoggedIn();
 OCP\App::checkAppEnabled('ocusagecharts');
 OCP\App::setActiveNavigationEntry('ocusagecharts');
-
 OCP\App::addNavigationEntry(Array(
     'id'	=> 'ocusagecharts',
     'order'	=> 60,

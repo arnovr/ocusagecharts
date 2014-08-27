@@ -54,6 +54,7 @@ class ChartController extends Controller
     /**
      * Entry point for the chart system
      *
+     * @NoCSRFRequired
      * @return TemplateResponse
      */
     public function frontpage()
@@ -63,7 +64,7 @@ class ChartController extends Controller
 
     /**
      * Show for a single chart
-     *
+     * @NoCSRFRequired
      * @param string $id
      * @return TemplateResponse
      */
@@ -71,6 +72,7 @@ class ChartController extends Controller
     {
         $charts = array($this->chartService->getChart($id));
         $templateName = 'main';  // will use templates/main.php
-        return new TemplateResponse($this->appName, $templateName, array('charts' => $charts));
+        return new TemplateResponse($this->appName, $templateName, array('charts' => $charts, 'requesttoken' => \OC_Util::callRegister()));
+
     }
 }

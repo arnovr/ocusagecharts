@@ -28,7 +28,7 @@ echo '<div class="chart" id="chart_' . $_['chart']->getConfig()->chartId . '"><d
             label = 'Gigabytes';
         }
 
-        var url = '<?php echo \OCP\Util::linkToRoute('ocusagecharts.chart_api.load_chart', array('id' => $_['chart']->getConfig()->chartId, 'size' => '')); ?>' + given;
+        var url = '<?php echo \OCP\Util::linkToRoute('ocusagecharts.chart_api.load_chart', array('id' => $_['chart']->getConfig()->chartId, 'requesttoken' => $_['requesttoken'], 'size' => '')); ?>' + given;
         c3.generate({
             bindto: '#chart_<?php p($_['chart']->getConfig()->chartId);?>',
             data: {

@@ -6,7 +6,7 @@ echo '<div class="chart" id="chart_' . $_['chart']->getConfig()->chartId . '"><d
     var chart<?php echo $_['chart']->getConfig()->chartId;?> = c3.generate({
         bindto: '#chart_<?php echo $_['chart']->getConfig()->chartId;?>',
         data: {
-            url: '<?php echo \OCP\Util::linkToRoute('ocusagecharts.chart_api.load_chart', array('id' => $_['chart']->getConfig()->chartId));?>',
+            url: '<?php echo \OCP\Util::linkToRoute('ocusagecharts.chart_api.load_chart', array('id' => $_['chart']->getConfig()->chartId, 'requesttoken' => $_['requesttoken']));?>',
             mimeType: 'json',
             type : 'pie'
         }
