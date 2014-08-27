@@ -77,7 +77,7 @@ class StorageUsageRepository extends Mapper
      * @return array
      */
     public function find($userName, $limit = 30) {
-        $sql = 'SELECT * FROM `oc_uc_storageusage` WHERE `username` = ? ORDER BY created ASC LIMIT ' . $limit;
+        $sql = 'SELECT * FROM `oc_uc_storageusage` WHERE `username` = ? ORDER BY created DESC LIMIT ' . $limit;
         return $this->findEntities($sql, array($userName));
     }
 
@@ -106,6 +106,16 @@ class StorageUsageRepository extends Mapper
     }
 
     /**
+     * Check if user is admin
+     * small wrapper for owncloud methology
+     * @return boolean
+     */
+    private function isAdminUser()
+    {
+        return \OC_User::isAdminUser(\OC_User::getUser());
+    }
+
+    /**
      * @TODO refactor to proper code
      *
      * @param ChartDataConfig $config
@@ -119,10 +129,7 @@ class StorageUsageRepository extends Mapper
         {
             default:
             case 'StorageUsageGraph':
-                $new = array();
-
-                // TODO proper username find
-                if ( $config->userName == 'admin' )
+                if ( $this->isAdminUser() )
                 {
                     $data = $this->findAll();
                 }
@@ -138,9 +145,7 @@ class StorageUsageRepository extends Mapper
 
                 $storageInfo = \OC_Helper::getStorageInfo('/');
                 $free = ceil($storageInfo['free'] / 1024 / 1024);
-
-                // TODO proper username find
-                if ( $config->userName == 'admin' )
+                if ( $this->isAdminUser() )
                 {
                     $data = $this->findAll(1);
                     foreach($data as $username => $items)
