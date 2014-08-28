@@ -28,7 +28,7 @@ OCP\App::addNavigationEntry(Array(
     'order'	=> 60,
     'href' => \OCP\Util::linkToRoute('ocusagecharts.chart.frontpage'),
     'icon'	=> OCP\Util::imagePath('ocusagecharts', 'iconchart.png'),
-    'name'	=> \OC_L10N::get('ocUsageCharts')->t('ocUsageCharts')
+    'name'	=> \OC_L10N::get('ocusagecharts')->t('ocUsageCharts')
 ));
 
 
