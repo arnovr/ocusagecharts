@@ -23,8 +23,8 @@
 
 namespace OCA\ocUsageCharts\Service;
 
+use OCA\ocUsageCharts\Entity\ChartConfig;
 use OCA\ocUsageCharts\Entity\StorageUsageRepository;
-use \stdClass as ChartConfig;
 
 /**
  * @author Arno van Rossum <arno@van-rossum.com>
