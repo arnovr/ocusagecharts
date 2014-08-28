@@ -49,5 +49,5 @@ echo '<div class="chart" id="chart_' . $_['chart']->getConfig()->getId() . '"><d
             }
         });
     }
-    showChart('mb');
+    showChart('gb');
 </script>
