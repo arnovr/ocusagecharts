@@ -98,7 +98,6 @@ class ChartController extends Controller
                 break;
             }
         }
-
         $chart = $this->chartService->getChartByConfig($config);
         $templateName = 'main';  // will use templates/main.php
         return new TemplateResponse($this->appName, $templateName, array('chart' => $chart, 'configs' => $chartConfigs, 'requesttoken' => \OC_Util::callRegister()));

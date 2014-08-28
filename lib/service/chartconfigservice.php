@@ -87,7 +87,7 @@ class ChartConfigService
             null,
             new \DateTime(),
             $this->getUsername(),
-            'StorageUsageInfo',
+            'StorageUsageCurrent',
             'c3js'
         );
         $this->repository->save($config);
@@ -96,7 +96,16 @@ class ChartConfigService
             null,
             new \DateTime(),
             $this->getUsername(),
-            'StorageUsageGraph',
+            'StorageUsageLastMonth',
+            'c3js'
+        );
+        $this->repository->save($config);
+
+        $config = new ChartConfig(
+            null,
+            new \DateTime(),
+            $this->getUsername(),
+            'StorageUsagePerMonth',
             'c3js'
         );
         $this->repository->save($config);

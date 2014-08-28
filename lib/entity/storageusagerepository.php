@@ -126,13 +126,11 @@ class StorageUsageRepository extends Mapper
     }
 
     /**
-     * Not working yet
      * @return array
      */
     public function findAllPerMonth()
     {
         $sql = 'SELECT DISTINCT CONCAT(MONTH(`created`), \' \', YEAR(`created`)) as month, avg(`usage`) as average, username FROM oc_uc_storageusage GROUP BY username, month';
-
         $query = $this->db->prepareQuery($sql);
         $result = $query->execute();
         $entities = array();
@@ -147,14 +145,12 @@ class StorageUsageRepository extends Mapper
 
             $entities[$row['username']] = array_merge(
                 $entities[$row['username']],
-                array(new StorageUsage($date, $row['average'], $row['username']))
+                array(new StorageUsage($dateTime, $row['average'], $row['username']))
             );
 
         }
         return $entities;
     }
-
-
 
     public function updateUsage(ChartDataConfig $config)
     {
@@ -203,7 +199,7 @@ class StorageUsageRepository extends Mapper
         switch($config->getChartType())
         {
             default:
-            case 'StorageUsageGraph':
+            case 'StorageUsageLastMonth':
                 $created = new \DateTime("-1 month");
                 if ( $this->isAdminUser() )
                 {
@@ -215,7 +211,17 @@ class StorageUsageRepository extends Mapper
                     $data = array($config->getUsername() => $data);
                 }
                 break;
-            case 'StorageUsageInfo':
+
+            case 'StorageUsagePerMonth':
+                //@TODO don't need to get everything for one user...
+                // Performance and such
+                $data = $this->findAllPerMonth();
+                if ( !$this->isAdminUser() )
+                {
+                    $data = array($config->getUsername() => $data[$config->getUsername()]);
+                }
+                break;
+            case 'StorageUsageCurrent':
                 $new = array();
 
                 $storageInfo = \OC_Helper::getStorageInfo('/');
