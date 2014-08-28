@@ -60,7 +60,9 @@ class ChartApiController extends ApiController
     /**
      * JSON Ajax call
      *
+     * @TODO this should not need require noCSRF... It bugs on production
      * @NoAdminRequired
+     * @NoCSRFRequired
      * @param string $id
      * @return JSONResponse
      */
