@@ -52,6 +52,7 @@ class c3jsBase
         \OCP\Util::addStyle('ocusagecharts', 'c3js/c3');
         \OCP\Util::addScript('ocusagecharts', 'c3js/d3.min');
         \OCP\Util::addScript('ocusagecharts', 'c3js/c3.min');
+        \OCP\Util::addScript('ocusagecharts', 'c3js/loadGraph');
     }
 
     public function getConfig()
