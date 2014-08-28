@@ -24,7 +24,6 @@
 namespace OCA\ocUsageCharts\Service;
 
 use OCA\ocUsageCharts\ChartType\c3js;
-use OCA\ocUsageCharts\ChartType\ChartTypeInterface;
 use OCA\ocUsageCharts\ChartType\ChartTypeViewInterface;
 use OCA\ocUsageCharts\Entity\ChartConfig;
 use OCA\ocUsageCharts\Exception\ChartServiceException;

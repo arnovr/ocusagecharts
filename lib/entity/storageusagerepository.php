@@ -27,7 +27,6 @@ use OCA\ocUsageCharts\ChartType\ChartTypeViewInterface;
 use OCA\ocUsageCharts\Exception\StorageUsageRepositoryException;
 use OCP\AppFramework\Db\Mapper;
 use \OCP\IDb;
-use \stdClass as ChartDataConfig;
 
 /**
  * @author Arno van Rossum <arno@van-rossum.com>
@@ -152,38 +151,36 @@ class StorageUsageRepository extends Mapper
         return $entities;
     }
 
-    public function updateUsage(ChartDataConfig $config)
+    /**
+     * @param string $userName
+     */
+    public function updateUsage($userName)
     {
-        switch($config->dataType)
+        $created = new \DateTime();
+        $created->setTime(0,0,0);
+        $results = $this->findAfterCreated($userName, $created);
+        // Apparently today it is allready scanned, ignore, only update once a day.
+        if ( count($results) > 0 )
         {
-            case 'StorageUsage':
-                $created = new \DateTime();
-                $created->setTime(0,0,0);
-                $results = $this->findAfterCreated($config->userName, $created);
-                // Apparently today it is allready scanned, ignore, only update once a day.
-                if ( count($results) > 0 )
-                {
-                    return;
-                }
-
-                $userDir = '/'.$config->userName.'/files';
-                $view = new \OC\Files\View('/');
-                $data = $view->getFileInfo($userDir, false);
-                $used = 0;
-                if ( $data instanceof \OC\Files\FileInfo )
-                {
-                    $fileInfoData = $data->getData();
-                    $used = $fileInfoData['size'];
-                    if ( $used < 0 )
-                    {
-                        $used = 0;
-                    }
-                }
-                $usage = new StorageUsage(new \Datetime(), $used, $config->userName);
-                $this->save($usage);
-                break;
+            return;
         }
-    }
+
+        $userDir = '/'.$userName.'/files';
+        $view = new \OC\Files\View('/');
+        $data = $view->getFileInfo($userDir, false);
+        $used = 0;
+        if ( $data instanceof \OC\Files\FileInfo )
+        {
+            $fileInfoData = $data->getData();
+            $used = $fileInfoData['size'];
+            if ( $used < 0 )
+            {
+                $used = 0;
+            }
+        }
+        $usage = new StorageUsage(new \Datetime(), $used, $userName);
+        $this->save($usage);
+     }
 
     /**
      * Check if user is admin

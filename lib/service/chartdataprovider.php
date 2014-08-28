@@ -50,9 +50,11 @@ class ChartDataProvider
         return $this->repository->getUsage($chartConfig);
     }
 
-
-    public function updateUsage(ChartConfig $chartConfig)
+    /**
+     * @param string $userName
+     */
+    public function updateUsage($userName)
     {
-        $this->repository->updateUsage($chartConfig);
+        $this->repository->updateUsage($userName);
     }
 }

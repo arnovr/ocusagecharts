@@ -23,8 +23,6 @@
 
 namespace OCA\ocUsageCharts\Service;
 
-use \stdClass as StorageDataConfig;
-
 /**
  * @author    Arno van Rossum <arno@van-rossum.com>
  */
@@ -60,9 +58,6 @@ class ChartStorageUpdater
      */
     private function updateUserStorageByUser($userName)
     {
-        $config = new StorageDataConfig();
-        $config->userName = $userName;
-        $config->dataType = 'StorageUsage';
-        $this->provider->updateUsage($config);
+        $this->provider->updateUsage($userName);
     }
 }
