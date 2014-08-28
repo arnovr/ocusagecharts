@@ -54,6 +54,7 @@ class StorageUsageRepository extends Mapper
     public function save(StorageUsage $usage)
     {
         $query = $this->db->prepareQuery('INSERT INTO oc_uc_storageusage (created, username, `usage`) VALUES (?,?,?)');
+        echo $query;
         $query->execute(Array($usage->getDate()->format('Y-m-d H:i:s'), $usage->getUsername(), $usage->getUsage()));
     }
 
@@ -162,6 +163,7 @@ class StorageUsageRepository extends Mapper
         // Apparently today it is allready scanned, ignore, only update once a day.
         if ( count($results) > 0 )
         {
+            echo 'results found';
             return;
         }
 
@@ -179,6 +181,7 @@ class StorageUsageRepository extends Mapper
             }
         }
         $usage = new StorageUsage(new \Datetime(), $used, $userName);
+        var_dump($usage);
         $this->save($usage);
      }
 
