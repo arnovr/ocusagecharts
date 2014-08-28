@@ -162,17 +162,16 @@ class StorageUsageRepository extends Mapper
      */
     private function getStorageUsageFromCacheByUserName($username)
     {
-        $sql = 'select * from oc_filecache WHERE path = ?';
+        $sql = 'select SUM(`size`) as totalsize from oc_filecache WHERE `size` >= 0 AND path LIKE ?';
         $query = $this->db->prepareQuery($sql);
-        $result = $query->execute(array($username . '/files'));
-        $totalSize = 0;
-        while($row = $result->fetch()){
-            if ( $row['size'] > 0 )
+        $result = $query->execute(array($username . '/files/%'));
+        while($row = $result->fetch()) {
+            if ( $row['totalsize'] > 0 )
             {
-                $totalSize += $row['size'];
+                return $row['totalsize'];
             }
         }
-        return $totalSize;
+        return 0;
     }
 
     /**
@@ -187,7 +186,7 @@ class StorageUsageRepository extends Mapper
         // Apparently today it is allready scanned, ignore, only update once a day.
         if ( count($results) > 0 )
         {
-            return;
+           return;
         }
         $usage = new StorageUsage(new \Datetime(), $this->getStorageUsageFromCacheByUserName($userName), $userName);
         $this->save($usage);
