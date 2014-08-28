@@ -64,6 +64,7 @@ class ChartController extends Controller
      * Entry point for the chart system
      *
      * @NoCSRFRequired
+     * @NoAdminRequired
      * @return TemplateResponse
      */
     public function frontpage()
@@ -83,6 +84,7 @@ class ChartController extends Controller
      * Show a single chart
      *
      * @NoCSRFRequired
+     * @NoAdminRequired
      * @param string $id
      * @return TemplateResponse
      */

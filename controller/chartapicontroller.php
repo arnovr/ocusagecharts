@@ -60,6 +60,7 @@ class ChartApiController extends ApiController
     /**
      * JSON Ajax call
      *
+     * @NoAdminRequired
      * @param string $id
      * @return JSONResponse
      */

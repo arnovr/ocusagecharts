@@ -171,6 +171,7 @@ class StorageUsageRepository extends Mapper
                 else
                 {
                     $free = ceil($storageInfo['free'] / 1024 / 1024);
+                    $used = ceil($storageInfo['used'] / 1024 / 1024);
                     $data = array(
                         'used' => $used,
                         'free' => $free

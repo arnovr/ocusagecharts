@@ -21,8 +21,6 @@
  * THE SOFTWARE.
  */
 
-// creates redirect loop when not logged in.... because it always loads app.php ?!
-//OCP\User::checkLoggedIn();
 OCP\App::checkAppEnabled('ocusagecharts');
 OCP\App::setActiveNavigationEntry('ocusagecharts');
 OCP\App::addNavigationEntry(Array(
