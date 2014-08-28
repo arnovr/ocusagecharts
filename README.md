@@ -11,9 +11,11 @@ Features
 	- User mode:
 		- A pie chart showing space used / free space
 		- A graph with data used over the course of the last month
+		- A Bar chart with average data used in the last months
 	- Admin mode
 		- A pie chart showing space used by all users
-		- A graph with data used over the course of the last month fo all users
+		- A graph with data used over the course of the last month for all users
+		- A Bar chart with average data used in the last months for all users
 
 Future ideas
 ============
