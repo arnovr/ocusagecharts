@@ -21,9 +21,9 @@ Future ideas
 ============
 Graphs:
     - A bar graph, with usages per month over the course of last year
-	- Files downloaded
-	- Activity tracking
-- Option to use alternative for C3.js
+    - Files downloaded
+    - Activity tracking
+    - Option to use alternative for C3.js
 
 INSTALL
 =======
