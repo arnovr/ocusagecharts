@@ -157,20 +157,24 @@ class StorageUsageRepository extends Mapper
      *
      * This method exists, because after vigorous trying, owncloud does not supply a proper way
      * to check somebody's used size
-     * @param $username
+     * @param string $userName
      * @return integer
      */
-    private function getStorageUsageFromCacheByUserName($username)
+    private function getStorageUsageFromCacheByUserName($userName)
     {
+        $data = new \OC\Files\Storage\Home(array('user' => \OC_User::getManager()->get($userName)));
+        return $data->getCache('files')->calculateFolderSize('files');
+        /*
         $sql = 'select SUM(`size`) as totalsize from oc_filecache WHERE `size` >= 0 AND path LIKE ?';
         $query = $this->db->prepareQuery($sql);
-        $result = $query->execute(array($username . '/files/%'));
+        $result = $query->execute(array($userName . '/files/%'));
         while($row = $result->fetch()) {
             if ( $row['totalsize'] > 0 )
             {
                 return $row['totalsize'];
             }
         }
+        */
         return 0;
     }
 
