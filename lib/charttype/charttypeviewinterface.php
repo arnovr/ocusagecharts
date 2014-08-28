@@ -23,9 +23,11 @@
 
 namespace OCA\ocUsageCharts\ChartType;
 
+use OCA\ocUsageCharts\Entity\ChartConfig;
+
 interface ChartTypeViewInterface
 {
-    public function __construct(\stdClass $config);
+    public function __construct(ChartConfig $config);
     public function show($data);
     public function getConfig();
 }

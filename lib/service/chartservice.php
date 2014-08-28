@@ -26,6 +26,7 @@ namespace OCA\ocUsageCharts\Service;
 use OCA\ocUsageCharts\ChartType\c3js;
 use OCA\ocUsageCharts\ChartType\ChartTypeInterface;
 use OCA\ocUsageCharts\ChartType\ChartTypeViewInterface;
+use OCA\ocUsageCharts\Entity\ChartConfig;
 use OCA\ocUsageCharts\Exception\ChartServiceException;
 
 /**
@@ -73,6 +74,21 @@ class ChartService
     }
 
     /**
+     * Return all charts
+     * @return array
+     */
+    public function getCharts()
+    {
+        $charts = array();
+        $chartConfigs = $this->config->getCharts();
+        foreach($chartConfigs as $config)
+        {
+            $charts[] = $this->getChartByConfig($config);
+        }
+        return $charts;
+    }
+
+    /**
      * @param $id
      * @return mixed
      * @throws \OCA\ocUsageCharts\Exception\ChartServiceException
@@ -80,19 +96,29 @@ class ChartService
     public function getChart($id)
     {
         $config = $this->config->getChartConfigById($id);
+        return $this->getChartByConfig($config);
+    }
+
+    /**
+     * @param ChartConfig $config
+     * @return mixed
+     * @throws \OCA\ocUsageCharts\Exception\ChartServiceException
+     */
+    public function getChartByConfig(ChartConfig $config)
+    {
         // Apparently namespace is needed
-        $view = '\OCA\ocUsageCharts\ChartType\\' .  $config->chartProvider . '\Views\\' . $config->chartDataType . 'View';
+        $view = '\OCA\ocUsageCharts\ChartType\\' .  $config->getChartProvider() . '\Views\\' . $config->getChartType() . 'View';
 
         if ( !class_exists($view) )
         {
-            throw new ChartServiceException("View for " . $config->chartDataType . ' does not exist.');
+            throw new ChartServiceException("View for " . $config->getChartType() . ' does not exist.');
         }
         $chartView = new $view($config);
 
-        if ( !in_array($config->chartProvider, $this->isLoaded) )
+        if ( !in_array($config->getChartProvider(), $this->isLoaded) )
         {
             $chartView->loadFrontend();
-            $this->isLoaded[] = $config->chartProvider;
+            $this->isLoaded[] = $config->getChartProvider();
         }
 
         return $chartView;

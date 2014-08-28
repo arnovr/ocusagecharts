@@ -23,8 +23,8 @@
 
 namespace OCA\ocUsageCharts\ChartType\c3js;
 
-use OCA\ocUsageCharts\ChartType\ChartTypeInterface;
-use \stdClass as ChartConfig;
+use OCA\ocUsageCharts\Entity\ChartConfig;
+
 
 /**
  * @author Arno van Rossum <arno@van-rossum.com>

@@ -47,13 +47,24 @@ class StorageUsageRepository extends Mapper
         parent::__construct($db, 'uc_storageusage', '\OCA\ocUsageCharts\Entity\StorageUsage');
     }
 
+    /**
+     * Save a storage usage entity to the database
+     *
+     * @param StorageUsage $usage
+     */
     public function save(StorageUsage $usage)
     {
         $query = $this->db->prepareQuery('INSERT INTO oc_uc_storageusage (created, username, `usage`) VALUES (?,?,?)');
         $query->execute(Array($usage->getDate()->format('Y-m-d H:i:s'), $usage->getUsername(), $usage->getUsage()));
-
     }
 
+    /**
+     * This method retrieves all usernames,
+     * and gets the lastest storage usage for them
+     *
+     * @param integer $limit
+     * @return array
+     */
     public function findAll($limit = 30)
     {
         $sql = 'SELECT username FROM `oc_uc_storageusage` GROUP BY username';
@@ -118,14 +129,14 @@ class StorageUsageRepository extends Mapper
     /**
      * @TODO refactor to proper code
      *
-     * @param ChartDataConfig $config
+     * @param ChartConfig $config
      * @return ChartTypeViewInterface
      *
      * @throws \OCA\ocUsageCharts\Exception\StorageUsageRepositoryException
      */
-    public function getUsage(ChartDataConfig $config)
+    public function getUsage(ChartConfig $config)
     {
-        switch($config->chartDataType)
+        switch($config->getChartType())
         {
             default:
             case 'StorageUsageGraph':
@@ -135,10 +146,9 @@ class StorageUsageRepository extends Mapper
                 }
                 else
                 {
-                    $data = $this->find($config->userName);
-                    $data = array($config->userName => $data);
+                    $data = $this->find($config->getUsername());
+                    $data = array($config->getUsername() => $data);
                 }
-
                 break;
             case 'StorageUsageInfo':
                 $new = array();
@@ -169,11 +179,11 @@ class StorageUsageRepository extends Mapper
                 break;
         }
 
-        $view = '\OCA\ocUsageCharts\ChartType\\' .  $config->chartProvider . '\Views\\' . $config->chartDataType . 'View';
+        $view = '\OCA\ocUsageCharts\ChartType\\' .  $config->getChartProvider() . '\Views\\' . $config->getChartType() . 'View';
 
         if ( !class_exists($view) )
         {
-            throw new StorageUsageRepositoryException("View for " . $config->chartDataType . ' does not exist.');
+            throw new StorageUsageRepositoryException("View for " . $config->getChartType() . ' does not exist.');
         }
         $chartView = new $view($config);
         return $chartView->show($data);

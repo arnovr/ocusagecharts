@@ -23,68 +23,46 @@
 
 namespace OCA\ocUsageCharts\Entity;
 
+use OCP\AppFramework\Db\Mapper;
+use \OCP\IDb;
+
 /**
  * @author Arno van Rossum <arno@van-rossum.com>
  */
-class StorageUsage
+class ChartConfigRepository extends Mapper
 {
     /**
-     * @var \DateTime
+     * @var \OCP\IDb
      */
-    private $date;
+    protected $db;
 
     /**
-     * @var integer Kilobytes
+     * @param IDb $db
      */
-    private $usage;
-
-    /**
-     * @var string
-     */
-    private $username;
-
-    /**
-     * @param \DateTime $date
-     * @param integer $usage
-     * @param string $username
-     */
-    public function __construct(\DateTime $date, $usage, $username)
-    {
-        $this->date = $date;
-        $this->usage = $usage;
-        $this->username = $username;
+    public function __construct(IDb $db) {
+        $this->db = $db;
+        parent::__construct($db, 'uc_chartconfig', '\OCA\ocUsageCharts\Entity\ChartConfig');
     }
 
     /**
-     * @return \DateTime
+     * Return ChartConfigs for username given
+     * @param $userName
+     * @return array|ChartConfig[]
      */
-    public function getDate()
-    {
-        return $this->date;
+    public function findByUsername($userName) {
+        $sql = 'SELECT * FROM `oc_uc_chartconfig` WHERE `username` = ?';
+        return $this->findEntities($sql, array($userName));
     }
 
-    /**
-     * @return integer
-     */
-    public function getUsage()
-    {
-        return $this->usage;
-    }
 
     /**
-     * @return string
+     * Save a chartconfig entity to the database
+     *
+     * @param ChartConfig $config
      */
-    public function getUsername()
+    public function save(ChartConfig $config)
     {
-        return $this->username;
-    }
-
-    /**
-     * @param array $row
-     * @return StorageUsage
-     */
-    public static function fromRow($row)
-    {
-        return new StorageUsage(new \Datetime($row['created']), $row['usage'], $row['username']);
+        $query = $this->db->prepareQuery('INSERT INTO oc_uc_chartconfig(created, username, charttype, chartprovider) VALUES (?,?,?,?)');
+        $query->execute(Array($config->getDate()->format('Y-m-d H:i:s'), $config->getUsername(), $config->getChartType(), $config->getChartProvider()));
     }
 }

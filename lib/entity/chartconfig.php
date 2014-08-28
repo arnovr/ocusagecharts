@@ -23,20 +23,17 @@
 
 namespace OCA\ocUsageCharts\Entity;
 
-/**
- * @author Arno van Rossum <arno@van-rossum.com>
- */
-class StorageUsage
+class ChartConfig
 {
+    /**
+     * @var integer
+     */
+    private $id;
+
     /**
      * @var \DateTime
      */
     private $date;
-
-    /**
-     * @var integer Kilobytes
-     */
-    private $usage;
 
     /**
      * @var string
@@ -44,15 +41,37 @@ class StorageUsage
     private $username;
 
     /**
-     * @param \DateTime $date
-     * @param integer $usage
-     * @param string $username
+     * @var string
      */
-    public function __construct(\DateTime $date, $usage, $username)
+    private $chartType;
+
+    /**
+     * @var string
+     */
+    private $chartProvider;
+
+    /**
+     * @param integer $id
+     * @param \DateTime $date
+     * @param string $username
+     * @param string $chartType
+     * @param string $chartProvider
+     */
+    public function __construct($id, \DateTime $date, $username, $chartType, $chartProvider = 'c3js')
     {
+        $this->id = $id;
         $this->date = $date;
-        $this->usage = $usage;
         $this->username = $username;
+        $this->chartType = $chartType;
+        $this->chartProvider = $chartProvider;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 
     /**
@@ -64,14 +83,6 @@ class StorageUsage
     }
 
     /**
-     * @return integer
-     */
-    public function getUsage()
-    {
-        return $this->usage;
-    }
-
-    /**
      * @return string
      */
     public function getUsername()
@@ -80,11 +91,28 @@ class StorageUsage
     }
 
     /**
+     * @return string
+     */
+    public function getChartType()
+    {
+        return $this->chartType;
+    }
+
+    /**
+     * @return string
+     */
+    public function getChartProvider()
+    {
+        return $this->chartProvider;
+    }
+
+    /**
      * @param array $row
-     * @return StorageUsage
+     * @return ChartConfig
      */
     public static function fromRow($row)
     {
-        return new StorageUsage(new \Datetime($row['created']), $row['usage'], $row['username']);
+        return new ChartConfig($row['id'], new \Datetime($row['created']), $row['username'], $row['charttype'], $row['chartprovider']);
     }
+
 }

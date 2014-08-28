@@ -2,7 +2,7 @@
 <info>
     <id>ocusagecharts</id>
     <name>Usage Charts</name>
-    <description>This app shows the usage per user or as grand total.</description>
+    <description>This app shows the usage for user(s) in graph or pie form.</description>
     <version>1.0</version>
     <licence>MIT</licence>
     <author>Arno van Rossum</author>

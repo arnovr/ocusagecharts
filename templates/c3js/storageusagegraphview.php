@@ -1,4 +1,3 @@
-
 <div id="controls" style="margin-left: 3px;">
     <div id="new" class="button">
         <a href="javascript:showChart('kb');">Kilobytes</a>
@@ -13,7 +12,7 @@
 <div style="height: 50px;"></div>
 <h1>Usage graph</h1>
 <?php
-echo '<div class="chart" id="chart_' . $_['chart']->getConfig()->chartId . '"><div class="icon-loading" style="height: 60px;"></div></div>';
+echo '<div class="chart" id="chart_' . $_['chart']->getConfig()->getId() . '"><div class="icon-loading" style="height: 60px;"></div></div>';
 ?>
 <script type="application/javascript">
     function showChart(given)
@@ -28,9 +27,9 @@ echo '<div class="chart" id="chart_' . $_['chart']->getConfig()->chartId . '"><d
             label = 'Gigabytes';
         }
 
-        var url = '<?php echo \OCP\Util::linkToRoute('ocusagecharts.chart_api.load_chart', array('id' => $_['chart']->getConfig()->chartId, 'requesttoken' => $_['requesttoken'], 'size' => '')); ?>' + given;
+        var url = '<?php echo \OCP\Util::linkToRoute('ocusagecharts.chart_api.load_chart', array('id' => $_['chart']->getConfig()->getId(), 'requesttoken' => $_['requesttoken'], 'size' => '')); ?>' + given;
         c3.generate({
-            bindto: '#chart_<?php p($_['chart']->getConfig()->chartId);?>',
+            bindto: '#chart_<?php p($_['chart']->getConfig()->getId());?>',
             data: {
                 x: 'x',
                 mimeType: 'json',

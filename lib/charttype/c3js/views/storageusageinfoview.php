@@ -25,10 +25,11 @@ namespace OCA\ocUsageCharts\ChartType\c3js\Views;
 
 use OCA\ocUsageCharts\ChartType\c3js\c3jsBase;
 use OCA\ocUsageCharts\ChartType\ChartTypeViewInterface;
+use OCA\ocUsageCharts\Entity\ChartConfig;
 
 class StorageUsageInfoView extends c3jsBase implements ChartTypeViewInterface
 {
-    public function __construct(\stdClass $config)
+    public function __construct(ChartConfig $config)
     {
         parent::__construct($config);
     }

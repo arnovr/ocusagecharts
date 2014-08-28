@@ -25,6 +25,7 @@ namespace OCA\ocUsageCharts\AppInfo;
 
 use OCA\ocUsageCharts\Controller\ChartApiController;
 use OCA\ocUsageCharts\Controller\ChartController;
+use OCA\ocUsageCharts\Entity\ChartConfigRepository;
 use OCA\ocUsageCharts\Entity\StorageUsageRepository;
 use OCA\ocUsageCharts\Service\ChartConfigService;
 use OCA\ocUsageCharts\Service\ChartDataProvider;
@@ -53,6 +54,11 @@ class Chart extends App
                 $c->query('ServerContainer')->getDb()
             );
         });
+        $container->registerService('ChartConfigRepository', function($c) {
+                return new ChartConfigRepository(
+                    $c->query('ServerContainer')->getDb()
+                );
+            });
         $container->registerService('ChartDataProvider', function($c) {
             return new ChartDataProvider(
                 $c->query('StorageUsageRepository')
@@ -65,8 +71,10 @@ class Chart extends App
             );
         });
         $container->registerService('ChartConfigService', function($c) {
-                return new ChartConfigService();
-            });
+            return new ChartConfigService(
+                $c->query('ChartConfigRepository')
+            );
+        });
         $container->registerService('ChartService', function($c) {
                 return new ChartService(
                     $c->query('ChartDataProvider'),
@@ -82,7 +90,8 @@ class Chart extends App
             return new ChartController(
                 $c->query('AppName'),
                 $c->query('Request'),
-                $c->query('ChartService')
+                $c->query('ChartService'),
+                $c->query('ChartConfigService')
             );
         });
         $container->registerService('ChartApiController', function($c) {

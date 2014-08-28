@@ -23,83 +23,82 @@
 
 namespace OCA\ocUsageCharts\Service;
 
-use \stdClass as ChartConfig;
+use OCA\ocUsageCharts\Entity\ChartConfigRepository;
+use OCA\ocUsageCharts\Entity\ChartConfig;
 
 /**
- * @author    Arno van Rossum <arno@van-rossum.com>
+ * @author Arno van Rossum <arno@van-rossum.com>
  */
 class ChartConfigService
 {
     /**
-     * STUB, This method should retrieve config from database
+     * @var ChartConfigRepository
+     */
+    private $repository;
+
+    public function __construct(ChartConfigRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
+    /**
+     * @return string
+     */
+    private function getUsername()
+    {
+        return \OCP\User::getUser();
+    }
+
+    /**
+     * Get all charts
+     *
+     * @return array|\OCA\ocUsageCharts\Entity\ChartConfig[]
+     */
+    public function getCharts()
+    {
+        return $this->repository->findByUsername($this->getUsername());
+    }
+
+    /**
+     * Get a config by id
      *
      * @param integer $id
-     *
      * @return ChartConfig
      */
     public function getChartConfigById($id)
     {
-        $config = new ChartConfig();
-        $config->chartId = $id;
-        $config->userName = 'admin';
-        $config->chartDataType = 'StorageUsageGraph';
-        if ( $id == 1 )
+        $configs = $this->repository->findByUsername($this->getUsername());
+        foreach($configs as $config)
         {
-            $config->chartDataType = 'StorageUsageInfo';
+            if ( $config->getId() == $id )
+            {
+                return $config;
+            }
         }
-        $config->chartProvider = 'c3js';
-        $config->extraConfig = $_GET;
-        return $config;
+        return $configs;
     }
 
     /**
-     * Get chart config for a specific user
-     * @TODO retrieve config getChartConfigById
-     *
-     * @param string $userName
-     * @return array
+     * Create default config for a user
      */
-    public function getChartConfig($userName)
+    public function createDefaultConfig()
     {
-        $config = new ChartConfig();
-        $config->chartId = '1';
-        $config->userName = $userName;
-        $config->chartProvider = 'c3js';
-        $config->chartDataType = 'StorageUsageInfo';
-        $config->extraConfig = $_GET;
+        $config = new ChartConfig(
+            null,
+            new \DateTime(),
+            $this->getUsername(),
+            'StorageUsageGraph',
+            'c3js'
+        );
+        $this->repository->save($config);
 
-        $config2 = new ChartConfig();
-        $config2->chartId = '2';
-        $config2->userName = $userName . '2';
-        $config2->chartProvider = 'c3js';
-        $config2->chartDataType = 'StorageUsageGraph';
-        $config->extraConfig = $_GET;
-
-        return array($config, $config2);
-
-
+        $config = new ChartConfig(
+            null,
+            new \DateTime(),
+            $this->getUsername(),
+            'StorageUsageInfo',
+            'c3js'
+        );
+        $this->repository->save($config);
     }
-
-
-    /*
-    public static function getUConfValue($key, $default = NULL){
-        $query = \OCP\DB::prepare("SELECT uc_id,uc_val FROM *PREFIX*usage_charts_uconf WHERE oc_uid = ? AND uc_key = ?");
-        $result = $query->execute(Array(\OCP\User::getUser(), $key))->fetchRow();
-        if($result){
-            return $result;
-        }
-        return $default;
-    }
-
-    public static function setUConfValue($key,$val){
-        $conf = self::getUConfValue($key);
-        if(!is_null($conf)){
-            $query = \OCP\DB::prepare("UPDATE *PREFIX*usage_charts_uconf SET uc_val = ? WHERE uc_id = ?");
-            $query->execute(Array($val, $conf['uc_id']));
-        }else{
-            $query = \OCP\DB::prepare("INSERT INTO *PREFIX*usage_charts_uconf (oc_uid,uc_key,uc_val) VALUES (?,?,?)");
-            $query->execute(Array(\OCP\User::getUser(), $key, $val));
-        }
-    }
-    */
 }

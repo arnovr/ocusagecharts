@@ -22,9 +22,11 @@
  */
 
 namespace OCA\ocUsageCharts\Controller;
+use OCA\ocUsageCharts\Service\ChartConfigService;
 use OCA\ocUsageCharts\Service\ChartService;
 use \OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\JSONResponse;
+use OCP\AppFramework\Http\RedirectResponse;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\IRequest;
 
@@ -41,13 +43,20 @@ class ChartController extends Controller
     private $chartService;
 
     /**
+     * @var ChartConfigService
+     */
+    private $configService;
+
+    /**
      * @param string $appName
      * @param IRequest $request
      * @param ChartService $chartService
+     * @param ChartConfigService $configService
      */
-    public function __construct($appName, IRequest $request, ChartService $chartService)
+    public function __construct($appName, IRequest $request, ChartService $chartService, ChartConfigService $configService)
     {
         $this->chartService = $chartService;
+        $this->configService = $configService;
         parent::__construct($appName, $request);
     }
 
@@ -59,20 +68,37 @@ class ChartController extends Controller
      */
     public function frontpage()
     {
-        return $this->displayChart(1);
+        $charts = $this->configService->getCharts();
+        if ( count($charts) == 0 )
+        {
+            $this->configService->createDefaultConfig();
+            $charts = $this->configService->getCharts();
+        }
+        $id = $charts[0]->getId();
+        $url = \OCP\Util::linkToRoute('ocusagecharts.chart.display_chart', array('id' => $id));
+        return new RedirectResponse($url);
     }
 
     /**
-     * Show for a single chart
+     * Show a single chart
+     *
      * @NoCSRFRequired
      * @param string $id
      * @return TemplateResponse
      */
     public function displayChart($id)
     {
-        $charts = array($this->chartService->getChart($id));
-        $templateName = 'main';  // will use templates/main.php
-        return new TemplateResponse($this->appName, $templateName, array('charts' => $charts, 'requesttoken' => \OC_Util::callRegister()));
+        $chartConfigs = $this->configService->getCharts();
+        foreach($chartConfigs as $config)
+        {
+            if ( $config->getId() == $id )
+            {
+                break;
+            }
+        }
 
+        $chart = $this->chartService->getChartByConfig($config);
+        $templateName = 'main';  // will use templates/main.php
+        return new TemplateResponse($this->appName, $templateName, array('chart' => $chart, 'configs' => $chartConfigs, 'requesttoken' => \OC_Util::callRegister()));
     }
 }
