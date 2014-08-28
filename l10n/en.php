@@ -1,7 +1,7 @@
 <?php
 $TRANSLATIONS = array(
     "ocUsageCharts" => "Charts",
-    "StorageUsageLastMonth" => "Storage Usage last month",
-    "StorageUsagePerMonth" => "Storage Usage per month",
+    "StorageUsageLastMonth" => "Storage usage last month",
+    "StorageUsagePerMonth" => "Average storage usage per month",
     "StorageUsageCurrent" => "Current storage usage",
 );

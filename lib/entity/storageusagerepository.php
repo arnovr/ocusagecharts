@@ -157,6 +157,15 @@ class StorageUsageRepository extends Mapper
         switch($config->dataType)
         {
             case 'StorageUsage':
+                $created = new \DateTime();
+                $created->setTime(0,0,0);
+                $results = $this->findAfterCreated($config->userName, $created);
+                // Apparently today it is allready scanned, ignore, only update once a day.
+                if ( count($results) > 0 )
+                {
+                    return;
+                }
+
                 $userDir = '/'.$config->userName.'/files';
                 $view = new \OC\Files\View('/');
                 $data = $view->getFileInfo($userDir, false);

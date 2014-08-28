@@ -2,6 +2,6 @@
 $TRANSLATIONS = array(
     "ocUsageCharts" => "Grafieken",
     "StorageUsageLastMonth" => "Data verbruik de afgelopen maand",
-    "StorageUsagePerMonth" => "Data verbruik per maand",
+    "StorageUsagePerMonth" => "Gemiddelde data verbruik per maand",
     "StorageUsageCurrent" => "Huidig data verbruik",
 );
