@@ -19,7 +19,7 @@ Features
 
 Future ideas
 ============
-Graphs:
+- Graphs:
     - A bar graph, with usages per month over the course of last year
     - Files downloaded
     - Activity tracking
