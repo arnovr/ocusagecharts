@@ -33,7 +33,7 @@ class StorageUsageInfoView extends c3jsBase implements ChartTypeViewInterface
     {
         parent::__construct($config);
     }
-    public function show($data)
+    public function formatData($data)
     {
         return $data;
     }

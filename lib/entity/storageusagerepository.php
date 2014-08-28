@@ -59,6 +59,16 @@ class StorageUsageRepository extends Mapper
     }
 
     /**
+     * @param $userName
+     * @param $limit
+     * @return array
+     */
+    public function find($userName, $limit = 30) {
+        $sql = 'SELECT * FROM `oc_uc_storageusage` WHERE `username` = ? ORDER BY created DESC LIMIT ' . $limit;
+        return $this->findEntities($sql, array($userName));
+    }
+
+    /**
      * This method retrieves all usernames,
      * and gets the lastest storage usage for them
      *
@@ -81,16 +91,70 @@ class StorageUsageRepository extends Mapper
         return $entities;
     }
 
+
     /**
-     * @TODO select on date specific
-     * @param $userName
-     * @param $limit
+     * @param string $userName
+     * @param \DateTime $created
      * @return array
      */
-    public function find($userName, $limit = 30) {
-        $sql = 'SELECT * FROM `oc_uc_storageusage` WHERE `username` = ? ORDER BY created DESC LIMIT ' . $limit;
-        return $this->findEntities($sql, array($userName));
+    public function findAfterCreated($userName, \DateTime $created) {
+        $sql = 'SELECT * FROM `oc_uc_storageusage` WHERE `username` = ? AND `created` > ? ORDER BY created DESC';
+        return $this->findEntities($sql, array($userName, $created->format('Y-m-d H:i:s')));
     }
+
+    /**
+     * This method retrieves all usernames,
+     * and gets the lastest storage usage for them
+     *
+     * @param \DateTime $created
+     * @return array
+     */
+    public function findAllAfterCreated(\DateTime $created)
+    {
+        $sql = 'SELECT username FROM `oc_uc_storageusage` GROUP BY username';
+        $query = $this->db->prepareQuery($sql);
+        $result = $query->execute();
+        $entities = array();
+        while($row = $result->fetch()){
+            if ( !isset($entities[$row['username']]))
+            {
+                $entities[$row['username']] = array();
+            }
+            $entities[$row['username']] = array_merge($entities[$row['username']], $this->findAfterCreated($row['username'], $created));
+        }
+        return $entities;
+    }
+
+    /**
+     * Not working yet
+     * @return array
+     */
+    public function findAllPerMonth()
+    {
+        $sql = 'SELECT DISTINCT CONCAT(MONTH(`created`), \' \', YEAR(`created`)) as month, avg(`usage`) as average, username FROM oc_uc_storageusage GROUP BY username, month';
+
+        $query = $this->db->prepareQuery($sql);
+        $result = $query->execute();
+        $entities = array();
+        while($row = $result->fetch()){
+            if ( !isset($entities[$row['username']]))
+            {
+                $entities[$row['username']] = array();
+            }
+            $date = explode(' ', $row['month']);
+            $dateTime = new \Datetime();
+            $dateTime->setDate($date[1], $date[0], 1);
+
+            $entities[$row['username']] = array_merge(
+                $entities[$row['username']],
+                array(new StorageUsage($date, $row['average'], $row['username']))
+            );
+
+        }
+        return $entities;
+    }
+
+
 
     public function updateUsage(ChartDataConfig $config)
     {
@@ -140,13 +204,14 @@ class StorageUsageRepository extends Mapper
         {
             default:
             case 'StorageUsageGraph':
+                $created = new \DateTime("-1 month");
                 if ( $this->isAdminUser() )
                 {
-                    $data = $this->findAll();
+                    $data = $this->findAllAfterCreated($created);
                 }
                 else
                 {
-                    $data = $this->find($config->getUsername());
+                    $data = $this->findAfterCreated($config->getUsername(), $created);
                     $data = array($config->getUsername() => $data);
                 }
                 break;
@@ -187,6 +252,6 @@ class StorageUsageRepository extends Mapper
             throw new StorageUsageRepositoryException("View for " . $config->getChartType() . ' does not exist.');
         }
         $chartView = new $view($config);
-        return $chartView->show($data);
+        return $chartView->formatData($data);
     }
 }

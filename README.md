@@ -10,14 +10,15 @@ Features
 - Graphs available:
 	- User mode:
 		- A pie chart showing space used / free space
-		- A graph with data used over the course of time, daily, weekly or monthly
+		- A graph with data used over the course of the last month
 	- Admin mode
-		- A pie chart showing space used by various users
-		- A graph with data used over the course of time, daily, weekly or monthly
+		- A pie chart showing space used by all users
+		- A graph with data used over the course of the last month fo all users
 
 Future ideas
 ============
 Graphs:
+    - A bar graph, with usages per month over the course of last year
 	- Files downloaded
 	- Activity tracking
 - Option to use alternative for C3.js

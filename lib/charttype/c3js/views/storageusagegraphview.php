@@ -36,12 +36,17 @@ class StorageUsageGraphView extends c3jsBase implements ChartTypeViewInterface
         parent::__construct($config);
     }
 
+    /**
+     * Parse the usage given to a chosen format
+     * @param $usage
+     * @return float
+     */
     private function parseUsage($usage)
     {
         $size = 'kb';
-        if ( in_array($this->getConfig()->extraConfig['size'], $this->allowedSizes) )
+        if ( in_array($_GET['size'], $this->allowedSizes) )
         {
-            $size = $this->getConfig()->extraConfig['size'];
+            $size = $_GET['size'];
         }
         switch($size)
         {
@@ -56,7 +61,7 @@ class StorageUsageGraphView extends c3jsBase implements ChartTypeViewInterface
         return round($usage, 2);
     }
 
-    public function show($data)
+    public function formatData($data)
     {
         $x = array();
         $result = array();
@@ -81,10 +86,5 @@ class StorageUsageGraphView extends c3jsBase implements ChartTypeViewInterface
         $result = array_reverse($result);
 
         return $result;
-    }
-
-    public function getTemplateName()
-    {
-        return 'c3js_storage_usage_graph_view';
     }
 }

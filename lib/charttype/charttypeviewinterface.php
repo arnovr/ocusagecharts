@@ -28,6 +28,12 @@ use OCA\ocUsageCharts\Entity\ChartConfig;
 interface ChartTypeViewInterface
 {
     public function __construct(ChartConfig $config);
-    public function show($data);
+
+    /**
+     * This method gives the ability to parse the data in any form you would like
+     * @param $data
+     * @return mixed
+     */
+    public function formatData($data);
     public function getConfig();
 }
