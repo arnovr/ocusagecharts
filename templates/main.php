@@ -5,7 +5,7 @@
 foreach($_['configs'] as $config)
 {
     $url = \OCP\Util::linkToRoute('ocusagecharts.chart.display_chart', array('id' => $config->getId()));
-    echo '<li><a href="' . $url . '">' . $config->getId() . '</a></li>';
+    echo '<li><a href="' . $url . '">' . $l->t($config->getChartType()) . '</a></li>';
 }
 ?>
         </ul>

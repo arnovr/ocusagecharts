@@ -87,7 +87,7 @@ class ChartConfigService
             null,
             new \DateTime(),
             $this->getUsername(),
-            'StorageUsageGraph',
+            'StorageUsageInfo',
             'c3js'
         );
         $this->repository->save($config);
@@ -96,7 +96,7 @@ class ChartConfigService
             null,
             new \DateTime(),
             $this->getUsername(),
-            'StorageUsageInfo',
+            'StorageUsageGraph',
             'c3js'
         );
         $this->repository->save($config);

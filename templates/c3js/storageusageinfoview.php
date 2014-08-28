@@ -1,4 +1,4 @@
-<h1>Free space / Used space</h1>
+<h1><?php p($l->t($_['chart']->getConfig()->getChartType())); ?></h1>
 <?php
 echo '<div class="chart" id="chart_' . $_['chart']->getConfig()->getId() . '"><div class="icon-loading" style="height: 60px;"></div></div>';
 ?>
