@@ -23,6 +23,7 @@
 
 namespace OCA\ocUsageCharts\Entity;
 
+use OC\Files\Filesystem;
 use OCA\ocUsageCharts\ChartType\ChartTypeViewInterface;
 use OCA\ocUsageCharts\Exception\StorageUsageRepositoryException;
 use OCP\AppFramework\Db\Mapper;
@@ -152,6 +153,29 @@ class StorageUsageRepository extends Mapper
     }
 
     /**
+     * Retrieve storage usage from cache by username
+     *
+     * This method exists, because after vigorous trying, owncloud does not supply a proper way
+     * to check somebody's used size
+     * @param $username
+     * @return integer
+     */
+    private function getStorageUsageFromCacheByUserName($username)
+    {
+        $sql = 'select * from oc_filecache WHERE path = ?';
+        $query = $this->db->prepareQuery($sql);
+        $result = $query->execute(array($username . '/files'));
+        $totalSize = 0;
+        while($row = $result->fetch()){
+            if ( $row['size'] > 0 )
+            {
+                $totalSize += $row['size'];
+            }
+        }
+        return $totalSize;
+    }
+
+    /**
      * @param string $userName
      */
     public function updateUsage($userName)
@@ -159,26 +183,13 @@ class StorageUsageRepository extends Mapper
         $created = new \DateTime();
         $created->setTime(0,0,0);
         $results = $this->findAfterCreated($userName, $created);
+
         // Apparently today it is allready scanned, ignore, only update once a day.
         if ( count($results) > 0 )
         {
             return;
         }
-
-        $userDir = '/'.$userName.'/files';
-        $view = new \OC\Files\View('/');
-        $data = $view->getFileInfo($userDir, false);
-        $used = 0;
-        if ( $data instanceof \OC\Files\FileInfo )
-        {
-            $fileInfoData = $data->getData();
-            $used = $fileInfoData['size'];
-            if ( $used < 0 )
-            {
-                $used = 0;
-            }
-        }
-        $usage = new StorageUsage(new \Datetime(), $used, $userName);
+        $usage = new StorageUsage(new \Datetime(), $this->getStorageUsageFromCacheByUserName($userName), $userName);
         $this->save($usage);
      }
 
