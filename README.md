@@ -20,14 +20,24 @@ Features
 Future ideas
 ============
 - Graphs:
-    - A bar graph, with usages per month over the course of last year
     - Files downloaded
     - Activity tracking
     - Option to use alternative for C3.js
+- Configure your own graphs through personal page, technically ready ( default configs )
 
-INSTALL
+Requirements
+============
+- Cronjobs must run every day!
+- Owncloud 7.0.1 ( untested with versions before 7.0.1 )
+
+Install
 =======
-TODO
+1) Download all files to owncloud/apps/ocusagecharts directory
+2) Login as admin on owncloud
+3) Press Apps in the menu
+4) Open app Charts
+5) Enable app Charts
+6) App is installed, check menu
 
 Product reference
 =================

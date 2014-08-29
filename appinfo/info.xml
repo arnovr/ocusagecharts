@@ -1,10 +1,15 @@
 <?xml version="1.0"?>
 <info>
     <id>ocusagecharts</id>
-    <name>Usage Charts</name>
-    <description>This app shows the usage for user(s) in graph or pie form.</description>
+    <name>Charts</name>
+    <description>This app will show how much disk space is used per user over the course of time.
+        The following graphs are available:
+        A pie chart showing space used / free space;
+        A graph with data used over the course of the last month;
+        A Bar chart with average data used in the last months;
+    </description>
     <version>1.0</version>
     <licence>MIT</licence>
-    <author>Arno van Rossum</author>
+    <author>Arno van Rossum, github:arnovr</author>
     <requiremin>7</requiremin>
 </info>
