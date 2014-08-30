@@ -40,7 +40,8 @@ use \OCP\AppFramework\App;
  */
 class Chart extends App
 {
-    public function __construct(array $urlParams = array()){
+    public function __construct(array $urlParams = array())
+    {
         parent::__construct('ocusagecharts', $urlParams);
         $this->registerServices();
     }

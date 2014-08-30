@@ -271,13 +271,13 @@ class StorageUsageRepository extends Mapper
                 break;
         }
 
-        $view = '\OCA\ocUsageCharts\ChartType\\' .  $config->getChartProvider() . '\Views\\' . $config->getChartType() . 'View';
-
-        if ( !class_exists($view) )
+        // If an adapter has been defined, format the data, else just return data parsed by the system
+        $adapter = '\OCA\ocUsageCharts\ChartType\\' .  $config->getChartProvider() . '\Adapters\\' . $config->getChartType() . 'Adapter';
+        if ( class_exists($adapter) )
         {
-            throw new StorageUsageRepositoryException("View for " . $config->getChartType() . ' does not exist.');
+            $chartAdapter = new $adapter($config);
+            return $chartAdapter->formatData($data);
         }
-        $chartView = new $view($config);
-        return $chartView->formatData($data);
+        return $data;
     }
 }

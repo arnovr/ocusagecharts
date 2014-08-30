@@ -21,20 +21,19 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\ChartType\c3js\Views;
+namespace OCA\ocUsageCharts\ChartType;
 
-use OCA\ocUsageCharts\ChartType\c3js\c3jsBase;
-use OCA\ocUsageCharts\ChartType\ChartTypeViewInterface;
 use OCA\ocUsageCharts\Entity\ChartConfig;
 
-class StorageUsageCurrentView extends c3jsBase implements ChartTypeViewInterface
+interface ChartTypeAdapterInterface
 {
-    public function __construct(ChartConfig $config)
-    {
-        parent::__construct($config);
-    }
-    public function formatData($data)
-    {
-        return $data;
-    }
+    public function __construct(ChartConfig $config);
+
+    /**
+     * This method gives the ability to parse the data in any form you would like
+     * @param $data
+     * @return mixed
+     */
+    public function formatData($data);
+    public function getConfig();
 }

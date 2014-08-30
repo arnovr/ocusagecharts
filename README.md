@@ -1,7 +1,7 @@
-ocUsageCharts ( STILL WORK IN PROGRESS )
-========================================
+ocUsageCharts ( Pre-Alpha )
+===========================
 ocUsageCharts is created due to the fact that the original usage_charts is no longer updated to work properly with owncloud 7.
-This application is from the base up designed for owncloud 7.
+This application is from the base up designed for Owncloud 7.
 ocUsageCharts uses C3.js for rendering the charts on the dashboard.
 
 Features

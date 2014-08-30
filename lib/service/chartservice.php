@@ -105,22 +105,21 @@ class ChartService
      */
     public function getChartByConfig(ChartConfig $config)
     {
-        // Apparently namespace is needed
-        $view = '\OCA\ocUsageCharts\ChartType\\' .  $config->getChartProvider() . '\Views\\' . $config->getChartType() . 'View';
+        $adapter = '\OCA\ocUsageCharts\ChartType\\' .  $config->getChartProvider() . '\Adapters\\' . $config->getChartType() . 'Adapter';
 
-        if ( !class_exists($view) )
+        if ( !class_exists($adapter) )
         {
-            throw new ChartServiceException("View for " . $config->getChartType() . ' does not exist.');
+            throw new ChartServiceException("Adapter for " . $config->getChartType() . ' does not exist.');
         }
-        $chartView = new $view($config);
+        $chartAdapter = new $adapter($config);
 
         if ( !in_array($config->getChartProvider(), $this->isLoaded) )
         {
-            $chartView->loadFrontend();
+            $chartAdapter->loadFrontend();
             $this->isLoaded[] = $config->getChartProvider();
         }
 
-        return $chartView;
+        return $chartAdapter;
     }
 
     /**

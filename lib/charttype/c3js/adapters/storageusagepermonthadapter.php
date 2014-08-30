@@ -21,12 +21,12 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\ChartType\c3js\Views;
+namespace OCA\ocUsageCharts\ChartType\c3js\Adapters;
 
-use OCA\ocUsageCharts\ChartType\ChartTypeViewInterface;
+use OCA\ocUsageCharts\ChartType\ChartTypeAdapterInterface;
 use OCA\ocUsageCharts\Entity\ChartConfig;
 
-class StorageUsagePerMonthView extends StorageUsageLastMonthView implements ChartTypeViewInterface
+class StorageUsagePerMonthAdapter extends StorageUsageLastMonthAdapter implements ChartTypeAdapterInterface
 {
     public function __construct(ChartConfig $config)
     {

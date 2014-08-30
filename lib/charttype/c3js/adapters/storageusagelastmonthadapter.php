@@ -21,13 +21,13 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\ChartType\c3js\Views;
+namespace OCA\ocUsageCharts\ChartType\c3js\Adapters;
 
 use OCA\ocUsageCharts\ChartType\c3js\c3jsBase;
-use OCA\ocUsageCharts\ChartType\ChartTypeViewInterface;
+use OCA\ocUsageCharts\ChartType\ChartTypeAdapterInterface;
 use OCA\ocUsageCharts\Entity\ChartConfig;
 
-class StorageUsageLastMonthView extends c3jsBase implements ChartTypeViewInterface
+class StorageUsageLastMonthAdapter extends c3jsBase implements ChartTypeAdapterInterface
 {
     private $allowedSizes = array('kb', 'mb', 'gb');
 
