@@ -24,7 +24,7 @@
 namespace OCA\ocUsageCharts\Service;
 
 use OCA\ocUsageCharts\ChartType\c3js;
-use OCA\ocUsageCharts\ChartType\ChartTypeViewInterface;
+use OCA\ocUsageCharts\ChartType\ChartTypeAdapterInterface;
 use OCA\ocUsageCharts\Entity\ChartConfig;
 use OCA\ocUsageCharts\Exception\ChartServiceException;
 
@@ -123,11 +123,11 @@ class ChartService
     }
 
     /**
-     * @param ChartTypeViewInterface $chart
+     * @param ChartTypeAdapterInterface $chart
      *
      * @return array
      */
-    public function getUsage(ChartTypeViewInterface $chart)
+    public function getUsage(ChartTypeAdapterInterface $chart)
     {
         return $this->provider->getUsage($chart->getConfig());
     }

@@ -23,9 +23,7 @@
 
 namespace OCA\ocUsageCharts\Entity;
 
-use OC\Files\Filesystem;
-use OCA\ocUsageCharts\ChartType\ChartTypeViewInterface;
-use OCA\ocUsageCharts\Exception\StorageUsageRepositoryException;
+use OCA\ocUsageCharts\ChartType\ChartTypeAdapterInterface;
 use OCP\AppFramework\Db\Mapper;
 use \OCP\IDb;
 
@@ -210,7 +208,7 @@ class StorageUsageRepository extends Mapper
      * @TODO refactor to proper code
      *
      * @param ChartConfig $config
-     * @return ChartTypeViewInterface
+     * @return ChartTypeAdapterInterface
      *
      * @throws \OCA\ocUsageCharts\Exception\StorageUsageRepositoryException
      */
