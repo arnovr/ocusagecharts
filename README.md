@@ -32,12 +32,12 @@ Requirements
 
 Install
 =======
-1) Download all files to owncloud/apps/ocusagecharts directory
-2) Login as admin on owncloud
-3) Press Apps in the menu
-4) Open app Charts
-5) Enable app Charts
-6) App is installed, check menu
+- Download all files to owncloud/apps/ocusagecharts directory
+- Login as admin on owncloud
+- Press Apps in the menu
+- Open app Charts
+- Enable app Charts
+- App is installed, check menu for Charts
 
 Product reference
 =================

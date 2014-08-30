@@ -18,7 +18,7 @@
             </field>
             <field>
                 <name>created</name>
-                <type>timestamp</type>
+                <type>datetime</type>
                 <notnull>true</notnull>
             </field>
             <field>
