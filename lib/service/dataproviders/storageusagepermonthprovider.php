@@ -30,4 +30,14 @@ class StorageUsagePerMonthProvider implements DataProviderInterface
     {
 
     }
+
+    public function getUsageForUpdate()
+    {
+        // TODO: Implement getUsageForUpdate() method.
+    }
+
+    public function getUsage()
+    {
+        // TODO: Implement getUsage() method.
+    }
 }

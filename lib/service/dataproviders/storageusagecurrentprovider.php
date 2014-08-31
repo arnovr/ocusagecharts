@@ -26,8 +26,19 @@ namespace OCA\ocUsageCharts\Service\DataProviders;
 
 class StorageUsageCurrentProvider implements DataProviderInterface
 {
+
+    public function getUsageForUpdate()
+    {
+        // TODO: Implement getUsageForUpdate() method.
+    }
+
+    public function getUsage()
+    {
+        // TODO: Implement getUsage() method.
+    }
+
     public function __construct()
     {
-
+        // TODO: Implement __construct() method.
     }
 }

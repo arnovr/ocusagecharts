@@ -26,8 +26,44 @@ namespace OCA\ocUsageCharts\Service\DataProviders;
 
 class StorageUsageLastMonthProvider implements DataProviderInterface
 {
+    private $repository;
+
+    /**
+     * @TODO, get ID from app, not hardcoded
+     */
     public function __construct()
     {
+        $container = new \OC\AppFramework\DependencyInjection\DIContainer('ocusagecharts', array());
+        $this->repository = $container->query('StorageUsageRepository');
+    }
 
+    public function getUsageForUpdate()
+    {
+        // TODO: Implement getUsageForUpdate() method.
+    }
+
+    /**
+     * Check if user is admin
+     * small wrapper for owncloud methology
+     * @return boolean
+     */
+    private function isAdminUser()
+    {
+        return \OC_User::isAdminUser(\OC_User::getUser());
+    }
+
+    public function getUsage()
+    {
+        $created = new \DateTime("-1 month");
+        if ( $this->isAdminUser() )
+        {
+            $data = $this->repository->findAllAfterCreated($created);
+        }
+        else
+        {
+            $data = $this->repository->findAfterCreated($config->getUsername(), $created);
+            $data = array($config->getUsername() => $data);
+        }
+        return $data;
     }
 }

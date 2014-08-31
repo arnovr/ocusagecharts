@@ -27,4 +27,6 @@ namespace OCA\ocUsageCharts\Service\DataProviders;
 interface DataProviderInterface
 {
     public function __construct();
+    public function getUsageForUpdate();
+    public function getUsage();
 }

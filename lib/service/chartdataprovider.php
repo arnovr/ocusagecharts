@@ -59,6 +59,8 @@ class ChartDataProvider
     /**
      * Get the current usage for a chart given
      *
+     * @TODO this should go through the data providers
+     *
      * @param ChartConfig $chartConfig
      * @return StorageUsage|null
      */
@@ -96,6 +98,8 @@ class ChartDataProvider
     }
 
     /**
+     * @TODO this should go through the data providers
+     *
      * @param ChartConfig $chartConfig
      * @return \OCA\ocUsageCharts\ChartType\ChartTypeAdapterInterface
      */
