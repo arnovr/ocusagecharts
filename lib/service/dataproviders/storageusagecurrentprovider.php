@@ -21,17 +21,13 @@
  * THE SOFTWARE.
  */
 
-OCP\App::checkAppEnabled('ocusagecharts');
-OCP\App::setActiveNavigationEntry('ocusagecharts');
-OCP\App::addNavigationEntry(Array(
-    'id'	=> 'ocusagecharts',
-    'order'	=> 60,
-    'href' => \OCP\Util::linkToRoute('ocusagecharts.chart.frontpage'),
-    'icon'	=> OCP\Util::imagePath('ocusagecharts', 'iconchart.png'),
-    'name'	=> \OC_L10N::get('ocusagecharts')->t('ocUsageCharts')
-));
+namespace OCA\ocUsageCharts\Service\DataProviders;
 
 
-\OCP\Util::addStyle('ocusagecharts', 'style');
+class StorageUsageCurrentProvider implements DataProviderInterface
+{
+    public function __construct()
+    {
 
-\OCP\Backgroundjob::registerJob('OCA\ocUsageCharts\Command\UpdateChartsCommand');
+    }
+}

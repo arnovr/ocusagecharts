@@ -123,12 +123,12 @@ class ChartService
     }
 
     /**
-     * @param ChartTypeAdapterInterface $chart
+     * @param ChartConfig $chartConfig
      *
      * @return array
      */
-    public function getUsage(ChartTypeAdapterInterface $chart)
+    public function getHistoricalUsageByChart(ChartConfig $chartConfig)
     {
-        return $this->provider->getUsage($chart->getConfig());
+        return $this->provider->getHistoricalUsage($chartConfig);
     }
 }

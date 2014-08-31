@@ -151,50 +151,6 @@ class StorageUsageRepository extends Mapper
     }
 
     /**
-     * Retrieve storage usage from cache by username
-     *
-     * This method exists, because after vigorous trying, owncloud does not supply a proper way
-     * to check somebody's used size
-     * @param string $userName
-     * @return integer
-     */
-    private function getStorageUsageFromCacheByUserName($userName)
-    {
-        $data = new \OC\Files\Storage\Home(array('user' => \OC_User::getManager()->get($userName)));
-        return $data->getCache('files')->calculateFolderSize('files');
-        /*
-        $sql = 'select SUM(`size`) as totalsize from oc_filecache WHERE `size` >= 0 AND path LIKE ?';
-        $query = $this->db->prepareQuery($sql);
-        $result = $query->execute(array($userName . '/files/%'));
-        while($row = $result->fetch()) {
-            if ( $row['totalsize'] > 0 )
-            {
-                return $row['totalsize'];
-            }
-        }
-        */
-        return 0;
-    }
-
-    /**
-     * @param string $userName
-     */
-    public function updateUsage($userName)
-    {
-        $created = new \DateTime();
-        $created->setTime(0,0,0);
-        $results = $this->findAfterCreated($userName, $created);
-
-        // Apparently today it is allready scanned, ignore, only update once a day.
-        if ( count($results) > 0 )
-        {
-           return;
-        }
-        $usage = new StorageUsage(new \Datetime(), $this->getStorageUsageFromCacheByUserName($userName), $userName);
-        $this->save($usage);
-     }
-
-    /**
      * Check if user is admin
      * small wrapper for owncloud methology
      * @return boolean
