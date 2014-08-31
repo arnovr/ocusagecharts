@@ -57,9 +57,6 @@ $( document ).ready(function() {
     });
     if ($("#defaultChart").length > 0 )
     {
-        console.error($("#defaultChart").data("url"));
-        //alert($("#defaultChart").data("url"));
-        console.error("hallo welt");
         loadGraph(
             $("#defaultChart").data("url"),
             $("#defaultChart").data("label"),
