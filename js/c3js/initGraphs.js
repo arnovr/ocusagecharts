@@ -8,6 +8,9 @@ function loadGraph(url, yLabel, graphType, format, size)
 
     c3.generate({
         bindto: '#chart',
+        size: {
+            height: 520
+        },
         data: {
             x: 'x',
             mimeType: 'json',
@@ -32,6 +35,9 @@ function loadPie(url)
 {
     c3.generate({
         bindto: '#chart',
+        size: {
+            height: 520
+        },
         data: {
             mimeType: 'json',
             url: url,
@@ -51,6 +57,9 @@ $( document ).ready(function() {
     });
     if ($("#defaultChart").length > 0 )
     {
+        console.error($("#defaultChart").data("url"));
+        //alert($("#defaultChart").data("url"));
+        console.error("hallo welt");
         loadGraph(
             $("#defaultChart").data("url"),
             $("#defaultChart").data("label"),
