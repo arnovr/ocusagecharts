@@ -24,6 +24,7 @@
 namespace OCA\ocUsageCharts\Service;
 
 use OCA\ocUsageCharts\Entity\ChartConfig;
+use OCA\ocUsageCharts\Entity\StorageUsage;
 use OCA\ocUsageCharts\Entity\StorageUsageRepository;
 
 /**
@@ -42,19 +43,64 @@ class ChartDataProvider
     }
 
     /**
-     * @param ChartConfig $chartConfig
-     * @return array
+     * Retrieve storage usage from cache by username
+     *
+     * This method exists, because after vigorous trying, owncloud does not supply a proper way
+     * to check somebody's used size
+     * @param string $userName
+     * @return integer
      */
-    public function getUsage(ChartConfig $chartConfig)
+    private function getStorageUsageFromCacheByUserName($userName)
     {
-        return $this->repository->getUsage($chartConfig);
+        $data = new \OC\Files\Storage\Home(array('user' => \OC_User::getManager()->get($userName)));
+        return $data->getCache('files')->calculateFolderSize('files');
     }
 
     /**
-     * @param string $userName
+     * Get the current usage for a chart given
+     *
+     * @param ChartConfig $chartConfig
+     * @return StorageUsage|null
      */
-    public function updateUsage($userName)
+    public function getCurrentUsage(ChartConfig $chartConfig)
     {
-        $this->repository->updateUsage($userName);
+        switch($chartConfig->getChartType())
+        {
+            case 'StorageUsageCurrent':
+            case 'StorageUsageLastMonth':
+            case 'StorageUsagePerMonth':
+                $userName = $chartConfig->getUsername();
+                $created = new \DateTime();
+                $created->setTime(0,0,0);
+                $results = $this->repository->findAfterCreated($userName, $created);
+
+                // The cron has already ran today, therefor ignoring a current update, only update once a day.
+                if ( count($results) == 0 )
+                {
+                    return new StorageUsage(new \Datetime(), $this->getStorageUsageFromCacheByUserName($userName), $userName);
+                }
+            break;
+        }
+
+        return null;
+    }
+
+    /**
+     * Save a particular usage
+     * @TODO this should go through the data providers
+     * @param StorageUsage $usage
+     */
+    public function saveUsage(StorageUsage $usage)
+    {
+        $this->repository->save($usage);
+    }
+
+    /**
+     * @param ChartConfig $chartConfig
+     * @return \OCA\ocUsageCharts\ChartType\ChartTypeAdapterInterface
+     */
+    public function getHistoricalUsage(ChartConfig $chartConfig)
+    {
+        return $this->repository->getUsage($chartConfig);
     }
 }

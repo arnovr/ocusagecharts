@@ -23,41 +23,68 @@
 
 namespace OCA\ocUsageCharts\Service;
 
+use OCA\ocUsageCharts\Entity\ChartConfig;
+
 /**
- * @author    Arno van Rossum <arno@van-rossum.com>
+ * @author Arno van Rossum <arno@van-rossum.com>
  */
-class ChartStorageUpdater
+class ChartUpdaterService
 {
     /**
      * @var ChartDataProvider
      */
-    private $provider;
+    private $dataProvider;
 
     /**
-     * @param ChartDataProvider $provider
+     * @var ChartConfigService
      */
-    public function __construct(ChartDataProvider $provider)
+    private $configService;
+
+    /**
+     * @param ChartDataProvider $dataProvider
+     * @param ChartConfigService $configService
+     */
+    public function __construct(ChartDataProvider $dataProvider, ChartConfigService $configService)
     {
-        $this->provider = $provider;
+        $this->dataProvider = $dataProvider;
+        $this->configService = $configService;
     }
 
     /**
-     * Update the user storage, called from command
+     * Update all charts for all users
      */
-    public function updateUserStorage()
+    public function updateChartsForUsers()
     {
         $users = \OC_User::getUsers();
         foreach($users as $userName)
         {
-            $this->updateUserStorageByUser($userName);
+            $this->updateChartsForUser($userName);
         }
     }
 
     /**
+     * Update all charts for one specific user
      * @param string $userName
      */
-    private function updateUserStorageByUser($userName)
+    private function updateChartsForUser($userName)
     {
-        $this->provider->updateUsage($userName);
+        $charts = $this->configService->getChartsByUsername($userName);
+        foreach($charts as $chartConfig)
+        {
+            $this->updateChart($chartConfig);
+        }
+    }
+
+    /**
+     * Update a specific chart
+     * @param ChartConfig $chartConfig
+     */
+    private function updateChart(ChartConfig $chartConfig)
+    {
+        $usage = $this->dataProvider->getCurrentUsage($chartConfig);
+        if ( !is_null($usage) )
+        {
+            $this->dataProvider->saveUsage($usage);
+        }
     }
 }

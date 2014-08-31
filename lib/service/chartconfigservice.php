@@ -50,13 +50,24 @@ class ChartConfigService
     }
 
     /**
-     * Get all charts
+     * Get all charts for the loggedin user
      *
      * @return array|\OCA\ocUsageCharts\Entity\ChartConfig[]
      */
     public function getCharts()
     {
         return $this->repository->findByUsername($this->getUsername());
+    }
+
+    /**
+     * Get all charts by username
+     *
+     * @param string $userName
+     * @return array|\OCA\ocUsageCharts\Entity\ChartConfig[]
+     */
+    public function getChartsByUsername($userName)
+    {
+        return $this->repository->findByUsername($userName);
     }
 
     /**

@@ -30,7 +30,7 @@ use OCA\ocUsageCharts\Entity\StorageUsageRepository;
 use OCA\ocUsageCharts\Service\ChartConfigService;
 use OCA\ocUsageCharts\Service\ChartDataProvider;
 use OCA\ocUsageCharts\Service\ChartService;
-use OCA\ocUsageCharts\Service\ChartStorageUpdater;
+use OCA\ocUsageCharts\Service\ChartUpdaterService;
 use \OCP\AppFramework\App;
 
 /**
@@ -66,9 +66,10 @@ class Chart extends App
             );
         });
 
-        $container->registerService('ChartStorageUpdater', function($c) {
-            return new ChartStorageUpdater(
-                $c->query('ChartDataProvider')
+        $container->registerService('ChartUpdaterService', function($c) {
+            return new ChartUpdaterService(
+                $c->query('ChartDataProvider'),
+                $c->query('ChartConfigService')
             );
         });
         $container->registerService('ChartConfigService', function($c) {

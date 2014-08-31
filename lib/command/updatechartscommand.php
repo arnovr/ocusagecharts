@@ -21,17 +21,17 @@
  * THE SOFTWARE.
  */
 
-OCP\App::checkAppEnabled('ocusagecharts');
-OCP\App::setActiveNavigationEntry('ocusagecharts');
-OCP\App::addNavigationEntry(Array(
-    'id'	=> 'ocusagecharts',
-    'order'	=> 60,
-    'href' => \OCP\Util::linkToRoute('ocusagecharts.chart.frontpage'),
-    'icon'	=> OCP\Util::imagePath('ocusagecharts', 'iconchart.png'),
-    'name'	=> \OC_L10N::get('ocusagecharts')->t('ocUsageCharts')
-));
+namespace OCA\ocUsageCharts\Command;
+use OCA\ocUsageCharts\AppInfo\Chart;
 
-
-\OCP\Util::addStyle('ocusagecharts', 'style');
-
-\OCP\Backgroundjob::registerJob('OCA\ocUsageCharts\Command\UpdateChartsCommand');
+/**
+* @author Arno van Rossum <arno@van-rossum.com>
+*/
+class UpdateChartsCommand extends \OC\BackgroundJob\Job
+{
+    public function run($argument) {
+        $app = new Chart();
+        $container = $app->getContainer();
+        $container->query('ChartUpdaterService')->updateChartsForUsers();
+    }
+}

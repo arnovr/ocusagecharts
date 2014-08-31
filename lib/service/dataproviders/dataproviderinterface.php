@@ -21,17 +21,10 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\Command;
-use OCA\ocUsageCharts\AppInfo\Chart;
+namespace OCA\ocUsageCharts\Service\DataProviders;
 
-/**
-* @author Arno van Rossum <arno@van-rossum.com>
-*/
-class UpdateUserStorageCommand extends \OC\BackgroundJob\Job
+
+interface DataProviderInterface
 {
-    public function run($argument) {
-        $app = new Chart();
-        $container = $app->getContainer();
-        $container->query('ChartStorageUpdater')->updateUserStorage();
-    }
+    public function __construct();
 }
