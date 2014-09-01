@@ -75,7 +75,7 @@ class StorageUsageRepository extends Mapper
      */
     public function findAll($limit = 30)
     {
-        $sql = 'SELECT username FROM `oc_uc_storageusage` GROUP BY username';
+        $sql = 'SELECT username FROM `oc_uc_storageusage` WHERE `usage` > 0 GROUP BY username';
         $query = $this->db->prepareQuery($sql);
         $result = $query->execute();
         $entities = array();
@@ -109,7 +109,7 @@ class StorageUsageRepository extends Mapper
      */
     public function findAllAfterCreated(\DateTime $created)
     {
-        $sql = 'SELECT username FROM `oc_uc_storageusage` GROUP BY username';
+        $sql = 'SELECT username FROM `oc_uc_storageusage` WHERE `usage` >0 GROUP BY username';
         $query = $this->db->prepareQuery($sql);
         $result = $query->execute();
         $entities = array();
@@ -128,7 +128,7 @@ class StorageUsageRepository extends Mapper
      */
     public function findAllPerMonth()
     {
-        $sql = 'SELECT DISTINCT CONCAT(MONTH(`created`), \' \', YEAR(`created`)) as month, avg(`usage`) as average, username FROM oc_uc_storageusage GROUP BY username, month';
+        $sql = 'SELECT DISTINCT CONCAT(MONTH(`created`), \' \', YEAR(`created`)) as month, avg(`usage`) as average, username FROM oc_uc_storageusage WHERE `usage` > 0 GROUP BY username, month';
         $query = $this->db->prepareQuery($sql);
         $result = $query->execute();
         $entities = array();
