@@ -69,7 +69,7 @@ class ChartApiController extends ApiController
     public function loadChart($id)
     {
         $chart = $this->chartService->getChart($id);
-        $usage = $this->chartService->getHistoricalUsageByChart($chart->getConfig());
+        $usage = $this->chartService->getChartUsage($chart->getConfig());
         $response = new JSONResponse($usage);
         return $response;
     }

@@ -24,20 +24,22 @@
 namespace OCA\ocUsageCharts\Service\DataProviders;
 
 
-class StorageUsagePerMonthProvider implements DataProviderInterface
+class StorageUsagePerMonthProvider extends StorageUsageBase implements DataProviderInterface
 {
-    public function __construct()
+    /**
+     * Return the chart data you want to return based on the ChartConfig
+     *
+     * @return mixed
+     */
+    public function getChartUsage()
     {
-
-    }
-
-    public function getUsageForUpdate()
-    {
-        // TODO: Implement getUsageForUpdate() method.
-    }
-
-    public function getUsage()
-    {
-        // TODO: Implement getUsage() method.
+        //@TODO don't need to get everything for one user...
+        // Performance and such
+        $data = $this->repository->findAllPerMonth();
+        if ( !$this->isAdminUser() )
+        {
+            $data = array($this->chartConfig->getUsername() => $data[$this->chartConfig->getUsername()]);
+        }
+        return $data;
     }
 }

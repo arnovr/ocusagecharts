@@ -23,10 +23,35 @@
 
 namespace OCA\ocUsageCharts\Service\DataProviders;
 
+use OCA\ocUsageCharts\Entity\ChartConfig;
 
 interface DataProviderInterface
 {
-    public function __construct();
-    public function getUsageForUpdate();
-    public function getUsage();
+    /**
+     * @param ChartConfig $chartConfig
+     */
+    public function __construct(ChartConfig $chartConfig);
+
+    /**
+     * Return a CURRENT usage for a USER,
+     * this is used to update the data with
+     *
+     * @return mixed
+     */
+    public function getChartUsageForUpdate();
+
+    /**
+     * Return the chart data you want to return based on the ChartConfig
+     *
+     * @return mixed
+     */
+    public function getChartUsage();
+
+    /**
+     * This method should store the data given from getChartUsageForUpdate
+     *
+     * @param $usage
+     * @return void
+     */
+    public function save($usage);
 }

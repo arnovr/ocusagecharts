@@ -23,9 +23,10 @@
 
 namespace OCA\ocUsageCharts\Service;
 
+use OCA\ocUsageCharts\ChartType\ChartTypeAdapterInterface;
 use OCA\ocUsageCharts\Entity\ChartConfig;
-use OCA\ocUsageCharts\Entity\StorageUsage;
-use OCA\ocUsageCharts\Entity\StorageUsageRepository;
+use OCA\ocUsageCharts\Exception\ChartDataProviderException;
+use OCA\ocUsageCharts\Service\DataProviders\DataProviderInterface;
 
 /**
  * @author Arno van Rossum <arno@van-rossum.com>
@@ -33,78 +34,79 @@ use OCA\ocUsageCharts\Entity\StorageUsageRepository;
 class ChartDataProvider
 {
     /**
-     * @var StorageUsageRepository
+     * @param ChartConfig $config
+     * @return DataProviderInterface
+     *
+     * @throws \OCA\ocUsageCharts\Exception\ChartDataProviderException
      */
-    private $repository;
-
-    public function __construct(StorageUsageRepository $repository)
+    private function getDataProviderByConfig(ChartConfig $config)
     {
-        $this->repository = $repository;
+        $dataProvider = '\OCA\ocUsageCharts\Service\DataProviders\\' .  $config->getChartType() . 'Provider';
+
+        if ( !class_exists($dataProvider) )
+        {
+            throw new ChartDataProviderException("DataProvider for " . $config->getChartType() . ' does not exist.');
+        }
+        return new $dataProvider($config);
     }
 
     /**
-     * Retrieve storage usage from cache by username
+     * This returns the data adapter for a specific provider
+     * This is use full when you want to implement alternatives for the current
+     * chart providers
      *
-     * This method exists, because after vigorous trying, owncloud does not supply a proper way
-     * to check somebody's used size
-     * @param string $userName
-     * @return integer
+     * @param ChartConfig $config
+     * @return ChartTypeAdapterInterface
+     *
+     * @throws \OCA\ocUsageCharts\Exception\ChartDataProviderException
      */
-    private function getStorageUsageFromCacheByUserName($userName)
+    private function getProviderAdapterByConfig(ChartConfig $config)
     {
-        $data = new \OC\Files\Storage\Home(array('user' => \OC_User::getManager()->get($userName)));
-        return $data->getCache('files')->calculateFolderSize('files');
+        // If an adapter has been defined, format the data, else just return data parsed by the system
+        $adapter = '\OCA\ocUsageCharts\ChartType\\' .  $config->getChartProvider() . '\Adapters\\' . $config->getChartType() . 'Adapter';
+        if ( !class_exists($adapter) )
+        {
+            throw new ChartDataProviderException("Adapter for " . $config->getChartType() . ' does not exist.');
+        }
+        return new $adapter($config);
     }
 
     /**
      * Get the current usage for a chart given
      *
-     * @TODO this should go through the data providers
-     *
      * @param ChartConfig $chartConfig
-     * @return StorageUsage|null
+     * @return mixed
      */
-    public function getCurrentUsage(ChartConfig $chartConfig)
+    public function getChartUsageForUpdate(ChartConfig $chartConfig)
     {
-        switch($chartConfig->getChartType())
-        {
-            case 'StorageUsageCurrent':
-            case 'StorageUsageLastMonth':
-            case 'StorageUsagePerMonth':
-                $userName = $chartConfig->getUsername();
-                $created = new \DateTime();
-                $created->setTime(0,0,0);
-                $results = $this->repository->findAfterCreated($userName, $created);
-
-                // The cron has already ran today, therefor ignoring a current update, only update once a day.
-                if ( count($results) == 0 )
-                {
-                    return new StorageUsage(new \Datetime(), $this->getStorageUsageFromCacheByUserName($userName), $userName);
-                }
-            break;
-        }
-
-        return null;
+        $provider = $this->getDataProviderByConfig($chartConfig);
+        return $provider->getChartUsageForUpdate();
     }
 
     /**
      * Save a particular usage
-     * @TODO this should go through the data providers
-     * @param StorageUsage $usage
+     *
+     * @param ChartConfig $chartConfig
+     * @param mixed $usage
      */
-    public function saveUsage(StorageUsage $usage)
+    public function save(ChartConfig $chartConfig, $usage)
     {
-        $this->repository->save($usage);
+        $provider = $this->getDataProviderByConfig($chartConfig);
+        $provider->save($usage);
     }
 
     /**
-     * @TODO this should go through the data providers
+     * This method returns all usage for a chart based on the chartconfig given
      *
      * @param ChartConfig $chartConfig
      * @return \OCA\ocUsageCharts\ChartType\ChartTypeAdapterInterface
      */
-    public function getHistoricalUsage(ChartConfig $chartConfig)
+    public function getChartUsage(ChartConfig $chartConfig)
     {
-        return $this->repository->getUsage($chartConfig);
+        $provider = $this->getDataProviderByConfig($chartConfig);
+        $data = $provider->getChartUsage();
+
+        $adapter = $this->getProviderAdapterByConfig($chartConfig);
+        return $adapter->formatData($data);
     }
 }

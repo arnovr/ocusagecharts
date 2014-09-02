@@ -127,8 +127,8 @@ class ChartService
      *
      * @return array
      */
-    public function getHistoricalUsageByChart(ChartConfig $chartConfig)
+    public function getChartUsage(ChartConfig $chartConfig)
     {
-        return $this->provider->getHistoricalUsage($chartConfig);
+        return $this->provider->getChartUsage($chartConfig);
     }
 }
