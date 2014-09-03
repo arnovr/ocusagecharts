@@ -55,6 +55,8 @@ class ChartDataProvider
      * This is use full when you want to implement alternatives for the current
      * chart providers
      *
+     * @TODO Same code is used in chartservice, fix this.....
+     *
      * @param ChartConfig $config
      * @return ChartTypeAdapterInterface
      *
