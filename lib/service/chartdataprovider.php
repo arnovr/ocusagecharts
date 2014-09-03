@@ -23,6 +23,7 @@
 
 namespace OCA\ocUsageCharts\Service;
 
+use OC\AppFramework\DependencyInjection\DIContainer;
 use OCA\ocUsageCharts\Adapters\ChartTypeAdapterInterface;
 use OCA\ocUsageCharts\Entity\ChartConfig;
 use OCA\ocUsageCharts\Exception\ChartDataProviderException;
@@ -33,6 +34,16 @@ use OCA\ocUsageCharts\DataProviders\DataProviderInterface;
  */
 class ChartDataProvider
 {
+    /**
+     * DiContainer is used for dataproviders to grep their repository needed
+     * @var DiContainer
+     */
+    private $container;
+
+    public function __construct(DIContainer $container)
+    {
+        $this->container = $container;
+    }
     /**
      * @param ChartConfig $config
      * @return DataProviderInterface
@@ -47,7 +58,7 @@ class ChartDataProvider
         {
             throw new ChartDataProviderException("DataProvider for " . $config->getChartType() . ' does not exist.');
         }
-        return new $dataProvider($config);
+        return new $dataProvider($this->container, $config);
     }
 
     /**

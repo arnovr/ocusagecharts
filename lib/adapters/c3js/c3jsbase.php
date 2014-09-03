@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\ChartType\c3js;
+namespace OCA\ocUsageCharts\Adapters\c3js;
 
 use OCA\ocUsageCharts\Entity\ChartConfig;
 

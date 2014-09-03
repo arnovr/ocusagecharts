@@ -116,7 +116,7 @@ class ChartService
         if ( !in_array($config->getChartProvider(), $this->isLoaded) )
         {
             $chartAdapter->loadFrontend();
-            $this->isLoaded[] = $config->getChartProvider();
+            $this->isLoaded[] = $config ->getChartProvider();
         }
 
         return $chartAdapter;

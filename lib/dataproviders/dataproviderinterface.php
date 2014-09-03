@@ -23,14 +23,16 @@
 
 namespace OCA\ocUsageCharts\DataProviders;
 
+use OC\AppFramework\DependencyInjection\DIContainer;
 use OCA\ocUsageCharts\Entity\ChartConfig;
 
 interface DataProviderInterface
 {
     /**
+     * @param DIContainer $container
      * @param ChartConfig $chartConfig
      */
-    public function __construct(ChartConfig $chartConfig);
+    public function __construct(DIContainer $container, ChartConfig $chartConfig);
 
     /**
      * Return a CURRENT usage for a USER,

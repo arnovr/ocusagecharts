@@ -41,14 +41,12 @@ abstract class StorageUsageBase implements DataProviderInterface
     protected $repository;
 
     /**
-     * @TODO is there a better way for the injection, Cause this kinda sucks :(
-     *
+     * @param DIContainer $container
      * @param ChartConfig $chartConfig
      */
-    public function __construct(ChartConfig $chartConfig)
+    public function __construct(DIContainer $container, ChartConfig $chartConfig)
     {
         $this->chartConfig = $chartConfig;
-        $container = new DIContainer('ocusagecharts', array());
         $this->repository = $container->query('StorageUsageRepository');
     }
 
