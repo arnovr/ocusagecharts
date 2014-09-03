@@ -21,28 +21,19 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\Service\DataProviders;
+namespace OCA\ocUsageCharts\Adapters;
 
+use OCA\ocUsageCharts\Entity\ChartConfig;
 
-class StorageUsageLastMonthProvider extends StorageUsageBase implements DataProviderInterface
+interface ChartTypeAdapterInterface
 {
+    public function __construct(ChartConfig $config);
+
     /**
-     * Return the chart data you want to return based on the ChartConfig
-     *
+     * This method gives the ability to parse the data in any form you would like
+     * @param $data
      * @return mixed
      */
-    public function getChartUsage()
-    {
-        $created = new \DateTime("-1 month");
-        if ( $this->isAdminUser() )
-        {
-            $data = $this->repository->findAllAfterCreated($created);
-        }
-        else
-        {
-            $data = $this->repository->findAfterCreated($this->chartConfig->getUsername(), $created);
-            $data = array($this->chartConfig->getUsername() => $data);
-        }
-        return $data;
-    }
+    public function formatData($data);
+    public function getConfig();
 }

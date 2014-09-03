@@ -21,9 +21,10 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\Service\DataProviders;
+namespace OCA\ocUsageCharts\DataProviders;
 
-class StorageUsageCurrentProvider extends StorageUsageBase implements DataProviderInterface
+
+class StorageUsagePerMonthProvider extends StorageUsageBase implements DataProviderInterface
 {
     /**
      * Return the chart data you want to return based on the ChartConfig
@@ -32,30 +33,12 @@ class StorageUsageCurrentProvider extends StorageUsageBase implements DataProvid
      */
     public function getChartUsage()
     {
-        $new = array();
-        $storageInfo = \OC_Helper::getStorageInfo('/');
-        $free = ceil($storageInfo['free'] / 1024 / 1024);
-        if ( $this->isAdminUser() )
+        //@TODO don't need to get everything for one user...
+        // Performance and such
+        $data = $this->repository->findAllPerMonth();
+        if ( !$this->isAdminUser() )
         {
-            $data = $this->repository->findAll(1);
-            foreach($data as $username => $items)
-            {
-                foreach($items as $item)
-                {
-                    $new[$username] = ceil($item->getUsage() / 1024 / 1024);
-                }
-            }
-            $new['free'] = $free;
-            $data = $new;
-        }
-        else
-        {
-            $free = ceil($storageInfo['free'] / 1024 / 1024);
-            $used = ceil($storageInfo['used'] / 1024 / 1024);
-            $data = array(
-                'used' => $used,
-                'free' => $free
-            );
+            $data = array($this->chartConfig->getUsername() => $data[$this->chartConfig->getUsername()]);
         }
         return $data;
     }

@@ -23,7 +23,7 @@
 
 namespace OCA\ocUsageCharts\Entity;
 
-use OCA\ocUsageCharts\ChartType\ChartTypeAdapterInterface;
+use OCA\ocUsageCharts\Adapters\ChartTypeAdapterInterface;
 use OCP\AppFramework\Db\Mapper;
 use \OCP\IDb;
 

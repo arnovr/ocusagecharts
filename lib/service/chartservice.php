@@ -105,7 +105,7 @@ class ChartService
      */
     public function getChartByConfig(ChartConfig $config)
     {
-        $adapter = '\OCA\ocUsageCharts\ChartType\\' .  $config->getChartProvider() . '\Adapters\\' . $config->getChartType() . 'Adapter';
+        $adapter = '\OCA\ocUsageCharts\Adapters\\' .  $config->getChartProvider() . '\\' . $config->getChartType() . 'Adapter';
 
         if ( !class_exists($adapter) )
         {

@@ -21,10 +21,10 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\Service\DataProviders;
+namespace OCA\ocUsageCharts\DataProviders;
 
 
-class StorageUsagePerMonthProvider extends StorageUsageBase implements DataProviderInterface
+class StorageUsageLastMonthProvider extends StorageUsageBase implements DataProviderInterface
 {
     /**
      * Return the chart data you want to return based on the ChartConfig
@@ -33,12 +33,15 @@ class StorageUsagePerMonthProvider extends StorageUsageBase implements DataProvi
      */
     public function getChartUsage()
     {
-        //@TODO don't need to get everything for one user...
-        // Performance and such
-        $data = $this->repository->findAllPerMonth();
-        if ( !$this->isAdminUser() )
+        $created = new \DateTime("-1 month");
+        if ( $this->isAdminUser() )
         {
-            $data = array($this->chartConfig->getUsername() => $data[$this->chartConfig->getUsername()]);
+            $data = $this->repository->findAllAfterCreated($created);
+        }
+        else
+        {
+            $data = $this->repository->findAfterCreated($this->chartConfig->getUsername(), $created);
+            $data = array($this->chartConfig->getUsername() => $data);
         }
         return $data;
     }

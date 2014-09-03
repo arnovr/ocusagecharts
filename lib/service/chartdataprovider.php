@@ -23,10 +23,10 @@
 
 namespace OCA\ocUsageCharts\Service;
 
-use OCA\ocUsageCharts\ChartType\ChartTypeAdapterInterface;
+use OCA\ocUsageCharts\Adapters\ChartTypeAdapterInterface;
 use OCA\ocUsageCharts\Entity\ChartConfig;
 use OCA\ocUsageCharts\Exception\ChartDataProviderException;
-use OCA\ocUsageCharts\Service\DataProviders\DataProviderInterface;
+use OCA\ocUsageCharts\DataProviders\DataProviderInterface;
 
 /**
  * @author Arno van Rossum <arno@van-rossum.com>
@@ -41,7 +41,7 @@ class ChartDataProvider
      */
     private function getDataProviderByConfig(ChartConfig $config)
     {
-        $dataProvider = '\OCA\ocUsageCharts\Service\DataProviders\\' .  $config->getChartType() . 'Provider';
+        $dataProvider = '\OCA\ocUsageCharts\DataProviders\\' .  $config->getChartType() . 'Provider';
 
         if ( !class_exists($dataProvider) )
         {
@@ -63,7 +63,7 @@ class ChartDataProvider
     private function getProviderAdapterByConfig(ChartConfig $config)
     {
         // If an adapter has been defined, format the data, else just return data parsed by the system
-        $adapter = '\OCA\ocUsageCharts\ChartType\\' .  $config->getChartProvider() . '\Adapters\\' . $config->getChartType() . 'Adapter';
+        $adapter = '\OCA\ocUsageCharts\Adapters\\' .  $config->getChartProvider() . '\\' . $config->getChartType() . 'Adapter';
         if ( !class_exists($adapter) )
         {
             throw new ChartDataProviderException("Adapter for " . $config->getChartType() . ' does not exist.');
@@ -99,7 +99,7 @@ class ChartDataProvider
      * This method returns all usage for a chart based on the chartconfig given
      *
      * @param ChartConfig $chartConfig
-     * @return \OCA\ocUsageCharts\ChartType\ChartTypeAdapterInterface
+     * @return \OCA\ocUsageCharts\Adapters\ChartTypeAdapterInterface
      */
     public function getChartUsage(ChartConfig $chartConfig)
     {

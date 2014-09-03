@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\Service\DataProviders;
+namespace OCA\ocUsageCharts\DataProviders;
 
 use OCA\ocUsageCharts\Entity\ChartConfig;
 
