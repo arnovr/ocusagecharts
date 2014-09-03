@@ -29,14 +29,16 @@ class ChartConfigServiceTest extends \PHPUnit_Framework_TestCase
 {
     private $configService;
 
+    private $configRepository;
+
     public function setUp()
     {
-        $configRepository = $this->getMock('ChartConfigRepository');
-        $this->configService = new ChartConfigService($configRepository);
+        $this->configRepository = $this->getMock('ChartConfigRepository');
+        $this->configService = new ChartConfigService($this->configRepository);
     }
 
     public function testGetCharts()
     {
-        echo $this->configService->getCharts();
+        $charts = $this->configService->getCharts();
     }
 }
