@@ -25,4 +25,8 @@ namespace OCA\ocUsageCharts\Service;
 
 class ChartDataProviderTest extends \PHPUnit_Framework_TestCase
 {
+    public function testStub()
+    {
+
+    }
 }

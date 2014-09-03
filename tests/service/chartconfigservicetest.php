@@ -21,8 +21,22 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\Service;
+namespace OCA\ocUsageCharts\Tests\Service;
+
+use OCA\ocUsageCharts\Service\ChartConfigService;
 
 class ChartConfigServiceTest extends \PHPUnit_Framework_TestCase
 {
+    private $configService;
+
+    public function setUp()
+    {
+        $configRepository = $this->getMock('ChartConfigRepository');
+        $this->configService = new ChartConfigService($configRepository);
+    }
+
+    public function testGetCharts()
+    {
+        echo $this->configService->getCharts();
+    }
 }
