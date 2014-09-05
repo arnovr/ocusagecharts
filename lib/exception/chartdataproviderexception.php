@@ -21,10 +21,12 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\Service\DataProviders;
+namespace OCA\ocUsageCharts\Exception;
 
-
-interface DataProviderInterface
+/**
+ * @author Arno van Rossum <arno@van-rossum.com>
+ */
+class ChartDataProviderException extends \Exception
 {
-    public function __construct();
+
 }

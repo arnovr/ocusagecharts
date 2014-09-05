@@ -23,7 +23,7 @@
 
 namespace OCA\ocUsageCharts\Entity;
 
-use OCA\ocUsageCharts\ChartType\ChartTypeAdapterInterface;
+use OCA\ocUsageCharts\Adapters\ChartTypeAdapterInterface;
 use OCP\AppFramework\Db\Mapper;
 use \OCP\IDb;
 
@@ -148,90 +148,5 @@ class StorageUsageRepository extends Mapper
 
         }
         return $entities;
-    }
-
-    /**
-     * Check if user is admin
-     * small wrapper for owncloud methology
-     * @return boolean
-     */
-    private function isAdminUser()
-    {
-        return \OC_User::isAdminUser(\OC_User::getUser());
-    }
-
-    /**
-     * @TODO refactor to proper code
-     *
-     * @param ChartConfig $config
-     * @return ChartTypeAdapterInterface
-     *
-     * @throws \OCA\ocUsageCharts\Exception\StorageUsageRepositoryException
-     */
-    public function getUsage(ChartConfig $config)
-    {
-        switch($config->getChartType())
-        {
-            default:
-            case 'StorageUsageLastMonth':
-                $created = new \DateTime("-1 month");
-                if ( $this->isAdminUser() )
-                {
-                    $data = $this->findAllAfterCreated($created);
-                }
-                else
-                {
-                    $data = $this->findAfterCreated($config->getUsername(), $created);
-                    $data = array($config->getUsername() => $data);
-                }
-                break;
-
-            case 'StorageUsagePerMonth':
-                //@TODO don't need to get everything for one user...
-                // Performance and such
-                $data = $this->findAllPerMonth();
-                if ( !$this->isAdminUser() )
-                {
-                    $data = array($config->getUsername() => $data[$config->getUsername()]);
-                }
-                break;
-            case 'StorageUsageCurrent':
-                $new = array();
-
-                $storageInfo = \OC_Helper::getStorageInfo('/');
-                $free = ceil($storageInfo['free'] / 1024 / 1024);
-                if ( $this->isAdminUser() )
-                {
-                    $data = $this->findAll(1);
-                    foreach($data as $username => $items)
-                    {
-                        foreach($items as $item)
-                        {
-                            $new[$username] = ceil($item->getUsage() / 1024 / 1024);
-                        }
-                    }
-                    $new['free'] = $free;
-                    $data = $new;
-                }
-                else
-                {
-                    $free = ceil($storageInfo['free'] / 1024 / 1024);
-                    $used = ceil($storageInfo['used'] / 1024 / 1024);
-                    $data = array(
-                        'used' => $used,
-                        'free' => $free
-                    );
-                }
-                break;
-        }
-
-        // If an adapter has been defined, format the data, else just return data parsed by the system
-        $adapter = '\OCA\ocUsageCharts\ChartType\\' .  $config->getChartProvider() . '\Adapters\\' . $config->getChartType() . 'Adapter';
-        if ( class_exists($adapter) )
-        {
-            $chartAdapter = new $adapter($config);
-            return $chartAdapter->formatData($data);
-        }
-        return $data;
     }
 }

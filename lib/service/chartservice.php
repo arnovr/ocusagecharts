@@ -105,7 +105,7 @@ class ChartService
      */
     public function getChartByConfig(ChartConfig $config)
     {
-        $adapter = '\OCA\ocUsageCharts\ChartType\\' .  $config->getChartProvider() . '\Adapters\\' . $config->getChartType() . 'Adapter';
+        $adapter = '\OCA\ocUsageCharts\Adapters\\' .  $config->getChartProvider() . '\\' . $config->getChartType() . 'Adapter';
 
         if ( !class_exists($adapter) )
         {
@@ -116,7 +116,7 @@ class ChartService
         if ( !in_array($config->getChartProvider(), $this->isLoaded) )
         {
             $chartAdapter->loadFrontend();
-            $this->isLoaded[] = $config->getChartProvider();
+            $this->isLoaded[] = $config ->getChartProvider();
         }
 
         return $chartAdapter;
@@ -127,8 +127,8 @@ class ChartService
      *
      * @return array
      */
-    public function getHistoricalUsageByChart(ChartConfig $chartConfig)
+    public function getChartUsage(ChartConfig $chartConfig)
     {
-        return $this->provider->getHistoricalUsage($chartConfig);
+        return $this->provider->getChartUsage($chartConfig);
     }
 }

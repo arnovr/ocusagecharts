@@ -21,13 +21,15 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\Service\DataProviders;
+namespace OCA\ocUsageCharts\Adapters\c3js;
 
+use OCA\ocUsageCharts\Adapters\ChartTypeAdapterInterface;
+use OCA\ocUsageCharts\Entity\ChartConfig;
 
-class StorageUsageLastMonthProvider implements DataProviderInterface
+class StorageUsagePerMonthAdapter extends StorageUsageLastMonthAdapter implements ChartTypeAdapterInterface
 {
-    public function __construct()
+    public function __construct(ChartConfig $config)
     {
-
+        parent::__construct($config);
     }
 }

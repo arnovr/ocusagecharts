@@ -21,15 +21,39 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\ChartType\c3js\Adapters;
+namespace OCA\ocUsageCharts\DataProviders;
 
-use OCA\ocUsageCharts\ChartType\ChartTypeAdapterInterface;
+use OC\AppFramework\DependencyInjection\DIContainer;
 use OCA\ocUsageCharts\Entity\ChartConfig;
 
-class StorageUsagePerMonthAdapter extends StorageUsageLastMonthAdapter implements ChartTypeAdapterInterface
+interface DataProviderInterface
 {
-    public function __construct(ChartConfig $config)
-    {
-        parent::__construct($config);
-    }
+    /**
+     * @param DIContainer $container
+     * @param ChartConfig $chartConfig
+     */
+    public function __construct(DIContainer $container, ChartConfig $chartConfig);
+
+    /**
+     * Return a CURRENT usage for a USER,
+     * this is used to update the data with
+     *
+     * @return mixed
+     */
+    public function getChartUsageForUpdate();
+
+    /**
+     * Return the chart data you want to return based on the ChartConfig
+     *
+     * @return mixed
+     */
+    public function getChartUsage();
+
+    /**
+     * This method should store the data given from getChartUsageForUpdate
+     *
+     * @param $usage
+     * @return void
+     */
+    public function save($usage);
 }

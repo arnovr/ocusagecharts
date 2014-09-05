@@ -25,6 +25,7 @@ namespace OCA\ocUsageCharts\Service;
 
 use OCA\ocUsageCharts\Entity\ChartConfigRepository;
 use OCA\ocUsageCharts\Entity\ChartConfig;
+use OCA\ocUsageCharts\Exception\ChartConfigServiceException;
 
 /**
  * @author Arno van Rossum <arno@van-rossum.com>
@@ -75,6 +76,7 @@ class ChartConfigService
      *
      * @param integer $id
      * @return ChartConfig
+     * @throws ChartConfigServiceException
      */
     public function getChartConfigById($id)
     {
@@ -86,7 +88,7 @@ class ChartConfigService
                 return $config;
             }
         }
-        return $configs;
+        throw new ChartConfigServiceException("No config found for given id " . $id);
     }
 
     /**

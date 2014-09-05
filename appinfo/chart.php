@@ -56,13 +56,13 @@ class Chart extends App
             );
         });
         $container->registerService('ChartConfigRepository', function($c) {
-                return new ChartConfigRepository(
-                    $c->query('ServerContainer')->getDb()
-                );
-            });
+            return new ChartConfigRepository(
+                $c->query('ServerContainer')->getDb()
+            );
+        });
         $container->registerService('ChartDataProvider', function($c) {
             return new ChartDataProvider(
-                $c->query('StorageUsageRepository')
+                $c
             );
         });
 
