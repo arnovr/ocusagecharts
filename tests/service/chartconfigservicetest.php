@@ -27,18 +27,61 @@ use OCA\ocUsageCharts\Service\ChartConfigService;
 
 class ChartConfigServiceTest extends \PHPUnit_Framework_TestCase
 {
+    private $container;
     private $configService;
-
     private $configRepository;
 
     public function setUp()
     {
-        $this->configRepository = $this->getMock('ChartConfigRepository');
+        $app = new \OCA\ocUsageCharts\AppInfo\Chart();
+        $this->container = $app->getContainer();
+        $this->configRepository = $chartConfigRepository = $this->getMockBuilder('\OCA\ocUsageCharts\Entity\ChartConfigRepository')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->container->registerService('ChartConfigRepository', function($c) use ($chartConfigRepository) {
+                return $chartConfigRepository;
+            });
         $this->configService = new ChartConfigService($this->configRepository);
     }
 
-    public function testGetCharts()
+    /**
+     * @expectedException OCA\ocUsageCharts\Exception\ChartConfigServiceException
+     */
+    public function testGetChartConfigByIdException()
     {
-        $charts = $this->configService->getCharts();
+        $this->configRepository->method('findByUsername')->willReturn(array());
+        $this->configService->getChartConfigById(1);
+    }
+
+    /**
+     * @expectedException OCA\ocUsageCharts\Exception\ChartConfigServiceException
+     */
+    public function testGetChartConfigByIdFailedToFindConfig()
+    {
+        $configMock = new \OCA\ocUsageCharts\Entity\ChartConfig(100, new \DateTime(), 'test1', 'StorageUsageCurrentProvider', 'c3js');
+        $this->configRepository->method('findByUsername')->willReturn(array($configMock));
+        $this->configService->getChartConfigById(1);
+    }
+
+    public function testGetChartConfigByIdFoundConfig()
+    {
+        $configMock = new \OCA\ocUsageCharts\Entity\ChartConfig(100, new \DateTime(), 'test1', 'StorageUsageCurrentProvider', 'c3js');
+
+        $this->configRepository->method('findByUsername')->willReturn(array($configMock));
+        $chartConfig = $this->configService->getChartConfigById(100);
+        $this->assertInstanceOf('\OCA\ocUsageCharts\Entity\ChartConfig', $chartConfig);
+    }
+
+
+    public function testGetChartsByUsername()
+    {
+        $configMock = new \OCA\ocUsageCharts\Entity\ChartConfig(100, new \DateTime(), 'test1', 'StorageUsageCurrentProvider', 'c3js');
+        $return = array($configMock);
+        $this->configRepository->method('findByUsername')->willReturn($return);
+
+
+        $result = $this->configService->getChartsByUsername('test1');
+        $this->assertCount(1, $result);
     }
 }

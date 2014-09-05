@@ -88,10 +88,14 @@ class ChartConfigService
                 return $config;
             }
         }
+
         throw new ChartConfigServiceException("No config found for given id " . $id);
     }
 
     /**
+     * @TODO Should be converted to something smarter.
+     * Method is untested, because i want this to be better
+     *
      * Create default config for a user
      */
     public function createDefaultConfig()
