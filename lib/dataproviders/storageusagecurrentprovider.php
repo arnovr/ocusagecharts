@@ -21,19 +21,42 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\ChartType;
+namespace OCA\ocUsageCharts\DataProviders;
 
-use OCA\ocUsageCharts\Entity\ChartConfig;
-
-interface ChartTypeAdapterInterface
+class StorageUsageCurrentProvider extends StorageUsageBase implements DataProviderInterface
 {
-    public function __construct(ChartConfig $config);
-
     /**
-     * This method gives the ability to parse the data in any form you would like
-     * @param $data
+     * Return the chart data you want to return based on the ChartConfig
+     *
      * @return mixed
      */
-    public function formatData($data);
-    public function getConfig();
+    public function getChartUsage()
+    {
+        $new = array();
+        $storageInfo = \OC_Helper::getStorageInfo('/');
+        $free = ceil($storageInfo['free'] / 1024 / 1024);
+        if ( $this->isAdminUser() )
+        {
+            $data = $this->repository->findAll(1);
+            foreach($data as $username => $items)
+            {
+                foreach($items as $item)
+                {
+                    $new[$username] = ceil($item->getUsage() / 1024 / 1024);
+                }
+            }
+            $new['free'] = $free;
+            $data = $new;
+        }
+        else
+        {
+            $free = ceil($storageInfo['free'] / 1024 / 1024);
+            $used = ceil($storageInfo['used'] / 1024 / 1024);
+            $data = array(
+                'used' => $used,
+                'free' => $free
+            );
+        }
+        return $data;
+    }
 }

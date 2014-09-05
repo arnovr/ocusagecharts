@@ -21,10 +21,9 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\ChartType\c3js\Adapters;
+namespace OCA\ocUsageCharts\Adapters\c3js;
 
-use OCA\ocUsageCharts\ChartType\c3js\c3jsBase;
-use OCA\ocUsageCharts\ChartType\ChartTypeAdapterInterface;
+use OCA\ocUsageCharts\Adapters\ChartTypeAdapterInterface;
 use OCA\ocUsageCharts\Entity\ChartConfig;
 
 class StorageUsageLastMonthAdapter extends c3jsBase implements ChartTypeAdapterInterface

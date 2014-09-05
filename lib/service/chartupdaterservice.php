@@ -81,10 +81,10 @@ class ChartUpdaterService
      */
     private function updateChart(ChartConfig $chartConfig)
     {
-        $usage = $this->dataProvider->getCurrentUsage($chartConfig);
+        $usage = $this->dataProvider->getChartUsageForUpdate($chartConfig);
         if ( !is_null($usage) )
         {
-            $this->dataProvider->saveUsage($usage);
+            $this->dataProvider->save($chartConfig, $usage);
         }
     }
 }

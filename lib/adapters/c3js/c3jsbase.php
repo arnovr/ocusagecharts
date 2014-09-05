@@ -21,56 +21,42 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\Controller;
-use OCA\ocUsageCharts\Service\ChartService;
-use OCP\AppFramework\ApiController;
-use OCP\AppFramework\Http\JSONResponse;
-use OCP\IRequest;
+namespace OCA\ocUsageCharts\Adapters\c3js;
+
+use OCA\ocUsageCharts\Entity\ChartConfig;
+
 
 /**
- * Class ChartApiController
- * @package OCA\ocUsageCharts\Controller
  * @author Arno van Rossum <arno@van-rossum.com>
  */
-class ChartApiController extends ApiController
+class c3jsBase
 {
     /**
-     * @var ChartService
+     * @var ChartConfig
      */
-    private $chartService;
-
+    private $config;
 
     /**
-     * @param string $appName
-     * @param IRequest $request
-     * @param ChartService $chartService
+     * @param ChartConfig $chartConfig
      */
-    public function __construct($appName, IRequest $request, ChartService $chartService)
+    public function __construct(ChartConfig $chartConfig)
     {
-        $this->chartService = $chartService;
-        parent::__construct(
-            $appName,
-            $request,
-            'GET',
-            'Authorization, Content-Type, Accept',
-            1728000
-        );
+        $this->config = $chartConfig;
     }
 
     /**
-     * JSON Ajax call
-     *
-     * @TODO this should not need require noCSRF... It bugs on production
-     * @NoAdminRequired
-     * @NoCSRFRequired
-     * @param string $id
-     * @return JSONResponse
+     * Load the frontend files needed
      */
-    public function loadChart($id)
+    public function loadFrontend()
     {
-        $chart = $this->chartService->getChart($id);
-        $usage = $this->chartService->getChartUsage($chart->getConfig());
-        $response = new JSONResponse($usage);
-        return $response;
+        \OCP\Util::addStyle('ocusagecharts', 'c3js/c3');
+        \OCP\Util::addScript('ocusagecharts', 'c3js/d3.min');
+        \OCP\Util::addScript('ocusagecharts', 'c3js/c3.min');
+        \OCP\Util::addScript('ocusagecharts', 'c3js/initGraphs');
+    }
+
+    public function getConfig()
+    {
+        return $this->config;
     }
 }

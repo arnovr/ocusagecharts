@@ -21,42 +21,19 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\ChartType\c3js;
+namespace OCA\ocUsageCharts\Adapters\c3js;
 
+use OCA\ocUsageCharts\Adapters\ChartTypeAdapterInterface;
 use OCA\ocUsageCharts\Entity\ChartConfig;
 
-
-/**
- * @author Arno van Rossum <arno@van-rossum.com>
- */
-class c3jsBase
+class StorageUsageCurrentAdapter extends c3jsBase implements ChartTypeAdapterInterface
 {
-    /**
-     * @var ChartConfig
-     */
-    private $config;
-
-    /**
-     * @param ChartConfig $chartConfig
-     */
-    public function __construct(ChartConfig $chartConfig)
+    public function __construct(ChartConfig $config)
     {
-        $this->config = $chartConfig;
+        parent::__construct($config);
     }
-
-    /**
-     * Load the frontend files needed
-     */
-    public function loadFrontend()
+    public function formatData($data)
     {
-        \OCP\Util::addStyle('ocusagecharts', 'c3js/c3');
-        \OCP\Util::addScript('ocusagecharts', 'c3js/d3.min');
-        \OCP\Util::addScript('ocusagecharts', 'c3js/c3.min');
-        \OCP\Util::addScript('ocusagecharts', 'c3js/initGraphs');
-    }
-
-    public function getConfig()
-    {
-        return $this->config;
+        return $data;
     }
 }
