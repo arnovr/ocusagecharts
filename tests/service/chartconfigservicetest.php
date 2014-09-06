@@ -59,14 +59,14 @@ class ChartConfigServiceTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetChartConfigByIdFailedToFindConfig()
     {
-        $configMock = new \OCA\ocUsageCharts\Entity\ChartConfig(100, new \DateTime(), 'test1', 'StorageUsageCurrentProvider', 'c3js');
+        $configMock = new \OCA\ocUsageCharts\Entity\ChartConfig(100, new \DateTime(), 'test1', 'StorageUsageCurrent', 'c3js');
         $this->configRepository->method('findByUsername')->willReturn(array($configMock));
         $this->configService->getChartConfigById(1);
     }
 
     public function testGetChartConfigByIdFoundConfig()
     {
-        $configMock = new \OCA\ocUsageCharts\Entity\ChartConfig(100, new \DateTime(), 'test1', 'StorageUsageCurrentProvider', 'c3js');
+        $configMock = new \OCA\ocUsageCharts\Entity\ChartConfig(100, new \DateTime(), 'test1', 'StorageUsageCurrent', 'c3js');
 
         $this->configRepository->method('findByUsername')->willReturn(array($configMock));
         $chartConfig = $this->configService->getChartConfigById(100);

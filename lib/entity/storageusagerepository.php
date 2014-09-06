@@ -49,11 +49,21 @@ class StorageUsageRepository extends Mapper
      * Save a storage usage entity to the database
      *
      * @param StorageUsage $usage
+     * @return boolean
      */
     public function save(StorageUsage $usage)
     {
         $query = $this->db->prepareQuery('INSERT INTO oc_uc_storageusage (created, username, `usage`) VALUES (?,?,?)');
-        $query->execute(Array($usage->getDate()->format('Y-m-d H:i:s'), $usage->getUsername(), $usage->getUsage()));
+        $result = $query->execute(Array($usage->getDate()->format('Y-m-d H:i:s'), $usage->getUsername(), $usage->getUsage()));
+        /*
+         * $query->execute could return integer or OC_DB_StatementWrapper or false
+         * I am expecting an integer with number 1
+         */
+        if ( is_int($result) && $result === 1 )
+        {
+            return true;
+        }
+        return false;
     }
 
     /**

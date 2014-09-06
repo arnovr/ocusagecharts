@@ -43,7 +43,7 @@ class StorageUsageLastMonthAdapter extends c3jsBase implements ChartTypeAdapterI
     protected function parseUsage($usage)
     {
         $size = 'kb';
-        if ( in_array($_GET['size'], $this->allowedSizes) )
+        if ( !empty($_GET['size']) && in_array($_GET['size'], $this->allowedSizes) )
         {
             $size = $_GET['size'];
         }

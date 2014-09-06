@@ -25,8 +25,47 @@ namespace OCA\ocUsageCharts\Service;
 
 class ChartDataProviderTest extends \PHPUnit_Framework_TestCase
 {
-    public function testStub()
-    {
 
+    private $container;
+    private $dataProvider;
+    private $configMock;
+
+    public function setUp()
+    {
+        $app = new \OCA\ocUsageCharts\AppInfo\Chart();
+        $this->container = $app->getContainer();
+        $this->dataProvider = new ChartDataProvider($this->container);
+        $this->configMock = new \OCA\ocUsageCharts\Entity\ChartConfig(100, new \DateTime(), 'test1', 'StorageUsageLastMonth', 'c3js');
+    }
+
+    public function testGetChartUsageForUpdate()
+    {
+        // @TODO
+        //$result = $this->dataProvider->getChartUsageForUpdate($this->configMock);
+
+    }
+    public function testSaveDataUsage()
+    {
+        $usageNumber = 2324235;
+        $created = new \DateTime();
+        $username = 'test1';
+        $usage = $this->getMock('\OCA\ocUsageCharts\Entity\StorageUsage', array(), array(
+                $created,
+                $usageNumber,
+                $username
+            ));
+
+        $usage->method('getUsage')->willReturn(2324235);
+        $usage->method('getDate')->willReturn($created);
+        $usage->method('getUsername')->willReturn($username);
+        $saved = $this->dataProvider->save($this->configMock, $usage);
+        $this->assertTrue($saved);
+    }
+
+    public function testGetChartUsage()
+    {
+        $data = $this->dataProvider->getChartUsage($this->configMock);
+        $this->assertArrayHasKey('x', $data);
+        $this->assertArrayHasKey($this->configMock->getUsername(), $data);
     }
 }

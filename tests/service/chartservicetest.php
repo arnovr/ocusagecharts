@@ -27,5 +27,6 @@ class ChartServiceTest extends \PHPUnit_Framework_TestCase
 {
     public function testGetChartByConfig()
     {
+        $this->assertTrue(true, true);
     }
 }
