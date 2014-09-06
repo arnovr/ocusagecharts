@@ -38,12 +38,14 @@ class ChartDataProviderTest extends \PHPUnit_Framework_TestCase
         $this->configMock = new \OCA\ocUsageCharts\Entity\ChartConfig(100, new \DateTime(), 'test1', 'StorageUsageLastMonth', 'c3js');
     }
 
+    /*
     public function testGetChartUsageForUpdate()
     {
         // @TODO
         //$result = $this->dataProvider->getChartUsageForUpdate($this->configMock);
-
     }
+    */
+
     public function testSaveDataUsage()
     {
         $usageNumber = 2324235;
