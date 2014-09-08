@@ -25,6 +25,7 @@ namespace OCA\ocUsageCharts\AppInfo;
 
 use OCA\ocUsageCharts\Controller\ChartApiController;
 use OCA\ocUsageCharts\Controller\ChartController;
+use OCA\ocUsageCharts\DataProviders\DataProviderFactory;
 use OCA\ocUsageCharts\Entity\ChartConfigRepository;
 use OCA\ocUsageCharts\Entity\StorageUsageRepository;
 use OCA\ocUsageCharts\Service\ChartConfigService;
@@ -60,9 +61,14 @@ class Chart extends App
                 $c->query('ServerContainer')->getDb()
             );
         });
+
+        $container->registerService('DataProviderFactory', function() {
+            return new DataProviderFactory();
+        });
         $container->registerService('ChartDataProvider', function($c) {
             return new ChartDataProvider(
-                $c
+                $c,
+                $c->query('DataProviderFactory')
             );
         });
 

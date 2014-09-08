@@ -25,6 +25,7 @@ namespace OCA\ocUsageCharts\Service;
 
 use OC\AppFramework\DependencyInjection\DIContainer;
 use OCA\ocUsageCharts\Adapters\ChartTypeAdapterInterface;
+use OCA\ocUsageCharts\DataProviders\DataProviderFactory;
 use OCA\ocUsageCharts\Entity\ChartConfig;
 use OCA\ocUsageCharts\Exception\ChartDataProviderException;
 use OCA\ocUsageCharts\DataProviders\DataProviderInterface;
@@ -40,9 +41,15 @@ class ChartDataProvider
      */
     private $container;
 
-    public function __construct(DIContainer $container)
+    /**
+     * @var DataProviderFactory
+     */
+    private $dataProviderFactory;
+
+    public function __construct(DIContainer $container, DataProviderFactory $dataProviderFactory)
     {
         $this->container = $container;
+        $this->dataProviderFactory = $dataProviderFactory;
     }
     /**
      * @param ChartConfig $config
@@ -52,12 +59,12 @@ class ChartDataProvider
      */
     private function getDataProviderByConfig(ChartConfig $config)
     {
-        $dataProvider = '\OCA\ocUsageCharts\DataProviders\\' .  $config->getChartType() . 'Provider';
-        if ( !class_exists($dataProvider) )
+        $method = 'get' . $config->getChartType() . 'Provider';
+        if ( !method_exists($this->dataProviderFactory, $method) )
         {
             throw new ChartDataProviderException("DataProvider for " . $config->getChartType() . ' does not exist.');
         }
-        return new $dataProvider($this->container, $config);
+        return $this->dataProviderFactory->$method($this->container, $config);
     }
 
     /**
