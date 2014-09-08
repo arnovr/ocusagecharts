@@ -6,7 +6,7 @@ php:
 
 env:
   global:
-    - CORE_BRANCH=fix-for-buildserver
+    - CORE_BRANCH=master
   matrix:
     - DB=sqlite
 
@@ -24,7 +24,7 @@ before_install:
 
 script:
   # Test lint
-  - cd apps/mail
+  - cd apps/ocusagecharts
   - sh -c "if [ '$DB' = 'sqlite' ]; then ant test; fi"
 
   # Run phpunit tests
