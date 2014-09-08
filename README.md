@@ -4,12 +4,6 @@ ocUsageCharts is created due to the fact that the original usage_charts is no lo
 This application is from the base up designed for Owncloud 7.
 ocUsageCharts uses C3.js for rendering the charts on the dashboard.
 
-Build Status
-============
-Pay attention, the builds are failing because the tests are not yet correctly implemented.
-Master branch is unstable at this point, use the latest release for a stable app!
-[![Build Status](http://inside.technology/build-status/image/1?branch=master)](http://inside.technology/build-status/view/1?branch=master)
-
 Features
 ========
 - ocUsageCharts stores the disk space used by each user of ownCloud.
