@@ -16,7 +16,7 @@
     verbose                     = "true">
 
     <testsuites>
-        <testsuite name="ocUsageCharts tests">
+        <testsuite name="unit-tests">
             <directory suffix="test.php">.</directory>
         </testsuite>
     </testsuites>
