@@ -13,7 +13,7 @@ env:
 branches:
   only:
     - master
-    - stable7
+    - fix-for-buildserver
 
 before_install:
   - composer install
