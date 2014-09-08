@@ -43,3 +43,7 @@ Product reference
 =================
 - C3.js: http://c3js.org/ - https://github.com/masayuki0812/c3
 - usage_charts: http://apps.owncloud.com/content/show.php/Usage+Charts?content=164956 - https://github.com/alanv72/usage_charts ( a fork from StorageCharts/ocStorage )
+
+Build Status
+============
+[![Build Status](https://travis-ci.org/arnovr/ocusagecharts.svg?branch=master)](https://travis-ci.org/arnovr/ocusagecharts)
