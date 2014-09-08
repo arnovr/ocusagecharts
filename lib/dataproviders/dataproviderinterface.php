@@ -53,7 +53,7 @@ interface DataProviderInterface
      * This method should store the data given from getChartUsageForUpdate
      *
      * @param $usage
-     * @return void
+     * @return boolean
      */
     public function save($usage);
 }

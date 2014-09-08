@@ -1,0 +1,8 @@
+build_settings:
+test:
+    php_unit:
+        config:
+            - "tests/phpunit.xml"
+        directory:
+            - "tests/"
+        run_from: "tests/"

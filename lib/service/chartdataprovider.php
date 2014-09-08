@@ -53,7 +53,6 @@ class ChartDataProvider
     private function getDataProviderByConfig(ChartConfig $config)
     {
         $dataProvider = '\OCA\ocUsageCharts\DataProviders\\' .  $config->getChartType() . 'Provider';
-
         if ( !class_exists($dataProvider) )
         {
             throw new ChartDataProviderException("DataProvider for " . $config->getChartType() . ' does not exist.');
@@ -101,11 +100,12 @@ class ChartDataProvider
      *
      * @param ChartConfig $chartConfig
      * @param mixed $usage
+     * @return boolean
      */
     public function save(ChartConfig $chartConfig, $usage)
     {
         $provider = $this->getDataProviderByConfig($chartConfig);
-        $provider->save($usage);
+        return $provider->save($usage);
     }
 
     /**

@@ -95,9 +95,10 @@ abstract class StorageUsageBase implements DataProviderInterface
 
     /**
      * @param StorageUsage $usage
+     * @return boolean
      */
     public function save($usage)
     {
-        $this->repository->save($usage);
+        return $this->repository->save($usage);
     }
 }

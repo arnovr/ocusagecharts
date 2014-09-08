@@ -1,0 +1,6 @@
+The tests are not great, this is due to the following reasons:
+
+- Mocking database with owncloud is not possible, forcing to weird code.
+- I am using variable dataprovider / adapters, almost impossible to mock. I should refactor that code for making proper tests
+- I dislike writing tests, so i didn't put much effort in it.... :P Maybe in the future!
+- I should refactor parts to remove the owncloud dependency static stuff, that would make it possible to mock owncloud stuff.
