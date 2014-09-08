@@ -25,8 +25,73 @@ namespace OCA\ocUsageCharts\Service;
 
 class ChartServiceTest extends \PHPUnit_Framework_TestCase
 {
+    private $container;
+    private $configService;
+    private $dataProvider;
+    /**
+     * @var ChartService
+     */
+    private $chartService;
+    private $configMock;
+
+    private $username;
+
+    public function setUp()
+    {
+        $app = new \OCA\ocUsageCharts\AppInfo\Chart();
+        $this->container = $app->getContainer();
+        $this->configService = $configService = $this->getMockBuilder('\OCA\ocUsageCharts\Service\ChartConfigService')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->container->registerService('ChartConfigService', function($c) use ($configService) {
+            return $configService;
+        });
+
+        $this->dataProvider = $dataProvider = $this->getMockBuilder('\OCA\ocUsageCharts\Service\ChartDataProvider')
+        ->disableOriginalConstructor()
+        ->getMock();
+
+        $this->container->registerService('ChartDataProvider', function($c) use ($dataProvider) {
+            return $dataProvider;
+        });
+        $this->username = 'test1';
+        $this->configMock = new \OCA\ocUsageCharts\Entity\ChartConfig(100, new \DateTime(), 'test1', 'StorageUsageCurrent', 'c3js');
+        $this->chartService = new ChartService($this->dataProvider, $this->configService, $this->username);
+
+    }
+    public function testGetCharts()
+    {
+        $configs = array(
+            $this->configMock,
+            new \OCA\ocUsageCharts\Entity\ChartConfig(101, new \DateTime(), 'test1', 'StorageUsageCurrent', 'c3js')
+        );
+        $this->configService->method('getCharts')->willReturn($configs);
+        $charts = $this->chartService->getCharts();
+        $this->assertCount(count($configs), $charts);
+        foreach($charts as $adapter)
+        {
+            $this->assertInstanceOf('OCA\ocUsageCharts\Adapters\ChartTypeAdapterInterface', $adapter);
+        }
+    }
+    public function testGetChart()
+    {
+        $this->configService->method('getChartConfigById')->willReturn($this->configMock);
+        $adapter = $this->chartService->getChart($this->configMock->getId());
+        $this->assertInstanceOf('OCA\ocUsageCharts\Adapters\ChartTypeAdapterInterface', $adapter);
+
+    }
     public function testGetChartByConfig()
     {
-        $this->assertTrue(true, true);
+        $adapter = $this->chartService->getChartByConfig($this->configMock);
+        $this->assertInstanceOf('OCA\ocUsageCharts\Adapters\ChartTypeAdapterInterface', $adapter);
+    }
+
+    public function testGetChartUsage()
+    {
+        $return = array('1');
+        $this->dataProvider->method('getChartUsage')->with($this->configMock)->willReturn($return);
+        $data = $this->chartService->getChartUsage($this->configMock);
+        $this->assertEquals($return, $data);
     }
 }

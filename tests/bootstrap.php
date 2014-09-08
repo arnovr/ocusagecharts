@@ -5,7 +5,7 @@ $RUNTIME_NOAPPS = true;
 
 define('PHPUNIT_RUN', 1);
 
-require_once '/var/www/owncloud/lib/base.php';
+require_once '../../../lib/base.php';
 if(!class_exists('PHPUnit_Framework_TestCase')) {
 	require_once('PHPUnit/Autoload.php');
 }

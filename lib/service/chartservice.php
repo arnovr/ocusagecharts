@@ -23,8 +23,7 @@
 
 namespace OCA\ocUsageCharts\Service;
 
-use OCA\ocUsageCharts\ChartType\c3js;
-use OCA\ocUsageCharts\ChartType\ChartTypeAdapterInterface;
+use OCA\ocUsageCharts\Adapters\ChartTypeAdapterInterface;
 use OCA\ocUsageCharts\Entity\ChartConfig;
 use OCA\ocUsageCharts\Exception\ChartServiceException;
 
@@ -100,7 +99,7 @@ class ChartService
 
     /**
      * @param ChartConfig $config
-     * @return mixed
+     * @return ChartTypeAdapterInterface
      * @throws \OCA\ocUsageCharts\Exception\ChartServiceException
      */
     public function getChartByConfig(ChartConfig $config)
@@ -116,7 +115,7 @@ class ChartService
         if ( !in_array($config->getChartProvider(), $this->isLoaded) )
         {
             $chartAdapter->loadFrontend();
-            $this->isLoaded[] = $config ->getChartProvider();
+            $this->isLoaded[] = $config->getChartProvider();
         }
 
         return $chartAdapter;
