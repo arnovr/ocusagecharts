@@ -25,9 +25,54 @@ namespace OCA\ocUsageCharts\Service;
 
 class ChartUpdaterServiceTest extends \PHPUnit_Framework_TestCase
 {
-    public function testStub()
-    {
 
-        $this->assertTrue(true, true);
+    private $container;
+    private $configService;
+    private $dataProvider;
+    /**
+     * @var ChartUpdaterService
+     */
+    private $chartUpdaterService;
+    private $configMock;
+
+
+    public function setUp()
+    {
+        $app = new \OCA\ocUsageCharts\AppInfo\Chart();
+        $this->container = $app->getContainer();
+        $this->configService = $configService = $this->getMockBuilder('\OCA\ocUsageCharts\Service\ChartConfigService')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->container->registerService('ChartConfigService', function($c) use ($configService) {
+                return $configService;
+            });
+
+        $this->dataProvider = $dataProvider = $this->getMockBuilder('\OCA\ocUsageCharts\Service\ChartDataProvider')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->container->registerService('ChartDataProvider', function($c) use ($dataProvider) {
+                return $dataProvider;
+            });
+        $this->configMock = new \OCA\ocUsageCharts\Entity\ChartConfig(100, new \DateTime(), 'test1', 'StorageUsageCurrent', 'c3js');
+        $this->chartUpdaterService = new ChartUpdaterService($this->dataProvider, $this->configService);
+    }
+
+    /**
+     * No asserts, but do check on what calls to expect
+     * @TODO Fix the \OC_User dependency ( also in chartupdaterservice )
+     */
+    public function testUpdateChart()
+    {
+        $users = \OC_User::getUsers();
+        $this->configService->expects($this->exactly(count($users)))->method('getChartsByUsername')->willReturn(array($this->configMock));
+        $this->dataProvider->expects($this->exactly(count($users)))->method('getChartUsageForUpdate')->willReturn(array('bogusdata'));
+        $this->dataProvider->expects($this->exactly(count($users)))->method('save')->with($this->configMock, array('bogusdata'));
+
+        $this->chartUpdaterService->updateChartsForUsers();
+
+        // Nothing to assert... Just for sake of it...
+        $this->assertTrue(true);
     }
 }

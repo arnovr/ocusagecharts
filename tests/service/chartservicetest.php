@@ -58,8 +58,8 @@ class ChartServiceTest extends \PHPUnit_Framework_TestCase
         $this->username = 'test1';
         $this->configMock = new \OCA\ocUsageCharts\Entity\ChartConfig(100, new \DateTime(), 'test1', 'StorageUsageCurrent', 'c3js');
         $this->chartService = new ChartService($this->dataProvider, $this->configService, $this->username);
-
     }
+
     public function testGetCharts()
     {
         $configs = array(
