@@ -6,3 +6,12 @@ test:
         directory:
             - "tests/"
         run_from: "tests/"
+    php_code_sniffer:
+        path: ""
+        ignore:
+            - "templates"
+            - "js"
+            - "css"
+            - "img"
+            - "l10n"
+        standard: "PSR2"
