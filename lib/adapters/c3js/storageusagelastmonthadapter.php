@@ -50,11 +50,9 @@ class StorageUsageLastMonthAdapter extends c3jsBase implements ChartTypeAdapterI
         switch($size)
         {
             case 'gb':
-                $usage = $usage / 1024 / 1024 / 1024;
-                break;
+                $usage = $usage / 1024;
             case 'mb':
-                $usage = $usage / 1024 / 1024;
-                break;
+                $usage = $usage / 1024;
             case 'kb':
                 $usage = $usage / 1024;
                 break;
