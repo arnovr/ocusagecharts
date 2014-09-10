@@ -97,7 +97,8 @@ class StorageUsageLastMonthAdapter extends c3jsBase implements ChartTypeAdapterI
     private function getRowX($items)
     {
         $x = array();
-        for($i = 0; $i < count($items); $i++)
+        $totalItems = count($items);
+        for($i = 0; $i < $totalItems; $i++)
         {
             $x[] = $items[$i]->getDate()->format('Y-m-d');
         }
@@ -113,7 +114,8 @@ class StorageUsageLastMonthAdapter extends c3jsBase implements ChartTypeAdapterI
     private function getRowData($items)
     {
         $row = array();
-        for($i = 0; $i < count($items); $i++)
+        $totalItems = count($items);
+        for($i = 0; $i < $totalItems; $i++)
         {
             $row[] = $this->calculateUsage($items[$i]->getUsage());
         }
