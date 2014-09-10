@@ -24,16 +24,13 @@
 namespace OCA\ocUsageCharts\Adapters\c3js;
 
 use OCA\ocUsageCharts\Adapters\ChartTypeAdapterInterface;
-use OCA\ocUsageCharts\Entity\ChartConfig;
 
+/**
+ * @author Arno van Rossum <arno@van-rossum.com>
+ */
 class StorageUsageLastMonthAdapter extends c3jsBase implements ChartTypeAdapterInterface
 {
     private $allowedSizes = array('kb', 'mb', 'gb');
-
-    public function __construct(ChartConfig $config)
-    {
-        parent::__construct($config);
-    }
 
     /**
      * Parse the usage given to a chosen format

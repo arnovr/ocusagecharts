@@ -25,8 +25,9 @@ namespace OCA\ocUsageCharts\Service;
 
 use OC\AppFramework\DependencyInjection\DIContainer;
 use OCA\ocUsageCharts\Adapters\ChartTypeAdapterInterface;
+use OCA\ocUsageCharts\ChartTypeAdapterFactory;
+use OCA\ocUsageCharts\DataProviderFactory;
 use OCA\ocUsageCharts\Entity\ChartConfig;
-use OCA\ocUsageCharts\Exception\ChartDataProviderException;
 use OCA\ocUsageCharts\DataProviders\DataProviderInterface;
 
 /**
@@ -36,13 +37,25 @@ class ChartDataProvider
 {
     /**
      * DiContainer is used for dataproviders to grep their repository needed
-     * @var DiContainer
+     * @var DIContainer
      */
     private $container;
 
-    public function __construct(DIContainer $container)
+    /**
+     * @var DataProviderFactory
+     */
+    private $dataProviderFactory;
+
+    /**
+     * @var ChartTypeAdapterFactory
+     */
+    private $chartTypeAdapterFactory;
+
+    public function __construct(DIContainer $container, DataProviderFactory $dataProviderFactory, ChartTypeAdapterFactory $chartTypeAdapterFactory)
     {
         $this->container = $container;
+        $this->dataProviderFactory = $dataProviderFactory;
+        $this->chartTypeAdapterFactory = $chartTypeAdapterFactory;
     }
     /**
      * @param ChartConfig $config
@@ -52,12 +65,7 @@ class ChartDataProvider
      */
     private function getDataProviderByConfig(ChartConfig $config)
     {
-        $dataProvider = '\OCA\ocUsageCharts\DataProviders\\' .  $config->getChartType() . 'Provider';
-        if ( !class_exists($dataProvider) )
-        {
-            throw new ChartDataProviderException("DataProvider for " . $config->getChartType() . ' does not exist.');
-        }
-        return new $dataProvider($this->container, $config);
+        return $this->dataProviderFactory->getDataProviderByConfig($this->container, $config);
     }
 
     /**
@@ -65,22 +73,13 @@ class ChartDataProvider
      * This is use full when you want to implement alternatives for the current
      * chart providers
      *
-     * @TODO Same code is used in chartservice, fix this.....
-     *
      * @param ChartConfig $config
      * @return ChartTypeAdapterInterface
-     *
-     * @throws \OCA\ocUsageCharts\Exception\ChartDataProviderException
+     * @throws \OCA\ocUsageCharts\Exception\ChartTypeAdapterException
      */
     private function getProviderAdapterByConfig(ChartConfig $config)
     {
-        // If an adapter has been defined, format the data, else just return data parsed by the system
-        $adapter = '\OCA\ocUsageCharts\Adapters\\' .  $config->getChartProvider() . '\\' . $config->getChartType() . 'Adapter';
-        if ( !class_exists($adapter) )
-        {
-            throw new ChartDataProviderException("Adapter for " . $config->getChartType() . ' does not exist.');
-        }
-        return new $adapter($config);
+        return $this->chartTypeAdapterFactory->getChartTypeAdapterByConfig($config);
     }
 
     /**

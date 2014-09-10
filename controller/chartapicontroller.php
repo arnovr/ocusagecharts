@@ -28,8 +28,6 @@ use OCP\AppFramework\Http\JSONResponse;
 use OCP\IRequest;
 
 /**
- * Class ChartApiController
- * @package OCA\ocUsageCharts\Controller
  * @author Arno van Rossum <arno@van-rossum.com>
  */
 class ChartApiController extends ApiController

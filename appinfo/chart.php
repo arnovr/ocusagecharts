@@ -23,8 +23,10 @@
 
 namespace OCA\ocUsageCharts\AppInfo;
 
+use OCA\ocUsageCharts\ChartTypeAdapterFactory;
 use OCA\ocUsageCharts\Controller\ChartApiController;
 use OCA\ocUsageCharts\Controller\ChartController;
+use OCA\ocUsageCharts\DataProviderFactory;
 use OCA\ocUsageCharts\Entity\ChartConfigRepository;
 use OCA\ocUsageCharts\Entity\StorageUsageRepository;
 use OCA\ocUsageCharts\Service\ChartConfigService;
@@ -34,8 +36,6 @@ use OCA\ocUsageCharts\Service\ChartUpdaterService;
 use \OCP\AppFramework\App;
 
 /**
- * Class Chart
- * @package OCA\ocUsageCharts\AppInfo
  * @author Arno van Rossum <arno@van-rossum.com>
  */
 class Chart extends App
@@ -60,9 +60,20 @@ class Chart extends App
                 $c->query('ServerContainer')->getDb()
             );
         });
+
+        $container->registerService('ChartTypeAdapterFactory', function() {
+            return new ChartTypeAdapterFactory();
+        });
+
+        $container->registerService('DataProviderFactory', function() {
+            return new DataProviderFactory();
+        });
+
         $container->registerService('ChartDataProvider', function($c) {
             return new ChartDataProvider(
-                $c
+                $c,
+                $c->query('DataProviderFactory'),
+                $c->query('ChartTypeAdapterFactory')
             );
         });
 
@@ -81,6 +92,7 @@ class Chart extends App
                 return new ChartService(
                     $c->query('ChartDataProvider'),
                     $c->query('ChartConfigService'),
+                    $c->query('ChartTypeAdapterFactory'),
                     \OCP\User::getUser()
                 );
             });

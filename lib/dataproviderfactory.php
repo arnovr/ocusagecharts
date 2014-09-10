@@ -21,44 +21,41 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\DataProviders;
+namespace OCA\ocUsageCharts;
 
 use OC\AppFramework\DependencyInjection\DIContainer;
+use OCA\ocUsageCharts\DataProviders\StorageUsageCurrentProvider;
+use OCA\ocUsageCharts\DataProviders\StorageUsageLastMonthProvider;
+use OCA\ocUsageCharts\DataProviders\StorageUsagePerMonthProvider;
 use OCA\ocUsageCharts\Entity\ChartConfig;
+use OCA\ocUsageCharts\Exception\ChartDataProviderException;
 
 /**
  * @author Arno van Rossum <arno@van-rossum.com>
  */
-interface DataProviderInterface
+class DataProviderFactory
 {
-    /**
-     * @param DIContainer $container
-     * @param ChartConfig $chartConfig
-     *
-     * @return \OCA\ocUsageCharts\DataProviders\DataProviderInterface
-     */
-    public function __construct(DIContainer $container, ChartConfig $chartConfig);
+    public function getDataProviderByConfig(DIContainer $container, ChartConfig $config)
+    {
+        $method = 'get' . $config->getChartType() . 'Provider';
+        if ( !method_exists($this, $method) )
+        {
+            throw new ChartDataProviderException("DataProvider for " . $config->getChartType() . ' does not exist.');
+        }
+        return $this->$method($container, $config);
+    }
+    public function getStorageUsageCurrentProvider(DIContainer $container, ChartConfig $config)
+    {
+        return new StorageUsageCurrentProvider($container, $config);
+    }
 
-    /**
-     * Return a CURRENT usage for a USER,
-     * this is used to update the data with
-     *
-     * @return mixed
-     */
-    public function getChartUsageForUpdate();
+    public function getStorageUsageLastMonthProvider(DIContainer $container, ChartConfig $config)
+    {
+        return new StorageUsageLastMonthProvider($container, $config);
+    }
 
-    /**
-     * Return the chart data you want to return based on the ChartConfig
-     *
-     * @return mixed
-     */
-    public function getChartUsage();
-
-    /**
-     * This method should store the data given from getChartUsageForUpdate
-     *
-     * @param $usage
-     * @return boolean
-     */
-    public function save($usage);
+    public function getStorageUsagePerMonthProvider(DIContainer $container, ChartConfig $config)
+    {
+        return new StorageUsagePerMonthProvider($container, $config);
+    }
 }

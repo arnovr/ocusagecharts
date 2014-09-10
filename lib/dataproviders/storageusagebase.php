@@ -28,6 +28,9 @@ use OCA\ocUsageCharts\Entity\ChartConfig;
 use OCA\ocUsageCharts\Entity\StorageUsage;
 use OCA\ocUsageCharts\Entity\StorageUsageRepository;
 
+/**
+ * @author Arno van Rossum <arno@van-rossum.com>
+ */
 abstract class StorageUsageBase implements DataProviderInterface
 {
     /**

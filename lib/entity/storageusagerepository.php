@@ -23,7 +23,6 @@
 
 namespace OCA\ocUsageCharts\Entity;
 
-use OCA\ocUsageCharts\Adapters\ChartTypeAdapterInterface;
 use OCP\AppFramework\Db\Mapper;
 use \OCP\IDb;
 
@@ -67,8 +66,8 @@ class StorageUsageRepository extends Mapper
     }
 
     /**
-     * @param $userName
-     * @param $limit
+     * @param string $userName
+     * @param integer $limit
      * @return array
      */
     public function find($userName, $limit = 30) {
@@ -77,13 +76,40 @@ class StorageUsageRepository extends Mapper
     }
 
     /**
-     * This method retrieves all usernames,
-     * and gets the lastest storage usage for them
+     * This method retrieves per username the latest storage usage with a limit of given
      *
      * @param integer $limit
      * @return array
      */
-    public function findAll($limit = 30)
+    public function findAllWithLimit($limit = 30)
+    {
+        return $this->findAll($limit);
+
+    }
+
+    /**
+     * This method retrieves per username the latest storage usage from date given
+     *
+     * @param \DateTime $created
+     * @return array
+     */
+    public function findAllAfterCreated(\DateTime $created)
+    {
+        return $this->findAll(30, $created);
+    }
+
+    /**
+     * This method retrieves all usernames,
+     * and gets the latest storage usage for them
+     *
+     * Limit is bogus when $afterCreated is used
+     *
+     * @param integer $limit
+     * @param \DateTime $afterCreated
+     *
+     * @return array
+     */
+    private function findAll($limit = 30, \DateTime $afterCreated = null)
     {
         $sql = 'SELECT username FROM `oc_uc_storageusage` WHERE `usage` > 0 GROUP BY username';
         $query = $this->db->prepareQuery($sql);
@@ -94,7 +120,15 @@ class StorageUsageRepository extends Mapper
             {
                 $entities[$row['username']] = array();
             }
-            $entities[$row['username']] = array_merge($entities[$row['username']], $this->find($row['username'], $limit));
+
+            if ( !is_null($afterCreated) )
+            {
+                $entities[$row['username']] = array_merge($entities[$row['username']], $this->findAfterCreated($row['username'], $afterCreated));
+            }
+            else
+            {
+                $entities[$row['username']] = array_merge($entities[$row['username']], $this->find($row['username'], $limit));
+            }
         }
         return $entities;
     }
@@ -108,29 +142,6 @@ class StorageUsageRepository extends Mapper
     public function findAfterCreated($userName, \DateTime $created) {
         $sql = 'SELECT * FROM `oc_uc_storageusage` WHERE `username` = ? AND `created` > ? ORDER BY created DESC';
         return $this->findEntities($sql, array($userName, $created->format('Y-m-d H:i:s')));
-    }
-
-    /**
-     * This method retrieves all usernames,
-     * and gets the lastest storage usage for them
-     *
-     * @param \DateTime $created
-     * @return array
-     */
-    public function findAllAfterCreated(\DateTime $created)
-    {
-        $sql = 'SELECT username FROM `oc_uc_storageusage` WHERE `usage` >0 GROUP BY username';
-        $query = $this->db->prepareQuery($sql);
-        $result = $query->execute();
-        $entities = array();
-        while($row = $result->fetch()){
-            if ( !isset($entities[$row['username']]))
-            {
-                $entities[$row['username']] = array();
-            }
-            $entities[$row['username']] = array_merge($entities[$row['username']], $this->findAfterCreated($row['username'], $created));
-        }
-        return $entities;
     }
 
     /**

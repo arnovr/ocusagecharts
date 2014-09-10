@@ -21,17 +21,12 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\Adapters\c3js;
-
-use OCA\ocUsageCharts\Adapters\ChartTypeAdapterInterface;
+namespace OCA\ocUsageCharts\Exception;
 
 /**
  * @author Arno van Rossum <arno@van-rossum.com>
  */
-class StorageUsageCurrentAdapter extends c3jsBase implements ChartTypeAdapterInterface
+class ChartTypeAdapterException extends \Exception
 {
-    public function formatData($data)
-    {
-        return $data;
-    }
+
 }
