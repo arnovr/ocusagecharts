@@ -40,7 +40,7 @@ class ChartTypeAdapterFactory
      *
      * @param ChartConfig $config
      * @return ChartTypeAdapterInterface
-     * @throws Exception\ChartTypeAdapterException
+     * @throws ChartTypeAdapterException
      */
     public function getChartTypeAdapterByConfig(ChartConfig $config)
     {
@@ -48,7 +48,7 @@ class ChartTypeAdapterFactory
 
         if ( !method_exists($this, $method) )
         {
-            throw new ChartTypeAdapterException("DataProvider for " . $config->getChartType() . ' does not exist.');
+            throw new ChartTypeAdapterException("ChartType Adapter for " . $config->getChartType() . ' does not exist.');
         }
 
         return $this->$method($config->getChartProvider(), $config);
