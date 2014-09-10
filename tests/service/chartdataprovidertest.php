@@ -23,6 +23,9 @@
 
 namespace OCA\ocUsageCharts\Service;
 
+use OCA\ocUsageCharts\ChartTypeAdapterFactory;
+use OCA\ocUsageCharts\DataProviderFactory;
+
 class ChartDataProviderTest extends \PHPUnit_Framework_TestCase
 {
 
@@ -34,7 +37,7 @@ class ChartDataProviderTest extends \PHPUnit_Framework_TestCase
     {
         $app = new \OCA\ocUsageCharts\AppInfo\Chart();
         $this->container = $app->getContainer();
-        $this->dataProvider = new ChartDataProvider($this->container);
+        $this->dataProvider = new ChartDataProvider($this->container, new DataProviderFactory(), new ChartTypeAdapterFactory());
         $this->configMock = new \OCA\ocUsageCharts\Entity\ChartConfig(100, new \DateTime(), 'test1', 'StorageUsageLastMonth', 'c3js');
     }
 
