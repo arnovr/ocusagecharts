@@ -40,7 +40,7 @@ class StorageUsageCurrentProvider extends StorageUsageBase implements DataProvid
         $free = ceil($storageInfo['free'] / 1024 / 1024);
         if ( $this->isAdminUser() )
         {
-            $data = $this->repository->findAll(1);
+            $data = $this->repository->findAllWithLimit(1);
             foreach($data as $username => $items)
             {
                 foreach($items as $item)

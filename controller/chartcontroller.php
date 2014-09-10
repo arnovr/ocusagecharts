@@ -23,6 +23,7 @@
 
 namespace OCA\ocUsageCharts\Controller;
 
+use OCA\ocUsageCharts\Exception\ChartServiceException;
 use OCA\ocUsageCharts\Service\ChartConfigService;
 use OCA\ocUsageCharts\Service\ChartService;
 use \OCP\AppFramework\Controller;
@@ -84,19 +85,28 @@ class ChartController extends Controller
      * @NoCSRFRequired
      * @NoAdminRequired
      * @param string $id
+     * @throws \OCA\ocUsageCharts\Exception\ChartServiceException
+     *
      * @return TemplateResponse
      */
     public function displayChart($id)
     {
+        $selectedConfig = null;
         $chartConfigs = $this->configService->getCharts();
         foreach($chartConfigs as $config)
         {
             if ( $config->getId() == $id )
             {
+                $selectedConfig = $config;
                 break;
             }
         }
-        $chart = $this->chartService->getChartByConfig($config);
+        if ( is_null($selectedConfig) )
+        {
+            throw new ChartServiceException('No config found for selected ID');
+        }
+
+        $chart = $this->chartService->getChartByConfig($selectedConfig);
         $templateName = 'main';  // will use templates/main.php
         return new TemplateResponse($this->appName, $templateName, array('chart' => $chart, 'configs' => $chartConfigs, 'requesttoken' => \OC_Util::callRegister()));
     }

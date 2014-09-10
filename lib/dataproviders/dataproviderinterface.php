@@ -35,7 +35,7 @@ interface DataProviderInterface
      * @param DIContainer $container
      * @param ChartConfig $chartConfig
      *
-     * @return void
+     * @return \OCA\ocUsageCharts\DataProviders\DataProviderInterface
      */
     public function __construct(DIContainer $container, ChartConfig $chartConfig);
 
