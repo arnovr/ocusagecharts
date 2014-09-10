@@ -35,7 +35,7 @@ use OCA\ocUsageCharts\Exception\ChartDataProviderException;
  */
 class DataProviderFactory
 {
-    public function getByConfig(DIContainer $container, ChartConfig $config)
+    public function getDataProviderByConfig(DIContainer $container, ChartConfig $config)
     {
         $method = 'get' . $config->getChartType() . 'Provider';
         if ( !method_exists($this, $method) )

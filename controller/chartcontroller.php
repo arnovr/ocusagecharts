@@ -22,10 +22,10 @@
  */
 
 namespace OCA\ocUsageCharts\Controller;
+
 use OCA\ocUsageCharts\Service\ChartConfigService;
 use OCA\ocUsageCharts\Service\ChartService;
 use \OCP\AppFramework\Controller;
-use OCP\AppFramework\Http\JSONResponse;
 use OCP\AppFramework\Http\RedirectResponse;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\IRequest;

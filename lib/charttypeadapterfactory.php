@@ -42,7 +42,7 @@ class ChartTypeAdapterFactory
      * @return ChartTypeAdapterInterface
      * @throws Exception\ChartTypeAdapterException
      */
-    public function getByConfig(ChartConfig $config)
+    public function getChartTypeAdapterByConfig(ChartConfig $config)
     {
         $method = 'get' . $config->getChartType() . 'Adapter';
 
@@ -65,9 +65,9 @@ class ChartTypeAdapterFactory
         {
             case 'c3js':
             default:
-                return new StorageUsageCurrentAdapter($config);
-            break;
+                $adapter = new StorageUsageCurrentAdapter($config);
         }
+        return $adapter;
     }
 
     /**
@@ -81,9 +81,9 @@ class ChartTypeAdapterFactory
         {
             case 'c3js':
             default:
-                return new StorageUsageLastMonthAdapter($config);
-                break;
+                $adapter = new StorageUsageLastMonthAdapter($config);
         }
+        return $adapter;
     }
 
     /**
@@ -97,8 +97,8 @@ class ChartTypeAdapterFactory
         {
             case 'c3js':
             default:
-                return new StorageUsagePerMonthAdapter($config);
-                break;
+                $adapter = new StorageUsagePerMonthAdapter($config);
         }
+        return $adapter;
     }
 }

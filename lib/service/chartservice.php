@@ -95,8 +95,8 @@ class ChartService
     }
 
     /**
-     * @param $id
-     * @return mixed
+     * @param integer $id
+     * @return ChartTypeAdapterInterface
      * @throws \OCA\ocUsageCharts\Exception\ChartServiceException
      */
     public function getChart($id)
@@ -114,7 +114,7 @@ class ChartService
     public function getChartByConfig(ChartConfig $config)
     {
         /** @var ChartTypeAdapterInterface $chartAdapter */
-        $chartAdapter = $this->chartTypeAdapterFactory->getByConfig($config);
+        $chartAdapter = $this->chartTypeAdapterFactory->getChartTypeAdapterByConfig($config);
 
         if ( !in_array($config->getChartProvider(), $this->isLoaded) )
         {

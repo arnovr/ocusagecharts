@@ -46,7 +46,7 @@ class ChartConfigRepository extends Mapper
 
     /**
      * Return ChartConfigs for username given
-     * @param $userName
+     * @param string $userName
      * @return array|ChartConfig[]
      */
     public function findByUsername($userName) {

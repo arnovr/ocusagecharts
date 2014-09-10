@@ -34,6 +34,8 @@ interface DataProviderInterface
     /**
      * @param DIContainer $container
      * @param ChartConfig $chartConfig
+     *
+     * @return void
      */
     public function __construct(DIContainer $container, ChartConfig $chartConfig);
 

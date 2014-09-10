@@ -30,6 +30,10 @@ use OCA\ocUsageCharts\Entity\ChartConfig;
  */
 interface ChartTypeAdapterInterface
 {
+    /**
+     * @param ChartConfig $config
+     * @return void
+     */
     public function __construct(ChartConfig $config);
 
     /**
@@ -38,6 +42,10 @@ interface ChartTypeAdapterInterface
      * @return mixed
      */
     public function formatData($data);
+
+    /**
+     * @return ChartConfig
+     */
     public function getConfig();
 
     /**

@@ -23,14 +23,12 @@
 
 namespace OCA\ocUsageCharts\AppInfo;
 
-use OC\L10N\Factory;
 use OCA\ocUsageCharts\ChartTypeAdapterFactory;
 use OCA\ocUsageCharts\Controller\ChartApiController;
 use OCA\ocUsageCharts\Controller\ChartController;
 use OCA\ocUsageCharts\DataProviderFactory;
 use OCA\ocUsageCharts\Entity\ChartConfigRepository;
 use OCA\ocUsageCharts\Entity\StorageUsageRepository;
-use OCA\ocUsageCharts\FactoryLocator;
 use OCA\ocUsageCharts\Service\ChartConfigService;
 use OCA\ocUsageCharts\Service\ChartDataProvider;
 use OCA\ocUsageCharts\Service\ChartService;

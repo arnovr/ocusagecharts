@@ -65,7 +65,7 @@ class ChartDataProvider
      */
     private function getDataProviderByConfig(ChartConfig $config)
     {
-        return $this->dataProviderFactory->getByConfig($this->container, $config);
+        return $this->dataProviderFactory->getDataProviderByConfig($this->container, $config);
     }
 
     /**
@@ -79,7 +79,7 @@ class ChartDataProvider
      */
     private function getProviderAdapterByConfig(ChartConfig $config)
     {
-        return $this->chartTypeAdapterFactory->getByConfig($config);
+        return $this->chartTypeAdapterFactory->getChartTypeAdapterByConfig($config);
     }
 
     /**

@@ -23,7 +23,6 @@
 
 namespace OCA\ocUsageCharts\Entity;
 
-use OCA\ocUsageCharts\Adapters\ChartTypeAdapterInterface;
 use OCP\AppFramework\Db\Mapper;
 use \OCP\IDb;
 
@@ -67,8 +66,8 @@ class StorageUsageRepository extends Mapper
     }
 
     /**
-     * @param $userName
-     * @param $limit
+     * @param string $userName
+     * @param integer $limit
      * @return array
      */
     public function find($userName, $limit = 30) {
