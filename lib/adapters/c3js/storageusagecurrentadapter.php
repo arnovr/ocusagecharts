@@ -26,12 +26,11 @@ namespace OCA\ocUsageCharts\Adapters\c3js;
 use OCA\ocUsageCharts\Adapters\ChartTypeAdapterInterface;
 use OCA\ocUsageCharts\Entity\ChartConfig;
 
+/**
+ * @author Arno van Rossum <arno@van-rossum.com>
+ */
 class StorageUsageCurrentAdapter extends c3jsBase implements ChartTypeAdapterInterface
 {
-    public function __construct(ChartConfig $config)
-    {
-        parent::__construct($config);
-    }
     public function formatData($data)
     {
         return $data;

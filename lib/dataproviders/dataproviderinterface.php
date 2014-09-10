@@ -26,6 +26,9 @@ namespace OCA\ocUsageCharts\DataProviders;
 use OC\AppFramework\DependencyInjection\DIContainer;
 use OCA\ocUsageCharts\Entity\ChartConfig;
 
+/**
+ * @author Arno van Rossum <arno@van-rossum.com>
+ */
 interface DataProviderInterface
 {
     /**

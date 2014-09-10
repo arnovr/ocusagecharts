@@ -21,13 +21,29 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\DataProviders;
+namespace OCA\ocUsageCharts;
 
 use OC\AppFramework\DependencyInjection\DIContainer;
+use OCA\ocUsageCharts\DataProviders\StorageUsageCurrentProvider;
+use OCA\ocUsageCharts\DataProviders\StorageUsageLastMonthProvider;
+use OCA\ocUsageCharts\DataProviders\StorageUsagePerMonthProvider;
 use OCA\ocUsageCharts\Entity\ChartConfig;
+use OCA\ocUsageCharts\Exception\ChartDataProviderException;
 
+/**
+ * @author Arno van Rossum <arno@van-rossum.com>
+ */
 class DataProviderFactory
 {
+    public function getByConfig(DIContainer $container, ChartConfig $config)
+    {
+        $method = 'get' . $config->getChartType() . 'Provider';
+        if ( !method_exists($this, $method) )
+        {
+            throw new ChartDataProviderException("DataProvider for " . $config->getChartType() . ' does not exist.');
+        }
+        return $this->$method($container, $config);
+    }
     public function getStorageUsageCurrentProvider(DIContainer $container, ChartConfig $config)
     {
         return new StorageUsageCurrentProvider($container, $config);

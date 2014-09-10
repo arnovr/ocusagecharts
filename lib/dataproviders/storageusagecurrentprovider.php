@@ -23,6 +23,9 @@
 
 namespace OCA\ocUsageCharts\DataProviders;
 
+/**
+ * @author Arno van Rossum <arno@van-rossum.com>
+ */
 class StorageUsageCurrentProvider extends StorageUsageBase implements DataProviderInterface
 {
     /**

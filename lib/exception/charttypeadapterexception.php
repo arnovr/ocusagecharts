@@ -21,54 +21,12 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\Controller;
-use OCA\ocUsageCharts\Service\ChartService;
-use OCP\AppFramework\ApiController;
-use OCP\AppFramework\Http\JSONResponse;
-use OCP\IRequest;
+namespace OCA\ocUsageCharts\Exception;
 
 /**
  * @author Arno van Rossum <arno@van-rossum.com>
  */
-class ChartApiController extends ApiController
+class ChartTypeAdapterException extends \Exception
 {
-    /**
-     * @var ChartService
-     */
-    private $chartService;
 
-
-    /**
-     * @param string $appName
-     * @param IRequest $request
-     * @param ChartService $chartService
-     */
-    public function __construct($appName, IRequest $request, ChartService $chartService)
-    {
-        $this->chartService = $chartService;
-        parent::__construct(
-            $appName,
-            $request,
-            'GET',
-            'Authorization, Content-Type, Accept',
-            1728000
-        );
-    }
-
-    /**
-     * JSON Ajax call
-     *
-     * @TODO this should not need require noCSRF... It bugs on production
-     * @NoAdminRequired
-     * @NoCSRFRequired
-     * @param string $id
-     * @return JSONResponse
-     */
-    public function loadChart($id)
-    {
-        $chart = $this->chartService->getChart($id);
-        $usage = $this->chartService->getChartUsage($chart->getConfig());
-        $response = new JSONResponse($usage);
-        return $response;
-    }
 }

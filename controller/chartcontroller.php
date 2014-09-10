@@ -31,8 +31,6 @@ use OCP\AppFramework\Http\TemplateResponse;
 use OCP\IRequest;
 
 /**
- * Class ChartController
- * @package OCA\ocUsageCharts\Controller
  * @author Arno van Rossum <arno@van-rossum.com>
  */
 class ChartController extends Controller

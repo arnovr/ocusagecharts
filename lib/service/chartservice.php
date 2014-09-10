@@ -24,6 +24,7 @@
 namespace OCA\ocUsageCharts\Service;
 
 use OCA\ocUsageCharts\Adapters\ChartTypeAdapterInterface;
+use OCA\ocUsageCharts\ChartTypeAdapterFactory;
 use OCA\ocUsageCharts\Entity\ChartConfig;
 use OCA\ocUsageCharts\Exception\ChartServiceException;
 
@@ -43,6 +44,11 @@ class ChartService
     private $config;
 
     /**
+     * @var ChartTypeAdapterFactory
+     */
+    private $chartTypeAdapterFactory;
+
+    /**
      * @var string
      */
     private $currentUserName;
@@ -56,11 +62,12 @@ class ChartService
     /**
      * @param ChartDataProvider $provider
      * @param ChartConfigService $config
+     * @param ChartTypeAdapterFactory $chartTypeAdapterFactory
      * @param string $currentUserName
      *
      * @throws ChartServiceException
      */
-    public function __construct(ChartDataProvider $provider, ChartConfigService $config, $currentUserName)
+    public function __construct(ChartDataProvider $provider, ChartConfigService $config, ChartTypeAdapterFactory $chartTypeAdapterFactory, $currentUserName)
     {
         $this->provider = $provider;
         $this->config = $config;
@@ -68,6 +75,7 @@ class ChartService
         {
             throw new ChartServiceException("Invalid user given");
         }
+        $this->chartTypeAdapterFactory = $chartTypeAdapterFactory;
         $this->currentUserName = $currentUserName;
     }
 
@@ -100,17 +108,13 @@ class ChartService
     /**
      * @param ChartConfig $config
      * @return ChartTypeAdapterInterface
+     *
      * @throws \OCA\ocUsageCharts\Exception\ChartServiceException
      */
     public function getChartByConfig(ChartConfig $config)
     {
-        $adapter = '\OCA\ocUsageCharts\Adapters\\' .  $config->getChartProvider() . '\\' . $config->getChartType() . 'Adapter';
-
-        if ( !class_exists($adapter) )
-        {
-            throw new ChartServiceException("Adapter for " . $config->getChartType() . ' does not exist.');
-        }
-        $chartAdapter = new $adapter($config);
+        /** @var ChartTypeAdapterInterface $chartAdapter */
+        $chartAdapter = $this->chartTypeAdapterFactory->getByConfig($config);
 
         if ( !in_array($config->getChartProvider(), $this->isLoaded) )
         {
