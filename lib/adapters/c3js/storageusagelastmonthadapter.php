@@ -34,12 +34,15 @@ class StorageUsageLastMonthAdapter extends c3jsBase implements ChartTypeAdapterI
 
     /**
      * Parse the usage given to a chosen format
+     *
      * @param $usage
      * @return float
      */
-    protected function parseUsage($usage)
+    protected function calculateUsage($usage)
     {
         $size = 'kb';
+
+        // Not so pretty...
         if ( !empty($_GET['size']) && in_array($_GET['size'], $this->allowedSizes) )
         {
             $size = $_GET['size'];
@@ -57,30 +60,67 @@ class StorageUsageLastMonthAdapter extends c3jsBase implements ChartTypeAdapterI
         return round($usage, 2);
     }
 
+    /**
+     * Format the data given to proper usage for the C3.js provider
+     *
+     * @param array $data
+     * @return array
+     */
     public function formatData($data)
     {
         $x = array();
         $result = array();
-        $first = true;
+
         foreach($data as $username => $items )
         {
-            $row = array();
-            for($i = 0; $i < count($items); $i++)
+            // For the first item, add to X
+            if ( count($x) === 0 )
             {
-                if ( $first )
-                {
-                    $x[] = $items[$i]->getDate()->format('Y-m-d');
-                }
-                $row[] = $this->parseUsage($items[$i]->getUsage());
+                $x = $this->getRowX($items);
             }
-            $first = false;
-            $row = array_reverse($row);
-            $row = array_reverse($row);
+            $row = $this->getRowData($items);
+
             $result[$username] = $row;
         }
         $result["x"] = $x;
         $result = array_reverse($result);
 
         return $result;
+    }
+
+    /**
+     * Get a data row for the X line
+     *
+     * @param array $items
+     * @return array
+     */
+    private function getRowX($items)
+    {
+        $x = array();
+        $totalItems = count($items);
+        for($i = 0; $i < $totalItems; $i++)
+        {
+            $x[] = $items[$i]->getDate()->format('Y-m-d');
+        }
+        return $x;
+    }
+
+    /**
+     * get Row Data for X/Y axes
+     *
+     * @param $items
+     * @return array
+     */
+    private function getRowData($items)
+    {
+        $row = array();
+        $totalItems = count($items);
+        for($i = 0; $i < $totalItems; $i++)
+        {
+            $row[] = $this->calculateUsage($items[$i]->getUsage());
+        }
+        $row = array_reverse($row);
+        $row = array_reverse($row);
+        return $row;
     }
 }
