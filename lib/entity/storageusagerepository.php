@@ -145,6 +145,8 @@ class StorageUsageRepository extends Mapper
     }
 
     /**
+     * Find all storage usages grouped by username and month
+     *
      * @return array
      */
     public function findAllPerMonth()
@@ -152,6 +154,31 @@ class StorageUsageRepository extends Mapper
         $sql = 'SELECT DISTINCT CONCAT(MONTH(`created`), \' \', YEAR(`created`)) as month, avg(`usage`) as average, username FROM oc_uc_storageusage WHERE `usage` > 0 GROUP BY username, month';
         $query = $this->db->prepareQuery($sql);
         $result = $query->execute();
+
+        return $this->parsePerMonthEntities($result);
+    }
+
+    /**
+     * Find all storage usages for a user grouped by username and month
+     *
+     * @param string $username
+     * @return array
+     */
+    public function findAllPerMonthAndUsername($username)
+    {
+        $sql = 'SELECT DISTINCT CONCAT(MONTH(`created`), \' \', YEAR(`created`)) as month, avg(`usage`) as average FROM oc_uc_storageusage WHERE `usage` > 0 AND username = ? GROUP BY month';
+        $query = $this->db->prepareQuery($sql);
+        $result = $query->execute(array($username));
+
+        return $this->parsePerMonthEntities($result);
+    }
+
+    /**
+     * @param \OC_DB_StatementWrapper $result
+     * @return array
+     */
+    private function parsePerMonthEntities($result)
+    {
         $entities = array();
         while($row = $result->fetch()){
             if ( !isset($entities[$row['username']]))
@@ -166,8 +193,9 @@ class StorageUsageRepository extends Mapper
                 $entities[$row['username']],
                 array(new StorageUsage($dateTime, $row['average'], $row['username']))
             );
-
         }
+
+
         return $entities;
     }
 }

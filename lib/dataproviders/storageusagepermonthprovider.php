@@ -35,12 +35,13 @@ class StorageUsagePerMonthProvider extends StorageUsageBase implements DataProvi
      */
     public function getChartUsage()
     {
-        //@TODO don't need to get everything for one user...
-        // Performance and such
-        $data = $this->repository->findAllPerMonth();
-        if ( !$this->isAdminUser() )
+        if ( $this->isAdminUser() )
         {
-            $data = array($this->chartConfig->getUsername() => $data[$this->chartConfig->getUsername()]);
+            $data = $this->repository->findAllPerMonth();
+        }
+        else
+        {
+            $data = $this->repository->findAllPerMonthAndUsername($this->chartConfig->getUsername());
         }
         return $data;
     }
