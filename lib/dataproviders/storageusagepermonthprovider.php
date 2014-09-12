@@ -41,7 +41,7 @@ class StorageUsagePerMonthProvider extends StorageUsageBase implements DataProvi
         }
         else
         {
-            $data = $this->repository->findAllPerMonthAndUsername($this->chartConfig->getUsername());
+            $data = $this->repository->findAllPerMonth($this->chartConfig->getUsername());
         }
         return $data;
     }

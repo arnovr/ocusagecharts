@@ -146,34 +146,32 @@ class StorageUsageRepository extends Mapper
 
     /**
      * Find all storage usages grouped by username and month
-     *
-     * @return array
-     */
-    public function findAllPerMonth()
-    {
-        $sql = 'SELECT DISTINCT CONCAT(MONTH(`created`), \' \', YEAR(`created`)) as month, avg(`usage`) as average, username FROM oc_uc_storageusage WHERE `usage` > 0 GROUP BY username, month';
-        $query = $this->db->prepareQuery($sql);
-        $result = $query->execute();
-
-        return $this->parsePerMonthEntities($result);
-    }
-
-    /**
-     * Find all storage usages for a user grouped by username and month
+     * When username supplied, only for that user
      *
      * @param string $username
      * @return array
      */
-    public function findAllPerMonthAndUsername($username)
+    public function findAllPerMonth($username = '')
     {
-        $sql = 'SELECT DISTINCT CONCAT(MONTH(`created`), \' \', YEAR(`created`)) as month, avg(`usage`) as average FROM oc_uc_storageusage WHERE `usage` > 0 AND username = ? GROUP BY month';
+        // When no username supplied, search for all information
+        $sql = 'SELECT DISTINCT CONCAT(MONTH(`created`), \' \', YEAR(`created`)) as month, avg(`usage`) as average, username FROM oc_uc_storageusage WHERE `usage` > 0 GROUP BY username, month';
+        $params = array();
+
+        // Username is supplied, get results only for that user
+        if ( $username !== '' )
+        {
+            $sql = 'SELECT DISTINCT CONCAT(MONTH(`created`), \' \', YEAR(`created`)) as month, avg(`usage`) as average FROM oc_uc_storageusage WHERE `usage` > 0 AND username = ? GROUP BY month';
+            $params = array($username);
+        }
         $query = $this->db->prepareQuery($sql);
-        $result = $query->execute(array($username));
+        $result = $query->execute($params);
 
         return $this->parsePerMonthEntities($result);
     }
 
     /**
+     * Parse the results from the per month entities found
+     *
      * @param \OC_DB_StatementWrapper $result
      * @return array
      */
