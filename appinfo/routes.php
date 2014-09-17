@@ -36,7 +36,7 @@ $application->registerRoutes($this, array(
             'verb' => 'GET'
         ),
         array(
-            'name' => 'chart_api#load_chart',
+            'name' => 'chart_api#preflighted_cors',
             'url' => '/api/load/{id}',
             'verb' => 'GET'
         ),
