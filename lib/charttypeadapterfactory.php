@@ -29,12 +29,27 @@ use OCA\ocUsageCharts\Adapters\c3js\StorageUsagePerMonthAdapter;
 use OCA\ocUsageCharts\Adapters\ChartTypeAdapterInterface;
 use OCA\ocUsageCharts\Entity\ChartConfig;
 use OCA\ocUsageCharts\Exception\ChartTypeAdapterException;
+use OCA\ocUsageCharts\Service\AppConfigService;
 
 /**
  * @author Arno van Rossum <arno@van-rossum.com>
  */
 class ChartTypeAdapterFactory
 {
+    /**
+     * @var Service\AppConfigService
+     */
+    private $appConfigService;
+
+    /**
+     * Config service is used to pick up what size is defined by the admin
+     * @param AppConfigService $appConfigService
+     */
+    public function __construct(AppConfigService $appConfigService)
+    {
+        $this->appConfigService = $appConfigService;
+    }
+
     /**
      * @TODO, This could be nicer, i should figure out how....
      *
@@ -81,7 +96,7 @@ class ChartTypeAdapterFactory
         {
             case 'c3js':
             default:
-                $adapter = new StorageUsageLastMonthAdapter($config);
+                $adapter = new StorageUsageLastMonthAdapter($config, $this->appConfigService->getUserValue('size'));
         }
         return $adapter;
     }

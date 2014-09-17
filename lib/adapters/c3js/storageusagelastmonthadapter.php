@@ -23,14 +23,40 @@
 
 namespace OCA\ocUsageCharts\Adapters\c3js;
 
-use OCA\ocUsageCharts\Adapters\ChartTypeAdapterInterface;
+use OCA\ocUsageCharts\Entity\ChartConfig;
+use OCA\ocUsageCharts\Exception\ChartTypeAdapterException;
 
 /**
  * @author Arno van Rossum <arno@van-rossum.com>
  */
-class StorageUsageLastMonthAdapter extends c3jsBase implements ChartTypeAdapterInterface
+class StorageUsageLastMonthAdapter extends c3jsBase
 {
-    private $allowedSizes = array('kb', 'mb', 'gb');
+    /**
+     * @var array
+     */
+    private $allowedSizes = array('kb', 'mb', 'gb', 'tb');
+
+    /**
+     * @var string
+     */
+    private $size;
+
+    /**
+     * @param ChartConfig $chartConfig
+     * @param string $size Defaults on gigabytes
+     * @throws ChartTypeAdapterException
+     */
+    public function __construct(ChartConfig $chartConfig, $size = 'gb')
+    {
+        if ( empty($size) || !in_array($size, $this->allowedSizes) )
+        {
+            throw new ChartTypeAdapterException('Size given is not an allowed size');
+        }
+
+        $this->size = $size;
+        parent::__construct($chartConfig);
+    }
+
 
     /**
      * Parse the usage given to a chosen format
@@ -40,15 +66,10 @@ class StorageUsageLastMonthAdapter extends c3jsBase implements ChartTypeAdapterI
      */
     protected function calculateUsage($usage)
     {
-        $size = 'kb';
-
-        // Not so pretty...
-        if ( !empty($_GET['size']) && in_array($_GET['size'], $this->allowedSizes) )
+        switch($this->size)
         {
-            $size = $_GET['size'];
-        }
-        switch($size)
-        {
+            case 'tb':
+                $usage = $usage / 1024;
             case 'gb':
                 $usage = $usage / 1024;
             case 'mb':

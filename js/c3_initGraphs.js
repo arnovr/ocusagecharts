@@ -1,10 +1,9 @@
-function loadGraph(url, yLabel, graphType, format, size)
+function loadGraph(url, yLabel, graphType, format)
 {
     if ( format == undefined )
     {
         format = '%Y-%m-%d';
     }
-    url += '&size=' + size;
 
     c3.generate({
         bindto: '#chart',
@@ -46,23 +45,13 @@ function loadPie(url)
     });
 }
 $( document ).ready(function() {
-    $("#controls").find('a').click(function() {
-        loadGraph(
-            $(this).data("url"),
-            $(this).data("label"),
-            $(this).data("type"),
-            $(this).data("format"),
-            $(this).data("size")
-        );
-    });
     if ($("#defaultChart").length > 0 )
     {
         loadGraph(
             $("#defaultChart").data("url"),
             $("#defaultChart").data("label"),
             $("#defaultChart").data("type"),
-            $("#defaultChart").data("format"),
-            $("#defaultChart").data("size")
+            $("#defaultChart").data("format")
         );
     }
 
