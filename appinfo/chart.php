@@ -29,6 +29,8 @@ use OCA\ocUsageCharts\Controller\ChartController;
 use OCA\ocUsageCharts\DataProviderFactory;
 use OCA\ocUsageCharts\Entity\ChartConfigRepository;
 use OCA\ocUsageCharts\Entity\StorageUsageRepository;
+use OCA\ocUsageCharts\Owncloud\Storage;
+use OCA\ocUsageCharts\Owncloud\User;
 use OCA\ocUsageCharts\Service\AppConfigService;
 use OCA\ocUsageCharts\Service\ChartConfigService;
 use OCA\ocUsageCharts\Service\ChartDataProvider;
@@ -69,7 +71,11 @@ class Chart extends App
         });
 
         $container->registerService('DataProviderFactory', function() {
-            return new DataProviderFactory();
+            return new DataProviderFactory(
+                $c->query('StorageUsageRepository'),
+                $c->query('OwncloudUser'),
+                $c->query('OwncloudStorage')
+            );
         });
 
         $container->registerService('ChartDataProvider', function($c) {
@@ -84,7 +90,8 @@ class Chart extends App
         $container->registerService('ChartUpdaterService', function($c) {
             return new ChartUpdaterService(
                 $c->query('ChartDataProvider'),
-                $c->query('ChartConfigService')
+                $c->query('ChartConfigService'),
+                $c->query('OwncloudUser')
             );
         });
         $container->registerService('AppConfigService', function($c) {
@@ -96,7 +103,8 @@ class Chart extends App
         });
         $container->registerService('ChartConfigService', function($c) {
             return new ChartConfigService(
-                $c->query('ChartConfigRepository')
+                $c->query('ChartConfigRepository'),
+                $c->query('OwncloudUser')
             );
         });
         $container->registerService('ChartService', function($c) {
@@ -125,6 +133,16 @@ class Chart extends App
                 $c->query('Request'),
                 $c->query('ChartService')
             );
+        });
+
+        /**
+         * Owncloud dependencies, cause i don't want them in my code
+         */
+        $container->registerService('OwncloudUser', function($c) {
+            return new User();
+        });
+        $container->registerService('OwncloudStorage', function($c) {
+            return new Storage();
         });
     }
 }

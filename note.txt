@@ -2,3 +2,4 @@
 - https://github.com/arnovr/ocusagecharts/issues/17
 - https://github.com/arnovr/ocusagecharts/issues/12
 - https://github.com/arnovr/ocusagecharts/issues/30
+- Refactored a bit off owncloud dependency stuff, lots still todo

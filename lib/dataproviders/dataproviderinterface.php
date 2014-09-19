@@ -23,8 +23,6 @@
 
 namespace OCA\ocUsageCharts\DataProviders;
 
-use OC\AppFramework\DependencyInjection\DIContainer;
-use OCA\ocUsageCharts\Entity\ChartConfig;
 
 /**
  * @author Arno van Rossum <arno@van-rossum.com>
@@ -32,12 +30,21 @@ use OCA\ocUsageCharts\Entity\ChartConfig;
 interface DataProviderInterface
 {
     /**
-     * @param DIContainer $container
-     * @param ChartConfig $chartConfig
+     * Return the chart data you want to return based on the ChartConfig
      *
-     * @return \OCA\ocUsageCharts\DataProviders\DataProviderInterface
+     * @return mixed
      */
-    public function __construct(DIContainer $container, ChartConfig $chartConfig);
+    public function getChartUsage();
+
+    /**
+     * This method is called when the cron runs for update
+     * you could add some logic here to define weither or not you want the
+     * cron to save the data
+     * When this method returns true, getChartUsageForUpdate() and save() is called
+     *
+     * @return boolean
+     */
+    public function isAllowedToUpdate();
 
     /**
      * Return a CURRENT usage for a USER,
@@ -46,13 +53,6 @@ interface DataProviderInterface
      * @return mixed
      */
     public function getChartUsageForUpdate();
-
-    /**
-     * Return the chart data you want to return based on the ChartConfig
-     *
-     * @return mixed
-     */
-    public function getChartUsage();
 
     /**
      * This method should store the data given from getChartUsageForUpdate

@@ -21,17 +21,20 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\DataProviders;
+namespace OCA\ocUsageCharts\DataProviders\Storage;
 
 use OC\AppFramework\DependencyInjection\DIContainer;
+use OCA\ocUsageCharts\DataProviders\DataProviderInterface;
 use OCA\ocUsageCharts\Entity\ChartConfig;
 use OCA\ocUsageCharts\Entity\StorageUsage;
 use OCA\ocUsageCharts\Entity\StorageUsageRepository;
+use OCA\ocUsageCharts\Owncloud\Storage;
+use OCA\ocUsageCharts\Owncloud\User;
 
 /**
  * @author Arno van Rossum <arno@van-rossum.com>
  */
-abstract class StorageUsageBase implements DataProviderInterface
+abstract class StorageUsageBase implements DataProviderInterface, DataProviderStorageInterface
 {
     /**
      * @var ChartConfig
@@ -44,13 +47,47 @@ abstract class StorageUsageBase implements DataProviderInterface
     protected $repository;
 
     /**
-     * @param DIContainer $container
-     * @param ChartConfig $chartConfig
+     * @var User
      */
-    public function __construct(DIContainer $container, ChartConfig $chartConfig)
+    protected $user;
+
+    /**
+     * @var Storage
+     */
+    protected $storage;
+
+    /**
+     * @param ChartConfig $chartConfig
+     * @param StorageUsageRepository $repository
+     * @param User $user
+     * @param Storage $storage
+     */
+    public function __construct(ChartConfig $chartConfig, StorageUsageRepository $repository, User $user, Storage $storage)
     {
         $this->chartConfig = $chartConfig;
-        $this->repository = $container->query('StorageUsageRepository');
+        $this->repository = $repository;
+        $this->user = $user;
+        $this->storage = $storage;
+    }
+
+    /**
+     * Check if the cron may update.
+     *
+     * @return boolean
+     */
+    public function isAllowedToUpdate()
+    {
+        $userName = $this->chartConfig->getUsername();
+        $created = new \DateTime();
+        $created->setTime(0,0,0);
+        $results = $this->repository->findAfterCreated($userName, $created);
+
+        // The cron has already ran today, therefor ignoring a current update, only update once a day.
+        if ( count($results) === 0 )
+        {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -61,42 +98,12 @@ abstract class StorageUsageBase implements DataProviderInterface
     public function getChartUsageForUpdate()
     {
         $userName = $this->chartConfig->getUsername();
-        $created = new \DateTime();
-        $created->setTime(0,0,0);
-        $results = $this->repository->findAfterCreated($userName, $created);
-
-        // The cron has already ran today, therefor ignoring a current update, only update once a day.
-        if ( count($results) == 0 )
-        {
-            return new StorageUsage(new \Datetime(), $this->getStorageUsageFromCacheByUserName($userName), $userName);
-        }
+        return new StorageUsage(new \Datetime(), $this->storage->getStorageUsage($userName), $userName);
     }
 
     /**
-     * Retrieve storage usage from cache by username
+     * Save the usage
      *
-     * This method exists, because after vigorous trying, owncloud does not supply a proper way
-     * to check somebody's used size
-     * @param string $userName
-     * @return integer
-     */
-    protected function getStorageUsageFromCacheByUserName($userName)
-    {
-        $data = new \OC\Files\Storage\Home(array('user' => \OC_User::getManager()->get($userName)));
-        return $data->getCache('files')->calculateFolderSize('files');
-    }
-
-    /**
-     * Check if user is admin
-     * small wrapper for owncloud methodology
-     * @return boolean
-     */
-    protected function isAdminUser()
-    {
-        return \OC_User::isAdminUser(\OC_User::getUser());
-    }
-
-    /**
      * @param StorageUsage $usage
      * @return boolean
      */

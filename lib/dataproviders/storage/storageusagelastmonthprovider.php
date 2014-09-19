@@ -21,42 +21,32 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\Adapters\c3js;
+namespace OCA\ocUsageCharts\DataProviders\Storage;
 
-use OCA\ocUsageCharts\Entity\ChartConfig;
-
+use OCA\ocUsageCharts\DataProviders\DataProviderInterface;
 
 /**
  * @author Arno van Rossum <arno@van-rossum.com>
  */
-abstract class c3jsBase
+class StorageUsageLastMonthProvider extends StorageUsageBase implements DataProviderInterface, DataProviderStorageInterface
 {
     /**
-     * @var ChartConfig
+     * Return the chart data you want to return based on the ChartConfig
+     *
+     * @return mixed
      */
-    private $config;
-
-    /**
-     * @param ChartConfig $chartConfig
-     */
-    public function __construct(ChartConfig $chartConfig)
+    public function getChartUsage()
     {
-        $this->config = $chartConfig;
-    }
-
-    /**
-     * Load the frontend files needed
-     */
-    public function loadFrontend()
-    {
-        \OCP\Util::addStyle('ocusagecharts', 'c3js/c3');
-        \OCP\Util::addScript('ocusagecharts', 'd3/d3.min');
-        \OCP\Util::addScript('ocusagecharts', 'c3js/c3.min');
-        \OCP\Util::addScript('ocusagecharts', 'c3_initGraphs');
-    }
-
-    public function getConfig()
-    {
-        return $this->config;
+        $created = new \DateTime("-1 month");
+        if ( $this->user->isAdminUser($this->user->getSignedInUsername()) )
+        {
+            $data = $this->repository->findAllAfterCreated($created);
+        }
+        else
+        {
+            $data = $this->repository->findAfterCreated($this->chartConfig->getUsername(), $created);
+            $data = array($this->chartConfig->getUsername() => $data);
+        }
+        return $data;
     }
 }

@@ -21,42 +21,32 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\Adapters\c3js;
+namespace OCA\ocUsageCharts\Owncloud;
 
-use OCA\ocUsageCharts\Entity\ChartConfig;
-
-
-/**
- * @author Arno van Rossum <arno@van-rossum.com>
- */
-abstract class c3jsBase
+class Storage
 {
     /**
-     * @var ChartConfig
+     * Retrieve storage usage username
+     *
+     * This method exists, because after vigorous trying, owncloud does not supply a proper way
+     * to check somebody's used size
+     *
+     * @param string $userName
+     * @return integer
      */
-    private $config;
-
-    /**
-     * @param ChartConfig $chartConfig
-     */
-    public function __construct(ChartConfig $chartConfig)
+    public function getStorageUsage($userName)
     {
-        $this->config = $chartConfig;
+        $data = new \OC\Files\Storage\Home(array('user' => \OC_User::getManager()->get($userName)));
+        return $data->getCache('files')->calculateFolderSize('files');
     }
 
     /**
-     * Load the frontend files needed
+     * Retrieve the current storage usage for the user that is signedin
+     *
+     * @return array ( array('free' => bytes, 'used' => bytes) )
      */
-    public function loadFrontend()
+    public function getCurrentStorageUsageForSignedInUser()
     {
-        \OCP\Util::addStyle('ocusagecharts', 'c3js/c3');
-        \OCP\Util::addScript('ocusagecharts', 'd3/d3.min');
-        \OCP\Util::addScript('ocusagecharts', 'c3js/c3.min');
-        \OCP\Util::addScript('ocusagecharts', 'c3_initGraphs');
-    }
-
-    public function getConfig()
-    {
-        return $this->config;
+        return \OC_Helper::getStorageInfo('/');
     }
 }

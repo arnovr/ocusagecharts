@@ -32,15 +32,9 @@ use \OCP\IDb;
 class StorageUsageRepository extends Mapper
 {
     /**
-     * @var \OCP\IDb
-     */
-    protected $db;
-
-    /**
      * @param IDb $db
      */
     public function __construct(IDb $db) {
-        $this->db = $db;
         parent::__construct($db, 'uc_storageusage', '\OCA\ocUsageCharts\Entity\StorageUsage');
     }
 

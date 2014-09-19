@@ -21,30 +21,36 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\DataProviders;
+namespace OCA\ocUsageCharts\Owncloud;
 
-/**
- * @author Arno van Rossum <arno@van-rossum.com>
- */
-class StorageUsageLastMonthProvider extends StorageUsageBase implements DataProviderInterface
+class User
 {
     /**
-     * Return the chart data you want to return based on the ChartConfig
-     *
-     * @return mixed
+     * @return string
      */
-    public function getChartUsage()
+    public function getSignedInUsername()
     {
-        $created = new \DateTime("-1 month");
-        if ( $this->isAdminUser() )
-        {
-            $data = $this->repository->findAllAfterCreated($created);
-        }
-        else
-        {
-            $data = $this->repository->findAfterCreated($this->chartConfig->getUsername(), $created);
-            $data = array($this->chartConfig->getUsername() => $data);
-        }
-        return $data;
+        return \OCP\User::getUser();
+    }
+
+    /**
+     * Check if username given is admin
+     *
+     * @param string $username
+     * @return boolean
+     */
+    public function isAdminUser($username)
+    {
+        return \OC_User::isAdminUser($username);
+    }
+
+    /**
+     * Return all users from the current system
+     *
+     * @return array
+     */
+    public function getSystemUsers()
+    {
+        return \OC_User::getUsers();
     }
 }

@@ -25,29 +25,60 @@ namespace OCA\ocUsageCharts\Service;
 
 use OCA\ocUsageCharts\ChartTypeAdapterFactory;
 use OCA\ocUsageCharts\DataProviderFactory;
+use OCA\ocUsageCharts\Entity\StorageUsageRepository;
 
 class ChartDataProviderTest extends \PHPUnit_Framework_TestCase
 {
-
+    private $dataProviderFactory;
     private $container;
     private $dataProvider;
+    private $appConfig;
+    /**
+     * @var StorageUsageRepository
+     */
+    private $storageUsageRepository;
+
     private $configMock;
 
     public function setUp()
     {
         $app = new \OCA\ocUsageCharts\AppInfo\Chart();
         $this->container = $app->getContainer();
-        $this->dataProvider = new ChartDataProvider($this->container, new DataProviderFactory(), new ChartTypeAdapterFactory());
+        $this->appConfig = $this->getMock('\OCA\ocUsageCharts\Service\AppConfigService');
+
+        $this->storageUsageRepository = $storageUsageRepository = $this->getMockBuilder('\OCA\ocUsageCharts\Entity\StorageUsageRepository');
+        $this->container->registerService('StorageUsageRepository', function($c) use ($storageUsageRepository) {
+            return $storageUsageRepository;
+        });
+        $this->dataProviderFactory = $dataProviderFactory = $this->getMockBuilder('\OCA\ocUsageCharts\DataProviderFactory');
+        $this->container->registerService('StorageUsageRepository', function($c) use ($dataProviderFactory) {
+            return $dataProviderFactory;
+        });
+
+        $this->dataProvider = new ChartDataProvider($this->container, $this->dataProviderFactory, new ChartTypeAdapterFactory($this->appConfig));
         $this->configMock = new \OCA\ocUsageCharts\Entity\ChartConfig(100, new \DateTime(), 'test1', 'StorageUsageLastMonth', 'c3js');
     }
 
-    /*
     public function testGetChartUsageForUpdate()
     {
-        // @TODO
-        //$result = $this->dataProvider->getChartUsageForUpdate($this->configMock);
+        $usageNumber = 2324235;
+        $created = new \DateTime();
+        $username = 'test1';
+        $usage = $this->getMock('\OCA\ocUsageCharts\Entity\StorageUsage', array(), array(
+                $created,
+                $usageNumber,
+                $username
+            ));
+
+        $usage->method('getUsage')->willReturn(2324235);
+        $usage->method('getDate')->willReturn($created);
+        $usage->method('getUsername')->willReturn($username);
+
+        $data = array($username => array($usage));
+        $this->storageUsageRepository->expects($this->once())->method('findAfterCreated')->willReturn($data);
+        $result = $this->dataProvider->getChartUsageForUpdate($this->configMock);
+        $this->assertEquals($data, $result);
     }
-    */
 
     public function testSaveDataUsage()
     {
@@ -69,6 +100,7 @@ class ChartDataProviderTest extends \PHPUnit_Framework_TestCase
 
     public function testGetChartUsage()
     {
+        $this->appConfig->method('getUserValue')->with('size')->willReturn('gb');
         $data = $this->dataProvider->getChartUsage($this->configMock);
         $this->assertArrayHasKey('x', $data);
         $this->assertArrayHasKey($this->configMock->getUsername(), $data);

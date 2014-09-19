@@ -23,39 +23,68 @@
 
 namespace OCA\ocUsageCharts;
 
-use OC\AppFramework\DependencyInjection\DIContainer;
-use OCA\ocUsageCharts\DataProviders\StorageUsageCurrentProvider;
-use OCA\ocUsageCharts\DataProviders\StorageUsageLastMonthProvider;
-use OCA\ocUsageCharts\DataProviders\StorageUsagePerMonthProvider;
+use OCA\ocUsageCharts\DataProviders\Storage\StorageUsageCurrentProvider;
+use OCA\ocUsageCharts\DataProviders\Storage\StorageUsageLastMonthProvider;
+use OCA\ocUsageCharts\DataProviders\Storage\StorageUsagePerMonthProvider;
 use OCA\ocUsageCharts\Entity\ChartConfig;
+use OCA\ocUsageCharts\Entity\StorageUsageRepository;
 use OCA\ocUsageCharts\Exception\ChartDataProviderException;
+use OCA\ocUsageCharts\Owncloud\Storage;
+use OCA\ocUsageCharts\Owncloud\User;
 
 /**
  * @author Arno van Rossum <arno@van-rossum.com>
  */
 class DataProviderFactory
 {
-    public function getDataProviderByConfig(DIContainer $container, ChartConfig $config)
+    /**
+     * @var StorageUsageRepository
+     */
+    private $repository;
+
+    /**
+     * @var User
+     */
+    private $user;
+
+    /**
+     * @var Storage
+     */
+    private $storage;
+
+    /**
+     * @param StorageUsageRepository $repository
+     * @param User $user
+     * @param Storage $storage
+     */
+    public function __construct(StorageUsageRepository $repository, User $user, Storage $storage)
     {
-        $method = 'get' . $config->getChartType() . 'Provider';
-        if ( !method_exists($this, $method) )
+        $this->repository = $repository;
+        $this->user = $user;
+        $this->storage = $storage;
+    }
+
+    /**
+     * @param ChartConfig $config
+     * @return StorageUsageCurrentProvider|StorageUsageLastMonthProvider|StorageUsagePerMonthProvider
+     * @throws Exception\ChartDataProviderException
+     */
+    public function getDataProviderByConfig(ChartConfig $config)
+    {
+        switch($config->getChartType())
         {
-            throw new ChartDataProviderException("DataProvider for " . $config->getChartType() . ' does not exist.');
+            case 'StorageUsageCurrentAdapter':
+                return new StorageUsageCurrentProvider($config, $this->repository, $this->user, $this->storage);
+                break;
+            case 'StorageUsageLastMonthAdapter':
+                return new StorageUsageLastMonthProvider($config, $this->repository, $this->user, $this->storage);
+                break;
+            case 'StorageUsagePerMonthAdapter':
+                return new StorageUsagePerMonthProvider($config, $this->repository, $this->user, $this->storage);
+                break;
+            default:
+                throw new ChartDataProviderException("DataProvider for " . $config->getChartType() . ' does not exist.');
+                break;
         }
-        return $this->$method($container, $config);
-    }
-    public function getStorageUsageCurrentProvider(DIContainer $container, ChartConfig $config)
-    {
-        return new StorageUsageCurrentProvider($container, $config);
-    }
-
-    public function getStorageUsageLastMonthProvider(DIContainer $container, ChartConfig $config)
-    {
-        return new StorageUsageLastMonthProvider($container, $config);
-    }
-
-    public function getStorageUsagePerMonthProvider(DIContainer $container, ChartConfig $config)
-    {
-        return new StorageUsagePerMonthProvider($container, $config);
     }
 }

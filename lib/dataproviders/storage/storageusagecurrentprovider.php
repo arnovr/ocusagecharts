@@ -21,12 +21,13 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\DataProviders;
+namespace OCA\ocUsageCharts\DataProviders\Storage;
+use OCA\ocUsageCharts\DataProviders\DataProviderInterface;
 
 /**
  * @author Arno van Rossum <arno@van-rossum.com>
  */
-class StorageUsageCurrentProvider extends StorageUsageBase implements DataProviderInterface
+class StorageUsageCurrentProvider extends StorageUsageBase implements DataProviderInterface, DataProviderStorageInterface
 {
     /**
      * Return the chart data you want to return based on the ChartConfig
@@ -36,9 +37,9 @@ class StorageUsageCurrentProvider extends StorageUsageBase implements DataProvid
     public function getChartUsage()
     {
         $new = array();
-        $storageInfo = \OC_Helper::getStorageInfo('/');
+        $storageInfo = $this->storage->getCurrentStorageUsageForSignedInUser();
         $free = ceil($storageInfo['free'] / 1024 / 1024);
-        if ( $this->isAdminUser() )
+        if ( $this->user->isAdminUser($this->user->getSignedInUsername()) )
         {
             $data = $this->repository->findAllWithLimit(1);
             foreach($data as $username => $items)

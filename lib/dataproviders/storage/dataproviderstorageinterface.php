@@ -21,28 +21,25 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\DataProviders;
+namespace OCA\ocUsageCharts\DataProviders\Storage;
+
+use OCA\ocUsageCharts\Entity\ChartConfig;
+use OCA\ocUsageCharts\Entity\StorageUsageRepository;
+use OCA\ocUsageCharts\Owncloud\Storage;
+use OCA\ocUsageCharts\Owncloud\User;
 
 /**
  * @author Arno van Rossum <arno@van-rossum.com>
  */
-class StorageUsagePerMonthProvider extends StorageUsageBase implements DataProviderInterface
+interface DataProviderStorageInterface
 {
     /**
-     * Return the chart data you want to return based on the ChartConfig
+     * @param ChartConfig $chartConfig
+     * @param StorageUsageRepository $repository
+     * @param User $user
+     * @param Storage $storage
      *
-     * @return mixed
+     * @return DataProviderStorageInterface
      */
-    public function getChartUsage()
-    {
-        if ( $this->isAdminUser() )
-        {
-            $data = $this->repository->findAllPerMonth();
-        }
-        else
-        {
-            $data = $this->repository->findAllPerMonth($this->chartConfig->getUsername());
-        }
-        return $data;
-    }
+    public function __construct(ChartConfig $chartConfig, StorageUsageRepository $repository, User $user, Storage $storage);
 }

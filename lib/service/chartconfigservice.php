@@ -26,6 +26,7 @@ namespace OCA\ocUsageCharts\Service;
 use OCA\ocUsageCharts\Entity\ChartConfigRepository;
 use OCA\ocUsageCharts\Entity\ChartConfig;
 use OCA\ocUsageCharts\Exception\ChartConfigServiceException;
+use OCA\ocUsageCharts\Owncloud\User;
 
 /**
  * @author Arno van Rossum <arno@van-rossum.com>
@@ -37,17 +38,15 @@ class ChartConfigService
      */
     private $repository;
 
-    public function __construct(ChartConfigRepository $repository)
+    /**
+     * @var User
+     */
+    private $user;
+
+    public function __construct(ChartConfigRepository $repository, User $user)
     {
         $this->repository = $repository;
-    }
-
-    /**
-     * @return string
-     */
-    private function getUsername()
-    {
-        return \OCP\User::getUser();
+        $this->user = $user;
     }
 
     /**
@@ -57,7 +56,7 @@ class ChartConfigService
      */
     public function getCharts()
     {
-        return $this->repository->findByUsername($this->getUsername());
+        return $this->repository->findByUsername($this->user->getSignedInUsername());
     }
 
     /**
@@ -80,7 +79,7 @@ class ChartConfigService
      */
     public function getChartConfigById($id)
     {
-        $configs = $this->repository->findByUsername($this->getUsername());
+        $configs = $this->repository->findByUsername($this->user->getSignedInUsername());
         foreach($configs as $config)
         {
             if ( $config->getId() == $id )
@@ -103,7 +102,7 @@ class ChartConfigService
         $config = new ChartConfig(
             null,
             new \DateTime(),
-            $this->getUsername(),
+            $this->user->getSignedInUsername(),
             'StorageUsageCurrent',
             'c3js'
         );
@@ -112,7 +111,7 @@ class ChartConfigService
         $config = new ChartConfig(
             null,
             new \DateTime(),
-            $this->getUsername(),
+            $this->user->getSignedInUsername(),
             'StorageUsageLastMonth',
             'c3js'
         );
@@ -121,7 +120,7 @@ class ChartConfigService
         $config = new ChartConfig(
             null,
             new \DateTime(),
-            $this->getUsername(),
+            $this->user->getSignedInUsername(),
             'StorageUsagePerMonth',
             'c3js'
         );
