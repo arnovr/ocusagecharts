@@ -24,6 +24,7 @@
 namespace OCA\ocUsageCharts\Service;
 
 use OCA\ocUsageCharts\Exception\ChartConfigServiceException;
+use OCA\ocUsageCharts\Owncloud\User;
 use OCP\IConfig;
 
 /**
@@ -42,26 +43,20 @@ class AppConfigService
     private $appName;
 
     /**
-     * @var string
+     * @var User
      */
-    private $username;
+    private $user;
 
     /**
      * @param IConfig $config
      * @param string $appName
-     * @param string $currentUserName
-     * @throws \OCA\ocUsageCharts\Exception\ChartConfigServiceException
+     * @param \OCA\ocUsageCharts\Owncloud\User $user
      */
-    public function __construct(IConfig $config, $appName, $currentUserName)
+    public function __construct(IConfig $config, $appName, User $user)
     {
-        if ( empty($currentUserName) )
-        {
-            throw new ChartConfigServiceException("Invalid user given");
-        }
-
         $this->config = $config;
         $this->appName = $appName;
-        $this->username = $currentUserName;
+        $this->user = $user;
     }
 
     /**
@@ -86,13 +81,36 @@ class AppConfigService
     }
 
     /**
+     * Retrieve the username
+     * Throw exception because:
+     * AppConfigService could be injected on non logged in places,
+     * This exception handles the feature toggle for getUserValue
+     * @return string
+     * @throws \OCA\ocUsageCharts\Exception\ChartConfigServiceException
+     */
+    private function getUsername()
+    {
+        $userName = $this->user->getSignedInUsername();
+        if ( empty($userName) )
+        {
+            throw new ChartConfigServiceException("Invalid user given");
+        }
+        return $userName;
+    }
+
+    /**
+     * @TODO I think the username should be set through this method, and not through
+     * internal owncloud dependencies
+     * Same goes for setUserValue
+     *
      * Retrieve configuration values for a user
      * @param string $key
+     * @throws \OCA\ocUsageCharts\Exception\ChartConfigServiceException
      * @return string
      */
     public function getUserValue($key)
     {
-        return $this->config->getUserValue($this->username, $this->appName, $key);
+        return $this->config->getUserValue($this->getUsername(), $this->appName, $key);
     }
 
     /**
@@ -103,6 +121,6 @@ class AppConfigService
      */
     public function setUserValue($key, $value)
     {
-        $this->config->setUserValue($this->username, $this->appName, $key, $value);
+        $this->config->setUserValue($this->getUsername(), $this->appName, $key, $value);
     }
 }

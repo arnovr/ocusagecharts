@@ -97,7 +97,7 @@ class Chart extends App
             return new AppConfigService(
                 $c->query('ServerContainer')->getConfig(),
                 $c->query('AppName'),
-                \OCP\User::getUser()
+                $c->query('OwncloudUser')
             );
         });
         $container->registerService('ChartConfigService', function($c) {
