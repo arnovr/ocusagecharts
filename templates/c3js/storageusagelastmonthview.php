@@ -1,5 +1,5 @@
 <?php
-$url =\OCP\Util::linkToRoute('ocusagecharts.chart_api.load_chart', array('id' => $_['chart']->getConfig()->getId(), 'requesttoken' => $_['requesttoken']));
+$url =\OCP\Util::linkToRoute('ocusagecharts.chart_api.preflighted_cors', array('id' => $_['chart']->getConfig()->getId(), 'requesttoken' => $_['requesttoken']));
 echo '
 <div style="height: 50px;"></div>
 <h1>';

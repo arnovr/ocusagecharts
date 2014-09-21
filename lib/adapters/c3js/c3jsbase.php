@@ -49,9 +49,9 @@ abstract class c3jsBase
      */
     public function loadFrontend()
     {
-        \OCP\Util::addStyle('ocusagecharts', 'c3js/c3');
+        \OCP\Util::addStyle('ocusagecharts', 'c3/c3');
         \OCP\Util::addScript('ocusagecharts', 'd3/d3.min');
-        \OCP\Util::addScript('ocusagecharts', 'c3js/c3.min');
+        \OCP\Util::addScript('ocusagecharts', 'c3/c3.min');
         \OCP\Util::addScript('ocusagecharts', 'c3_initGraphs');
     }
 
