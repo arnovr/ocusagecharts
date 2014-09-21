@@ -59,13 +59,13 @@ class ChartTypeAdapterFactory
     {
         switch($config->getChartType())
         {
-            case 'StorageUsageCurrentAdapter':
+            case 'StorageUsageCurrent':
                 return $this->getStorageUsageCurrentAdapter($config->getChartProvider(), $config);
                 break;
-            case 'StorageUsageLastMonthAdapter':
+            case 'StorageUsageLastMonth':
                 return $this->getStorageUsageLastMonthAdapter($config->getChartProvider(), $config);
                 break;
-            case 'StorageUsagePerMonthAdapter':
+            case 'StorageUsagePerMonth':
                 return $this->getStorageUsagePerMonthAdapter($config->getChartProvider(), $config);
                 break;
             default:

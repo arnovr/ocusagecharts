@@ -73,13 +73,13 @@ class DataProviderFactory
     {
         switch($config->getChartType())
         {
-            case 'StorageUsageCurrentAdapter':
+            case 'StorageUsageCurrent':
                 return new StorageUsageCurrentProvider($config, $this->repository, $this->user, $this->storage);
                 break;
-            case 'StorageUsageLastMonthAdapter':
+            case 'StorageUsageLastMonth':
                 return new StorageUsageLastMonthProvider($config, $this->repository, $this->user, $this->storage);
                 break;
-            case 'StorageUsagePerMonthAdapter':
+            case 'StorageUsagePerMonth':
                 return new StorageUsagePerMonthProvider($config, $this->repository, $this->user, $this->storage);
                 break;
             default:

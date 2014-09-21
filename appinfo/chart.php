@@ -70,7 +70,7 @@ class Chart extends App
             );
         });
 
-        $container->registerService('DataProviderFactory', function() {
+        $container->registerService('DataProviderFactory', function($c) {
             return new DataProviderFactory(
                 $c->query('StorageUsageRepository'),
                 $c->query('OwncloudUser'),
@@ -96,7 +96,7 @@ class Chart extends App
         });
         $container->registerService('AppConfigService', function($c) {
             return new AppConfigService(
-                $c->query('Config'),
+                $c->query('ServerContainer')->getConfig(),
                 $c->query('AppName'),
                 \OCP\User::getUser()
             );
