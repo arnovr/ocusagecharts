@@ -45,20 +45,20 @@ function loadPie(url)
     });
 }
 $( document ).ready(function() {
-    if ($("#defaultChart").length > 0 )
+    if ($(".defaultChart").length > 0 )
     {
         loadGraph(
-            $("#defaultChart").data("url"),
-            $("#defaultChart").data("label"),
-            $("#defaultChart").data("type"),
-            $("#defaultChart").data("format")
+            $(".defaultChart").data("url"),
+            $(".defaultChart").data("label"),
+            $(".defaultChart").data("type"),
+            $(".defaultChart").data("format")
         );
     }
 
-    if ($("#defaultBar").length > 0 )
+    if ($(".defaultBar").length > 0 )
     {
         loadPie(
-            $("#defaultBar").data("url")
+            $(".defaultBar").data("url")
         );
     }
 });

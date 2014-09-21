@@ -46,6 +46,7 @@ class ChartApiController extends ApiController
     public function __construct($appName, IRequest $request, ChartService $chartService)
     {
         $this->chartService = $chartService;
+
         parent::__construct(
             $appName,
             $request,
@@ -58,7 +59,8 @@ class ChartApiController extends ApiController
     /**
      * JSON Ajax call
      *
-     * @CORS
+     * @NoAdminRequired
+     * @NoCSRFRequired
      * @param string $id
      * @return JSONResponse
      */

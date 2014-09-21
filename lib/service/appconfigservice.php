@@ -92,7 +92,7 @@ class AppConfigService
      */
     public function getUserValue($key)
     {
-        return $this->config->getSystemValue($this->username, $this->appName, $key);
+        return $this->config->getUserValue($this->username, $this->appName, $key);
     }
 
     /**
@@ -103,6 +103,6 @@ class AppConfigService
      */
     public function setUserValue($key, $value)
     {
-        $this->config->setSystemValue($this->username, $this->appName, $key, $value);
+        $this->config->setUserValue($this->username, $this->appName, $key, $value);
     }
 }

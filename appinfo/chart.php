@@ -80,7 +80,6 @@ class Chart extends App
 
         $container->registerService('ChartDataProvider', function($c) {
             return new ChartDataProvider(
-                $c,
                 $c->query('DataProviderFactory'),
                 $c->query('ChartTypeAdapterFactory')
             );

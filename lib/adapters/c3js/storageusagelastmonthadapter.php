@@ -50,7 +50,7 @@ class StorageUsageLastMonthAdapter extends c3jsBase
     {
         if ( empty($size) || !in_array($size, $this->allowedSizes) )
         {
-            throw new ChartTypeAdapterException('Size given is not an allowed size');
+            $size = 'gb'; // Don't throw exception, killing the call over this is obsolete
         }
 
         $this->size = $size;
