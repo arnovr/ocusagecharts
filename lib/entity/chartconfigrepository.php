@@ -57,6 +57,8 @@ class ChartConfigRepository extends Mapper
 
     /**
      * Save a chartconfig entity to the database
+     * @TODO make it update and create
+     *
      *
      * @param ChartConfig $config
      */

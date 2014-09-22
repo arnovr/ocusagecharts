@@ -5,8 +5,8 @@ $TRANSLATIONS = array(
     "StorageUsagePerMonth"  => "Uso promedio de disco por mes",
     "StorageUsageCurrent"   => "Uso actual de disco",
     "DefaultChartSize"      => "The charts will be shown in this size",
-    "Kilobytes"             => "Kilobytes",
-    "Megabytes"             => "Megabytes",
-    "Gigabytes"             => "Gigabytes",
-    "Terabytes"             => "Terabytes"
+    "sizes_kb"              => "Kilobytes",
+    "sizes_mb"              => "Megabytes",
+    "sizes_gb"              => "Gigabytes",
+    "sizes_tb"              => "Terabytes"
 );

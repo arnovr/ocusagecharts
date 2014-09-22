@@ -5,8 +5,8 @@ $TRANSLATIONS = array(
     "StorageUsagePerMonth"  => "Gemiddelde data verbruik per maand",
     "StorageUsageCurrent"   => "Huidig data verbruik",
     "DefaultChartSize"      => "De grafieken worden weergegeven in deze grootte",
-    "Kilobytes"             => "Kilobytes",
-    "Megabytes"             => "Megabytes",
-    "Gigabytes"             => "Gigabytes",
-    "Terabytes"             => "Terabytes"
+    "sizes_kb"              => "Kilobytes",
+    "sizes_mb"              => "Megabytes",
+    "sizes_gb"              => "Gigabytes",
+    "sizes_tb"              => "Terabytes"
 );

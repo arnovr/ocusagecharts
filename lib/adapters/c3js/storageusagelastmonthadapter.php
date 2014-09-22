@@ -43,8 +43,7 @@ class StorageUsageLastMonthAdapter extends c3jsBase
 
     /**
      * @param ChartConfig $chartConfig
-     * @param string $size Defaults on gigabytes
-     * @throws ChartTypeAdapterException
+     * @internal param string $size Defaults on gigabytes
      */
     public function __construct(ChartConfig $chartConfig)
     {
