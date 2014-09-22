@@ -24,6 +24,7 @@
 namespace OCA\ocUsageCharts\Service;
 
 use OCA\ocUsageCharts\Exception\ChartConfigServiceException;
+use OCA\ocUsageCharts\Owncloud\User;
 
 class AppConfigServiceTest extends \PHPUnit_Framework_TestCase
 {
@@ -33,22 +34,19 @@ class AppConfigServiceTest extends \PHPUnit_Framework_TestCase
      */
     private $appConfigService;
     private $appName = 'ocusagecharts';
-    private $username = 'test1';
+
+    /**
+     * @var User
+     */
+    private $user;
 
     public function setUp()
     {
         $app = new \OCA\ocUsageCharts\AppInfo\Chart();
         $this->container = $app->getContainer();
         $this->IConfig = $this->getMock('OCP\IConfig');
-        $this->appConfigService = new AppConfigService($this->IConfig, $this->appName, $this->username);
-    }
-
-    /**
-     * @expectedException ChartConfigServiceException
-     */
-    public function testEmptyUsername()
-    {
-        $this->appConfigService = new AppConfigService($this->IConfig, $this->appName, '');
+        $this->user = $this->getMock('OCA\ocUsageCharts\Owncloud\User');
+        $this->appConfigService = new AppConfigService($this->IConfig, $this->appName, $this->user);
     }
 
     public function testGetAppValue()
@@ -67,15 +65,19 @@ class AppConfigServiceTest extends \PHPUnit_Framework_TestCase
 
     public function testGetUserValue()
     {
+        $this->user->method('getSignedInUsername')->willReturn('test1');
+
         $returnValue = 'randomValue';
-        $this->IConfig->method('getSystemValue')->with($this->username, $this->appName, 'key')->willReturn($returnValue);
-        $this->assertEquals($this->appConfigService->getAppValue('key'), $returnValue);
+        $this->IConfig->method('getUserValue')->willReturn($returnValue);
+        $this->assertEquals($this->appConfigService->getUserValue('key'), $returnValue);
     }
 
     public function testSetUserValue()
     {
+        $this->user->method('getSignedInUsername')->willReturn('test1');
+
         $setValue = 'randomValue';
-        $this->IConfig->expects($this->once())->method('setSystemValue')->with($this->username, $this->appName, 'key', $setValue);
-        $this->appConfigService->setAppValue('key', $setValue);
+        $this->IConfig->expects($this->once())->method('setUserValue');
+        $this->appConfigService->setUserValue('key', $setValue);
     }
 }

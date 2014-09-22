@@ -41,8 +41,8 @@ class ChartConfigServiceTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         $this->container->registerService('ChartConfigRepository', function($c) use ($chartConfigRepository) {
-                return $chartConfigRepository;
-            });
+            return $chartConfigRepository;
+        });
 
         $this->user = $this->getMock('\OCA\ocUsageCharts\Owncloud\User');
         $this->configService = new ChartConfigService($this->configRepository, $this->user);
@@ -53,7 +53,7 @@ class ChartConfigServiceTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetChartConfigByIdException()
     {
-        $this->user->expects($this->once())->method('getUsername')->willReturn('test1');
+        $this->user->expects($this->once())->method('getSignedInUsername');
         $this->configRepository->method('findByUsername')->willReturn(array());
         $this->configService->getChartConfigById(1);
     }
@@ -63,7 +63,7 @@ class ChartConfigServiceTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetChartConfigByIdFailedToFindConfig()
     {
-        $this->user->expects($this->once())->method('getUsername')->willReturn('test1');
+        $this->user->expects($this->once())->method('getSignedInUsername')->willReturn('test1');
         $configMock = new \OCA\ocUsageCharts\Entity\ChartConfig(100, new \DateTime(), 'test1', 'StorageUsageCurrent', 'c3js');
         $this->configRepository->method('findByUsername')->willReturn(array($configMock));
         $this->configService->getChartConfigById(1);
@@ -71,7 +71,7 @@ class ChartConfigServiceTest extends \PHPUnit_Framework_TestCase
 
     public function testGetChartConfigByIdFoundConfig()
     {
-        $this->user->expects($this->once())->method('getUsername')->willReturn('test1');
+        $this->user->expects($this->once())->method('getSignedInUsername')->willReturn('test1');
         $configMock = new \OCA\ocUsageCharts\Entity\ChartConfig(100, new \DateTime(), 'test1', 'StorageUsageCurrent', 'c3js');
 
         $this->configRepository->method('findByUsername')->willReturn(array($configMock));

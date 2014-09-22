@@ -27,27 +27,12 @@ use OCA\ocUsageCharts\Adapters as Adapters;
 use OCA\ocUsageCharts\Adapters\ChartTypeAdapterInterface;
 use OCA\ocUsageCharts\Entity\ChartConfig;
 use OCA\ocUsageCharts\Exception\ChartTypeAdapterException;
-use OCA\ocUsageCharts\Service\AppConfigService;
 
 /**
  * @author Arno van Rossum <arno@van-rossum.com>
  */
 class ChartTypeAdapterFactory
 {
-    /**
-     * @var Service\AppConfigService
-     */
-    private $appConfigService;
-
-    /**
-     * Config service is used to pick up what size is defined by the admin
-     * @param AppConfigService $appConfigService
-     */
-    public function __construct(AppConfigService $appConfigService)
-    {
-        $this->appConfigService = $appConfigService;
-    }
-
     /**
      * Return the proper adapter based on the chartconfig given
      *
@@ -101,7 +86,7 @@ class ChartTypeAdapterFactory
         {
             case 'c3js':
             default:
-                $adapter = new Adapters\c3js\StorageUsageLastMonthAdapter($config, $this->appConfigService->getUserValue('size'));
+                $adapter = new Adapters\c3js\StorageUsageLastMonthAdapter($config);
         }
         return $adapter;
     }

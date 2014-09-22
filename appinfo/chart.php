@@ -64,10 +64,8 @@ class Chart extends App
             );
         });
 
-        $container->registerService('ChartTypeAdapterFactory', function($c) {
-            return new ChartTypeAdapterFactory(
-                $c->query('AppConfigService')
-            );
+        $container->registerService('ChartTypeAdapterFactory', function() {
+            return new ChartTypeAdapterFactory();
         });
 
         $container->registerService('DataProviderFactory', function($c) {

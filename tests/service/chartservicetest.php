@@ -58,9 +58,8 @@ class ChartServiceTest extends \PHPUnit_Framework_TestCase
             return $dataProvider;
         });
         $this->username = 'test1';
-        $this->appConfig = $this->getMock('\OCA\ocUsageCharts\Service\AppConfigService');
         $this->configMock = new \OCA\ocUsageCharts\Entity\ChartConfig(100, new \DateTime(), 'test1', 'StorageUsageCurrent', 'c3js');
-        $this->chartService = new ChartService($this->dataProvider, $this->configService, new ChartTypeAdapterFactory($this->appConfig), $this->username);
+        $this->chartService = new ChartService($this->dataProvider, $this->configService, new ChartTypeAdapterFactory(), $this->username);
     }
 
     public function testGetCharts()
@@ -69,7 +68,6 @@ class ChartServiceTest extends \PHPUnit_Framework_TestCase
             $this->configMock,
             new \OCA\ocUsageCharts\Entity\ChartConfig(101, new \DateTime(), 'test1', 'StorageUsageCurrent', 'c3js')
         );
-        $this->appConfig->method('getUserValue')->with('size')->willReturn('gb');
         $this->configService->method('getCharts')->willReturn($configs);
         $charts = $this->chartService->getCharts();
         $this->assertCount(count($configs), $charts);
@@ -80,7 +78,6 @@ class ChartServiceTest extends \PHPUnit_Framework_TestCase
     }
     public function testGetChart()
     {
-        $this->appConfig->method('getUserValue')->with('size')->willReturn('gb');
         $this->configService->method('getChartConfigById')->willReturn($this->configMock);
         $adapter = $this->chartService->getChart($this->configMock->getId());
         $this->assertInstanceOf('OCA\ocUsageCharts\Adapters\ChartTypeAdapterInterface', $adapter);
@@ -88,14 +85,12 @@ class ChartServiceTest extends \PHPUnit_Framework_TestCase
     }
     public function testGetChartByConfig()
     {
-        $this->appConfig->method('getUserValue')->with('size')->willReturn('gb');
         $adapter = $this->chartService->getChartByConfig($this->configMock);
         $this->assertInstanceOf('OCA\ocUsageCharts\Adapters\ChartTypeAdapterInterface', $adapter);
     }
 
     public function testGetChartUsage()
     {
-        $this->appConfig->method('getUserValue')->with('size')->willReturn('gb');
         $return = array('1');
         $this->dataProvider->method('getChartUsage')->with($this->configMock)->willReturn($return);
         $data = $this->chartService->getChartUsage($this->configMock);

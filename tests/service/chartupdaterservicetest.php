@@ -72,10 +72,26 @@ class ChartUpdaterServiceTest extends \PHPUnit_Framework_TestCase
     {
         $users = array('test1', 'test2', 'test3');
         $this->owncloudUser->expects($this->once())->method('getSystemUsers')->willReturn($users);
-
         $this->configService->expects($this->exactly(count($users)))->method('getChartsByUsername')->willReturn(array($this->configMock));
+        $this->dataProvider->expects($this->exactly(count($users)))->method('isAllowedToUpdate')->willReturn(true);
         $this->dataProvider->expects($this->exactly(count($users)))->method('getChartUsageForUpdate')->willReturn(array('bogusdata'));
         $this->dataProvider->expects($this->exactly(count($users)))->method('save')->with($this->configMock, array('bogusdata'));
+
+        $this->chartUpdaterService->updateChartsForUsers();
+
+        // Nothing to assert... Just for sake of it...
+        $this->assertTrue(true);
+    }
+
+    /**
+     * No asserts, but do check on what calls to expect
+     */
+    public function testNotUpdatingChart()
+    {
+        $users = array('test1', 'test2', 'test3');
+        $this->owncloudUser->expects($this->once())->method('getSystemUsers')->willReturn($users);
+        $this->configService->expects($this->exactly(count($users)))->method('getChartsByUsername')->willReturn(array($this->configMock));
+        $this->dataProvider->expects($this->exactly(count($users)))->method('isAllowedToUpdate')->willReturn(false);
 
         $this->chartUpdaterService->updateChartsForUsers();
 
