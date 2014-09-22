@@ -23,24 +23,16 @@
 
 namespace OCA\ocUsageCharts\Service;
 
-use OC\AppFramework\DependencyInjection\DIContainer;
 use OCA\ocUsageCharts\Adapters\ChartTypeAdapterInterface;
 use OCA\ocUsageCharts\ChartTypeAdapterFactory;
 use OCA\ocUsageCharts\DataProviderFactory;
 use OCA\ocUsageCharts\Entity\ChartConfig;
-use OCA\ocUsageCharts\DataProviders\DataProviderInterface;
 
 /**
  * @author Arno van Rossum <arno@van-rossum.com>
  */
 class ChartDataProvider
 {
-    /**
-     * DiContainer is used for dataproviders to grep their repository needed
-     * @var DIContainer
-     */
-    private $container;
-
     /**
      * @var DataProviderFactory
      */
@@ -51,35 +43,26 @@ class ChartDataProvider
      */
     private $chartTypeAdapterFactory;
 
-    public function __construct(DIContainer $container, DataProviderFactory $dataProviderFactory, ChartTypeAdapterFactory $chartTypeAdapterFactory)
+    /**
+     * @param DataProviderFactory $dataProviderFactory
+     * @param ChartTypeAdapterFactory $chartTypeAdapterFactory
+     */
+    public function __construct(DataProviderFactory $dataProviderFactory, ChartTypeAdapterFactory $chartTypeAdapterFactory)
     {
-        $this->container = $container;
         $this->dataProviderFactory = $dataProviderFactory;
         $this->chartTypeAdapterFactory = $chartTypeAdapterFactory;
     }
-    /**
-     * @param ChartConfig $config
-     * @return DataProviderInterface
-     *
-     * @throws \OCA\ocUsageCharts\Exception\ChartDataProviderException
-     */
-    private function getDataProviderByConfig(ChartConfig $config)
-    {
-        return $this->dataProviderFactory->getDataProviderByConfig($this->container, $config);
-    }
 
     /**
-     * This returns the data adapter for a specific provider
-     * This is use full when you want to implement alternatives for the current
-     * chart providers
+     * Get the current usage for a chart given
      *
-     * @param ChartConfig $config
-     * @return ChartTypeAdapterInterface
-     * @throws \OCA\ocUsageCharts\Exception\ChartTypeAdapterException
+     * @param ChartConfig $chartConfig
+     * @return mixed
      */
-    private function getProviderAdapterByConfig(ChartConfig $config)
+    public function isAllowedToUpdate(ChartConfig $chartConfig)
     {
-        return $this->chartTypeAdapterFactory->getChartTypeAdapterByConfig($config);
+        $provider = $this->dataProviderFactory->getDataProviderByConfig($chartConfig);
+        return $provider->isAllowedToUpdate();
     }
 
     /**
@@ -90,7 +73,7 @@ class ChartDataProvider
      */
     public function getChartUsageForUpdate(ChartConfig $chartConfig)
     {
-        $provider = $this->getDataProviderByConfig($chartConfig);
+        $provider = $this->dataProviderFactory->getDataProviderByConfig($chartConfig);
         return $provider->getChartUsageForUpdate();
     }
 
@@ -103,7 +86,7 @@ class ChartDataProvider
      */
     public function save(ChartConfig $chartConfig, $usage)
     {
-        $provider = $this->getDataProviderByConfig($chartConfig);
+        $provider = $this->dataProviderFactory->getDataProviderByConfig($chartConfig);
         return $provider->save($usage);
     }
 
@@ -111,14 +94,14 @@ class ChartDataProvider
      * This method returns all usage for a chart based on the chartconfig given
      *
      * @param ChartConfig $chartConfig
-     * @return \OCA\ocUsageCharts\Adapters\ChartTypeAdapterInterface
+     * @return ChartTypeAdapterInterface
      */
     public function getChartUsage(ChartConfig $chartConfig)
     {
-        $provider = $this->getDataProviderByConfig($chartConfig);
+        $provider = $this->dataProviderFactory->getDataProviderByConfig($chartConfig);
         $data = $provider->getChartUsage();
 
-        $adapter = $this->getProviderAdapterByConfig($chartConfig);
+        $adapter = $this->chartTypeAdapterFactory->getChartTypeAdapterByConfig($chartConfig);
         return $adapter->formatData($data);
     }
 }

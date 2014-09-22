@@ -35,7 +35,7 @@ class ChartServiceTest extends \PHPUnit_Framework_TestCase
      */
     private $chartService;
     private $configMock;
-
+    private $appConfig;
     private $username;
 
     public function setUp()

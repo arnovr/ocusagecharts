@@ -1,0 +1,8 @@
+{
+  "name": "ocusagecharts",
+  "version": "0.2",
+  "dependencies": {
+    "c3": "https://github.com/masayuki0812/c3.git"
+  },
+  "private": true
+}

@@ -34,6 +34,7 @@ class ChartUpdaterServiceTest extends \PHPUnit_Framework_TestCase
      */
     private $chartUpdaterService;
     private $configMock;
+    private $owncloudUser;
 
 
     public function setUp()
@@ -55,20 +56,42 @@ class ChartUpdaterServiceTest extends \PHPUnit_Framework_TestCase
         $this->container->registerService('ChartDataProvider', function($c) use ($dataProvider) {
                 return $dataProvider;
             });
+        $owncloudUser = $this->owncloudUser = $this->getMock('\OCA\ocUsageCharts\Owncloud\User');
+        $this->container->registerService('OwncloudUser', function($c) use ($owncloudUser) {
+            return $owncloudUser;
+        });
+
         $this->configMock = new \OCA\ocUsageCharts\Entity\ChartConfig(100, new \DateTime(), 'test1', 'StorageUsageCurrent', 'c3js');
-        $this->chartUpdaterService = new ChartUpdaterService($this->dataProvider, $this->configService);
+        $this->chartUpdaterService = new ChartUpdaterService($this->dataProvider, $this->configService, $this->owncloudUser);
     }
 
     /**
      * No asserts, but do check on what calls to expect
-     * @TODO Fix the \OC_User dependency ( also in chartupdaterservice )
      */
     public function testUpdateChart()
     {
-        $users = \OC_User::getUsers();
+        $users = array('test1', 'test2', 'test3');
+        $this->owncloudUser->expects($this->once())->method('getSystemUsers')->willReturn($users);
         $this->configService->expects($this->exactly(count($users)))->method('getChartsByUsername')->willReturn(array($this->configMock));
+        $this->dataProvider->expects($this->exactly(count($users)))->method('isAllowedToUpdate')->willReturn(true);
         $this->dataProvider->expects($this->exactly(count($users)))->method('getChartUsageForUpdate')->willReturn(array('bogusdata'));
         $this->dataProvider->expects($this->exactly(count($users)))->method('save')->with($this->configMock, array('bogusdata'));
+
+        $this->chartUpdaterService->updateChartsForUsers();
+
+        // Nothing to assert... Just for sake of it...
+        $this->assertTrue(true);
+    }
+
+    /**
+     * No asserts, but do check on what calls to expect
+     */
+    public function testNotUpdatingChart()
+    {
+        $users = array('test1', 'test2', 'test3');
+        $this->owncloudUser->expects($this->once())->method('getSystemUsers')->willReturn($users);
+        $this->configService->expects($this->exactly(count($users)))->method('getChartsByUsername')->willReturn(array($this->configMock));
+        $this->dataProvider->expects($this->exactly(count($users)))->method('isAllowedToUpdate')->willReturn(false);
 
         $this->chartUpdaterService->updateChartsForUsers();
 

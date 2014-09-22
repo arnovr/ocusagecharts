@@ -21,30 +21,25 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\DataProviders;
+use OCA\ocUsageCharts\AppInfo\Chart;
 
-/**
- * @author Arno van Rossum <arno@van-rossum.com>
- */
-class StorageUsageLastMonthProvider extends StorageUsageBase implements DataProviderInterface
+
+\OCP\Util::addSCript('ocusagecharts', 'personal');
+
+$l = \OCP\Util::getL10N('ocusagecharts');
+
+$app = new Chart();
+$container = $app->getContainer();
+$chartService = $container->query('ChartService');
+$chartConfigs = $chartService->getCharts();
+if ( count($chartConfigs) == 0 )
 {
-    /**
-     * Return the chart data you want to return based on the ChartConfig
-     *
-     * @return mixed
-     */
-    public function getChartUsage()
-    {
-        $created = new \DateTime("-1 month");
-        if ( $this->isAdminUser() )
-        {
-            $data = $this->repository->findAllAfterCreated($created);
-        }
-        else
-        {
-            $data = $this->repository->findAfterCreated($this->chartConfig->getUsername(), $created);
-            $data = array($this->chartConfig->getUsername() => $data);
-        }
-        return $data;
-    }
+    $chartConfigService = $container->query('ChartConfigService');
+    $chartConfigService->createDefaultConfig();
+    $chartConfigs = $chartService->getCharts();
 }
+
+$template = new \OCP\Template('ocusagecharts', 'personal');
+$template->assign('charts', $chartConfigs);
+
+return $template->fetchPage();

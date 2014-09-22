@@ -1,0 +1,7 @@
+- Removed kb / mb / gb toggle, should configure within personal page
+- https://github.com/arnovr/ocusagecharts/issues/17
+- https://github.com/arnovr/ocusagecharts/issues/12
+- https://github.com/arnovr/ocusagecharts/issues/30
+- Refactored a bit off owncloud dependency stuff, lots still todo
+
+TODO Change label Gigabyte to whatever is selected!!!

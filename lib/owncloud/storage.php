@@ -21,54 +21,32 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\Controller;
-use OCA\ocUsageCharts\Service\ChartService;
-use OCP\AppFramework\ApiController;
-use OCP\AppFramework\Http\JSONResponse;
-use OCP\IRequest;
+namespace OCA\ocUsageCharts\Owncloud;
 
-/**
- * @author Arno van Rossum <arno@van-rossum.com>
- */
-class ChartApiController extends ApiController
+class Storage
 {
     /**
-     * @var ChartService
+     * Retrieve storage usage username
+     *
+     * This method exists, because after vigorous trying, owncloud does not supply a proper way
+     * to check somebody's used size
+     *
+     * @param string $userName
+     * @return integer
      */
-    private $chartService;
-
-
-    /**
-     * @param string $appName
-     * @param IRequest $request
-     * @param ChartService $chartService
-     */
-    public function __construct($appName, IRequest $request, ChartService $chartService)
+    public function getStorageUsage($userName)
     {
-        $this->chartService = $chartService;
-
-        parent::__construct(
-            $appName,
-            $request,
-            'GET',
-            'Authorization, Content-Type, Accept',
-            1728000
-        );
+        $data = new \OC\Files\Storage\Home(array('user' => \OC_User::getManager()->get($userName)));
+        return $data->getCache('files')->calculateFolderSize('files');
     }
 
     /**
-     * JSON Ajax call
+     * Retrieve the current storage usage for the user that is signedin
      *
-     * @NoAdminRequired
-     * @NoCSRFRequired
-     * @param string $id
-     * @return JSONResponse
+     * @return array ( array('free' => bytes, 'used' => bytes) )
      */
-    public function loadChart($id)
+    public function getCurrentStorageUsageForSignedInUser()
     {
-        $chart = $this->chartService->getChart($id);
-        $usage = $this->chartService->getChartUsage($chart->getConfig());
-        $response = new JSONResponse($usage);
-        return $response;
+        return \OC_Helper::getStorageInfo('/');
     }
 }

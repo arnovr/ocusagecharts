@@ -21,45 +21,36 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\DataProviders;
+namespace OCA\ocUsageCharts\Owncloud;
 
-/**
- * @author Arno van Rossum <arno@van-rossum.com>
- */
-class StorageUsageCurrentProvider extends StorageUsageBase implements DataProviderInterface
+class User
 {
     /**
-     * Return the chart data you want to return based on the ChartConfig
-     *
-     * @return mixed
+     * @return string
      */
-    public function getChartUsage()
+    public function getSignedInUsername()
     {
-        $new = array();
-        $storageInfo = \OC_Helper::getStorageInfo('/');
-        $free = ceil($storageInfo['free'] / 1024 / 1024);
-        if ( $this->isAdminUser() )
-        {
-            $data = $this->repository->findAllWithLimit(1);
-            foreach($data as $username => $items)
-            {
-                foreach($items as $item)
-                {
-                    $new[$username] = ceil($item->getUsage() / 1024 / 1024);
-                }
-            }
-            $new['free'] = $free;
-            $data = $new;
-        }
-        else
-        {
-            $free = ceil($storageInfo['free'] / 1024 / 1024);
-            $used = ceil($storageInfo['used'] / 1024 / 1024);
-            $data = array(
-                'used' => $used,
-                'free' => $free
-            );
-        }
-        return $data;
+        return \OCP\User::getUser();
+    }
+
+    /**
+     * Check if username given is admin
+     *
+     * @param string $username
+     * @return boolean
+     */
+    public function isAdminUser($username)
+    {
+        return \OC_User::isAdminUser($username);
+    }
+
+    /**
+     * Return all users from the current system
+     *
+     * @return array
+     */
+    public function getSystemUsers()
+    {
+        return \OC_User::getUsers();
     }
 }

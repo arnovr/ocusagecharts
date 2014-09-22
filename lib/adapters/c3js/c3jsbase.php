@@ -29,7 +29,7 @@ use OCA\ocUsageCharts\Entity\ChartConfig;
 /**
  * @author Arno van Rossum <arno@van-rossum.com>
  */
-class c3jsBase
+abstract class c3jsBase
 {
     /**
      * @var ChartConfig
@@ -49,10 +49,10 @@ class c3jsBase
      */
     public function loadFrontend()
     {
-        \OCP\Util::addStyle('ocusagecharts', 'c3js/c3');
-        \OCP\Util::addScript('ocusagecharts', 'c3js/d3.min');
-        \OCP\Util::addScript('ocusagecharts', 'c3js/c3.min');
-        \OCP\Util::addScript('ocusagecharts', 'c3js/initGraphs');
+        \OCP\Util::addStyle('ocusagecharts', 'c3/c3');
+        \OCP\Util::addScript('ocusagecharts', 'd3/d3.min');
+        \OCP\Util::addScript('ocusagecharts', 'c3/c3.min');
+        \OCP\Util::addScript('ocusagecharts', 'c3_initGraphs');
     }
 
     public function getConfig()

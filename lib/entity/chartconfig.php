@@ -54,19 +54,26 @@ class ChartConfig
     private $chartProvider;
 
     /**
+     * @var string
+     */
+    private $metaData;
+
+    /**
      * @param integer $id
      * @param \DateTime $date
      * @param string $username
      * @param string $chartType
      * @param string $chartProvider
+     * @param string $metaData
      */
-    public function __construct($id, \DateTime $date, $username, $chartType, $chartProvider = 'c3js')
+    public function __construct($id, \DateTime $date, $username, $chartType, $chartProvider = 'c3js', $metaData = '')
     {
         $this->id = $id;
         $this->date = $date;
         $this->username = $username;
         $this->chartType = $chartType;
         $this->chartProvider = $chartProvider;
+        $this->metaData = $metaData;
     }
 
     /**
@@ -110,12 +117,30 @@ class ChartConfig
     }
 
     /**
+     * Metadata is possible to save externally
+     *
+     * @param string $data 255 chars max
+     */
+    public function setMetaData($data)
+    {
+        $this->metaData = $data;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMetaData()
+    {
+        return $this->metaData;
+    }
+
+    /**
      * @param array $row
      * @return ChartConfig
      */
     public static function fromRow($row)
     {
-        return new ChartConfig($row['id'], new \Datetime($row['created']), $row['username'], $row['charttype'], $row['chartprovider']);
+        return new ChartConfig($row['id'], new \Datetime($row['created']), $row['username'], $row['charttype'], $row['chartprovider'], $row['metadata']);
     }
 
 }

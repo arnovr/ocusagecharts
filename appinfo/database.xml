@@ -60,16 +60,21 @@
             </field>
             <field>
                 <name>charttype</name>
-                <type>string</type>
+                <type>text</type>
                 <notnull>true</notnull>
                 <length>255</length>
             </field>
             <field>
                 <name>chartprovider</name>
-                <type>string</type>
+                <type>text</type>
                 <notnull>true</notnull>
                 <length>255</length>
                 <default>c3js</default>
+            </field>
+            <field>
+                <name>metadata</name>
+                <type>text</type>
+                <notnull>false</notnull>
             </field>
         </declaration>
     </table>

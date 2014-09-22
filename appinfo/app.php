@@ -23,6 +23,7 @@
 
 OCP\App::checkAppEnabled('ocusagecharts');
 OCP\App::setActiveNavigationEntry('ocusagecharts');
+OCP\App::registerPersonal('ocusagecharts', 'personal');
 OCP\App::addNavigationEntry(Array(
     'id'	=> 'ocusagecharts',
     'order'	=> 60,
@@ -30,7 +31,6 @@ OCP\App::addNavigationEntry(Array(
     'icon'	=> OCP\Util::imagePath('ocusagecharts', 'iconchart.png'),
     'name'	=> \OC_L10N::get('ocusagecharts')->t('ocUsageCharts')
 ));
-
 
 \OCP\Util::addStyle('ocusagecharts', 'style');
 

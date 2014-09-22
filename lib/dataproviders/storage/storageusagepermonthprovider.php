@@ -21,54 +21,30 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\Controller;
-use OCA\ocUsageCharts\Service\ChartService;
-use OCP\AppFramework\ApiController;
-use OCP\AppFramework\Http\JSONResponse;
-use OCP\IRequest;
+namespace OCA\ocUsageCharts\DataProviders\Storage;
+
+use OCA\ocUsageCharts\DataProviders\DataProviderInterface;
 
 /**
  * @author Arno van Rossum <arno@van-rossum.com>
  */
-class ChartApiController extends ApiController
+class StorageUsagePerMonthProvider extends StorageUsageBase implements DataProviderInterface, DataProviderStorageInterface
 {
     /**
-     * @var ChartService
-     */
-    private $chartService;
-
-
-    /**
-     * @param string $appName
-     * @param IRequest $request
-     * @param ChartService $chartService
-     */
-    public function __construct($appName, IRequest $request, ChartService $chartService)
-    {
-        $this->chartService = $chartService;
-
-        parent::__construct(
-            $appName,
-            $request,
-            'GET',
-            'Authorization, Content-Type, Accept',
-            1728000
-        );
-    }
-
-    /**
-     * JSON Ajax call
+     * Return the chart data you want to return based on the ChartConfig
      *
-     * @NoAdminRequired
-     * @NoCSRFRequired
-     * @param string $id
-     * @return JSONResponse
+     * @return mixed
      */
-    public function loadChart($id)
+    public function getChartUsage()
     {
-        $chart = $this->chartService->getChart($id);
-        $usage = $this->chartService->getChartUsage($chart->getConfig());
-        $response = new JSONResponse($usage);
-        return $response;
+        if ( $this->user->isAdminUser($this->user->getSignedInUsername()) )
+        {
+            $data = $this->repository->findAllPerMonth();
+        }
+        else
+        {
+            $data = $this->repository->findAllPerMonth($this->chartConfig->getUsername());
+        }
+        return $data;
     }
 }

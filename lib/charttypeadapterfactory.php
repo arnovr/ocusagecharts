@@ -23,9 +23,7 @@
 
 namespace OCA\ocUsageCharts;
 
-use OCA\ocUsageCharts\Adapters\c3js\StorageUsageCurrentAdapter;
-use OCA\ocUsageCharts\Adapters\c3js\StorageUsageLastMonthAdapter;
-use OCA\ocUsageCharts\Adapters\c3js\StorageUsagePerMonthAdapter;
+use OCA\ocUsageCharts\Adapters as Adapters;
 use OCA\ocUsageCharts\Adapters\ChartTypeAdapterInterface;
 use OCA\ocUsageCharts\Entity\ChartConfig;
 use OCA\ocUsageCharts\Exception\ChartTypeAdapterException;
@@ -36,7 +34,7 @@ use OCA\ocUsageCharts\Exception\ChartTypeAdapterException;
 class ChartTypeAdapterFactory
 {
     /**
-     * @TODO, This could be nicer, i should figure out how....
+     * Return the proper adapter based on the chartconfig given
      *
      * @param ChartConfig $config
      * @return ChartTypeAdapterInterface
@@ -44,20 +42,27 @@ class ChartTypeAdapterFactory
      */
     public function getChartTypeAdapterByConfig(ChartConfig $config)
     {
-        $method = 'get' . $config->getChartType() . 'Adapter';
-
-        if ( !method_exists($this, $method) )
+        switch($config->getChartType())
         {
-            throw new ChartTypeAdapterException("ChartType Adapter for " . $config->getChartType() . ' does not exist.');
+            case 'StorageUsageCurrent':
+                $adapter = $this->getStorageUsageCurrentAdapter($config->getChartProvider(), $config);
+                break;
+            case 'StorageUsageLastMonth':
+                $adapter = $this->getStorageUsageLastMonthAdapter($config->getChartProvider(), $config);
+                break;
+            case 'StorageUsagePerMonth':
+                $adapter = $this->getStorageUsagePerMonthAdapter($config->getChartProvider(), $config);
+                break;
+            default:
+                throw new ChartTypeAdapterException("ChartType Adapter for " . $config->getChartType() . ' does not exist.');
         }
-
-        return $this->$method($config->getChartProvider(), $config);
+        return $adapter;
     }
 
     /**
      * @param string $provider
      * @param ChartConfig $config
-     * @return StorageUsageCurrentAdapter
+     * @return Adapters\c3js\StorageUsageCurrentAdapter
      */
     public function getStorageUsageCurrentAdapter($provider, ChartConfig $config)
     {
@@ -65,7 +70,7 @@ class ChartTypeAdapterFactory
         {
             case 'c3js':
             default:
-                $adapter = new StorageUsageCurrentAdapter($config);
+                $adapter = new Adapters\c3js\StorageUsageCurrentAdapter($config);
         }
         return $adapter;
     }
@@ -73,7 +78,7 @@ class ChartTypeAdapterFactory
     /**
      * @param string $provider
      * @param ChartConfig $config
-     * @return StorageUsageLastMonthAdapter
+     * @return Adapters\c3js\StorageUsageLastMonthAdapter
      */
     public function getStorageUsageLastMonthAdapter($provider, ChartConfig $config)
     {
@@ -81,7 +86,7 @@ class ChartTypeAdapterFactory
         {
             case 'c3js':
             default:
-                $adapter = new StorageUsageLastMonthAdapter($config);
+                $adapter = new Adapters\c3js\StorageUsageLastMonthAdapter($config);
         }
         return $adapter;
     }
@@ -89,7 +94,7 @@ class ChartTypeAdapterFactory
     /**
      * @param string $provider
      * @param ChartConfig $config
-     * @return StorageUsagePerMonthAdapter
+     * @return Adapters\c3js\StorageUsagePerMonthAdapter
      */
     public function getStorageUsagePerMonthAdapter($provider, ChartConfig $config)
     {
@@ -97,7 +102,7 @@ class ChartTypeAdapterFactory
         {
             case 'c3js':
             default:
-                $adapter = new StorageUsagePerMonthAdapter($config);
+                $adapter = new Adapters\c3js\StorageUsagePerMonthAdapter($config);
         }
         return $adapter;
     }

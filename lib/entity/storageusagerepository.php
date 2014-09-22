@@ -32,15 +32,9 @@ use \OCP\IDb;
 class StorageUsageRepository extends Mapper
 {
     /**
-     * @var \OCP\IDb
-     */
-    protected $db;
-
-    /**
      * @param IDb $db
      */
     public function __construct(IDb $db) {
-        $this->db = $db;
         parent::__construct($db, 'uc_storageusage', '\OCA\ocUsageCharts\Entity\StorageUsage');
     }
 
@@ -145,13 +139,43 @@ class StorageUsageRepository extends Mapper
     }
 
     /**
+     * Find all storage usages grouped by username and month
+     * When username supplied, only for that user
+     * With a maximum of going back 2 years
+     *
+     * @param string $username
      * @return array
      */
-    public function findAllPerMonth()
+    public function findAllPerMonth($username = '')
     {
-        $sql = 'SELECT DISTINCT CONCAT(MONTH(`created`), \' \', YEAR(`created`)) as month, avg(`usage`) as average, username FROM oc_uc_storageusage WHERE `usage` > 0 GROUP BY username, month';
+        $created = new \DateTime();
+        $created->sub(new \DateInterval('P2Y'));
+
+        // When no username supplied, search for all information
+        $sql = 'SELECT DISTINCT CONCAT(MONTH(`created`), \' \', YEAR(`created`)) as month, avg(`usage`) as average, username FROM oc_uc_storageusage WHERE `usage` > 0 AND created > ? GROUP BY username, month';
+        $params = array();
+
+        // Username is supplied, get results only for that user
+        if ( $username !== '' )
+        {
+            $sql = 'SELECT DISTINCT CONCAT(MONTH(`created`), \' \', YEAR(`created`)) as month, avg(`usage`) as average FROM oc_uc_storageusage WHERE `usage` > 0 AND username = ? AND created > ? GROUP BY month';
+            $params = array($username);
+        }
+        $params[] = $created->format('Y-m-d H:I:s');
         $query = $this->db->prepareQuery($sql);
-        $result = $query->execute();
+        $result = $query->execute($params);
+
+        return $this->parsePerMonthEntities($result);
+    }
+
+    /**
+     * Parse the results from the per month entities found
+     *
+     * @param \OC_DB_StatementWrapper $result
+     * @return array
+     */
+    private function parsePerMonthEntities($result)
+    {
         $entities = array();
         while($row = $result->fetch()){
             if ( !isset($entities[$row['username']]))
@@ -166,8 +190,9 @@ class StorageUsageRepository extends Mapper
                 $entities[$row['username']],
                 array(new StorageUsage($dateTime, $row['average'], $row['username']))
             );
-
         }
+
+
         return $entities;
     }
 }
