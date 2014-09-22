@@ -37,19 +37,25 @@ use OCA\ocUsageCharts\Service\ChartDataProvider;
 use OCA\ocUsageCharts\Service\ChartService;
 use OCA\ocUsageCharts\Service\ChartUpdaterService;
 use \OCP\AppFramework\App;
+use OCP\AppFramework\IAppContainer;
 
 /**
  * @author Arno van Rossum <arno@van-rossum.com>
  */
 class Chart extends App
 {
+    /**
+     * @var IAppContainer
+     */
+    private $container;
+
     public function __construct(array $urlParams = array())
     {
         parent::__construct('ocusagecharts', $urlParams);
+        $this->container = $this->getContainer();
         $this->registerRepositories();
         $this->registerOwncloudDependencies();
-        $this->registerControllers();
-        $this->registerFactories();
+        $this->registerVarious();
         $this->registerServices();
     }
 
@@ -59,11 +65,10 @@ class Chart extends App
      */
     private function registerOwncloudDependencies()
     {
-        $container = $this->getContainer();
-        $container->registerService('OwncloudUser', function() {
+        $this->container->registerService('OwncloudUser', function() {
             return new User();
         });
-        $container->registerService('OwncloudStorage', function() {
+        $this->container->registerService('OwncloudStorage', function() {
             return new Storage();
         });
     }
@@ -74,14 +79,12 @@ class Chart extends App
      */
     private function registerRepositories()
     {
-        $container = $this->getContainer();
-
-        $container->registerService('StorageUsageRepository', function($c) {
+        $this->container->registerService('StorageUsageRepository', function($c) {
             return new StorageUsageRepository(
                 $c->query('ServerContainer')->getDb()
             );
         });
-        $container->registerService('ChartConfigRepository', function($c) {
+        $this->container->registerService('ChartConfigRepository', function($c) {
             return new ChartConfigRepository(
                 $c->query('ServerContainer')->getDb()
             );
@@ -91,10 +94,9 @@ class Chart extends App
     /**
      * @return void
      */
-    private function registerControllers()
+    private function registerVarious()
     {
-        $container = $this->getContainer();
-        $container->registerService('ChartController', function($c) {
+        $this->container->registerService('ChartController', function($c) {
             return new ChartController(
                 $c->query('AppName'),
                 $c->query('Request'),
@@ -102,35 +104,22 @@ class Chart extends App
                 $c->query('ChartConfigService')
             );
         });
-        $container->registerService('ChartApiController', function($c) {
+        $this->container->registerService('ChartApiController', function($c) {
             return new ChartApiController(
                 $c->query('AppName'),
                 $c->query('Request'),
                 $c->query('ChartService')
             );
         });
-    }
 
-    /**
-     * @return void
-     */
-    private function registerFactories()
-    {
-        $container = $this->getContainer();
-        $container->registerService('ChartTypeAdapterFactory', function() {
+        $this->container->registerService('ChartTypeAdapterFactory', function() {
             return new ChartTypeAdapterFactory();
         });
-        $container->registerService('DataProviderFactory', function($c) {
+        $this->container->registerService('DataProviderFactory', function($c) {
             return new DataProviderFactory(
                 $c->query('StorageUsageRepository'),
                 $c->query('OwncloudUser'),
                 $c->query('OwncloudStorage')
-            );
-        });
-        $container->registerService('ChartDataProvider', function($c) {
-            return new ChartDataProvider(
-                $c->query('DataProviderFactory'),
-                $c->query('ChartTypeAdapterFactory')
             );
         });
     }
@@ -141,32 +130,36 @@ class Chart extends App
      */
     private function registerServices()
     {
-        $container = $this->getContainer();
-
-        $container->registerService('ChartUpdaterService', function($c) {
+        $this->container->registerService('ChartUpdaterService', function($c) {
             return new ChartUpdaterService(
                 $c->query('ChartDataProvider'),
                 $c->query('ChartConfigService'),
                 $c->query('OwncloudUser')
             );
         });
-        $container->registerService('AppConfigService', function($c) {
+        $this->container->registerService('AppConfigService', function($c) {
             return new AppConfigService(
                 $c->query('ServerContainer')->getConfig(),
                 $c->query('AppName'),
                 $c->query('OwncloudUser')
             );
         });
-        $container->registerService('ChartConfigService', function($c) {
+        $this->container->registerService('ChartConfigService', function($c) {
             return new ChartConfigService(
                 $c->query('ChartConfigRepository'),
                 $c->query('OwncloudUser')
             );
         });
-        $container->registerService('ChartService', function($c) {
+        $this->container->registerService('ChartService', function($c) {
             return new ChartService(
                 $c->query('ChartDataProvider'),
                 $c->query('ChartConfigService'),
+                $c->query('ChartTypeAdapterFactory')
+            );
+        });
+        $this->container->registerService('ChartDataProvider', function($c) {
+            return new ChartDataProvider(
+                $c->query('DataProviderFactory'),
                 $c->query('ChartTypeAdapterFactory')
             );
         });
