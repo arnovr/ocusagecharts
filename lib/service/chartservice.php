@@ -49,11 +49,6 @@ class ChartService
     private $chartTypeAdapterFactory;
 
     /**
-     * @var string
-     */
-    private $currentUserName;
-
-    /**
      * What providers are already loaded
      * @var array
      */
@@ -63,20 +58,12 @@ class ChartService
      * @param ChartDataProvider $provider
      * @param ChartConfigService $config
      * @param ChartTypeAdapterFactory $chartTypeAdapterFactory
-     * @param string $currentUserName
-     *
-     * @throws ChartServiceException
      */
-    public function __construct(ChartDataProvider $provider, ChartConfigService $config, ChartTypeAdapterFactory $chartTypeAdapterFactory, $currentUserName)
+    public function __construct(ChartDataProvider $provider, ChartConfigService $config, ChartTypeAdapterFactory $chartTypeAdapterFactory)
     {
         $this->provider = $provider;
         $this->config = $config;
-        if ( empty($currentUserName) )
-        {
-            throw new ChartServiceException("Invalid user given");
-        }
         $this->chartTypeAdapterFactory = $chartTypeAdapterFactory;
-        $this->currentUserName = $currentUserName;
     }
 
     /**
