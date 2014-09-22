@@ -74,17 +74,17 @@ class DataProviderFactory
         switch($config->getChartType())
         {
             case 'StorageUsageCurrent':
-                return new StorageUsageCurrentProvider($config, $this->repository, $this->user, $this->storage);
+                $provider = new StorageUsageCurrentProvider($config, $this->repository, $this->user, $this->storage);
                 break;
             case 'StorageUsageLastMonth':
-                return new StorageUsageLastMonthProvider($config, $this->repository, $this->user, $this->storage);
+                $provider = new StorageUsageLastMonthProvider($config, $this->repository, $this->user, $this->storage);
                 break;
             case 'StorageUsagePerMonth':
-                return new StorageUsagePerMonthProvider($config, $this->repository, $this->user, $this->storage);
+                $provider = new StorageUsagePerMonthProvider($config, $this->repository, $this->user, $this->storage);
                 break;
             default:
                 throw new ChartDataProviderException("DataProvider for " . $config->getChartType() . ' does not exist.');
-                break;
         }
+        return $provider;
     }
 }

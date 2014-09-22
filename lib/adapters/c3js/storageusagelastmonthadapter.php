@@ -24,7 +24,6 @@
 namespace OCA\ocUsageCharts\Adapters\c3js;
 
 use OCA\ocUsageCharts\Entity\ChartConfig;
-use OCA\ocUsageCharts\Exception\ChartTypeAdapterException;
 
 /**
  * @author Arno van Rossum <arno@van-rossum.com>

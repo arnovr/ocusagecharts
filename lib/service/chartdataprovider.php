@@ -23,12 +23,10 @@
 
 namespace OCA\ocUsageCharts\Service;
 
-use OC\AppFramework\DependencyInjection\DIContainer;
 use OCA\ocUsageCharts\Adapters\ChartTypeAdapterInterface;
 use OCA\ocUsageCharts\ChartTypeAdapterFactory;
 use OCA\ocUsageCharts\DataProviderFactory;
 use OCA\ocUsageCharts\Entity\ChartConfig;
-use OCA\ocUsageCharts\DataProviders\DataProviderInterface;
 
 /**
  * @author Arno van Rossum <arno@van-rossum.com>
@@ -96,7 +94,7 @@ class ChartDataProvider
      * This method returns all usage for a chart based on the chartconfig given
      *
      * @param ChartConfig $chartConfig
-     * @return \OCA\ocUsageCharts\Adapters\ChartTypeAdapterInterface
+     * @return ChartTypeAdapterInterface
      */
     public function getChartUsage(ChartConfig $chartConfig)
     {

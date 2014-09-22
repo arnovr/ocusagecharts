@@ -135,10 +135,10 @@ class Chart extends App
         /**
          * Owncloud dependencies, cause i don't want them in my code
          */
-        $container->registerService('OwncloudUser', function($c) {
+        $container->registerService('OwncloudUser', function() {
             return new User();
         });
-        $container->registerService('OwncloudStorage', function($c) {
+        $container->registerService('OwncloudStorage', function() {
             return new Storage();
         });
     }

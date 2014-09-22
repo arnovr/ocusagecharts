@@ -45,18 +45,18 @@ class ChartTypeAdapterFactory
         switch($config->getChartType())
         {
             case 'StorageUsageCurrent':
-                return $this->getStorageUsageCurrentAdapter($config->getChartProvider(), $config);
+                $adapter = $this->getStorageUsageCurrentAdapter($config->getChartProvider(), $config);
                 break;
             case 'StorageUsageLastMonth':
-                return $this->getStorageUsageLastMonthAdapter($config->getChartProvider(), $config);
+                $adapter = $this->getStorageUsageLastMonthAdapter($config->getChartProvider(), $config);
                 break;
             case 'StorageUsagePerMonth':
-                return $this->getStorageUsagePerMonthAdapter($config->getChartProvider(), $config);
+                $adapter = $this->getStorageUsagePerMonthAdapter($config->getChartProvider(), $config);
                 break;
             default:
                 throw new ChartTypeAdapterException("ChartType Adapter for " . $config->getChartType() . ' does not exist.');
-                break;
         }
+        return $adapter;
     }
 
     /**

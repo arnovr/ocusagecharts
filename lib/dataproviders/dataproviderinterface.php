@@ -23,6 +23,8 @@
 
 namespace OCA\ocUsageCharts\DataProviders;
 
+use OCA\ocUsageCharts\Entity\StorageUsage;
+
 
 /**
  * @author Arno van Rossum <arno@van-rossum.com>
@@ -50,7 +52,7 @@ interface DataProviderInterface
      * Return a CURRENT usage for a USER,
      * this is used to update the data with
      *
-     * @return mixed
+     * @return StorageUsage
      */
     public function getChartUsageForUpdate();
 
