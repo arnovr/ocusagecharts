@@ -46,10 +46,33 @@ class Chart extends App
     public function __construct(array $urlParams = array())
     {
         parent::__construct('ocusagecharts', $urlParams);
+        $this->registerRepositories();
+        $this->registerOwncloudDependencies();
+        $this->registerControllers();
+        $this->registerFactories();
         $this->registerServices();
     }
 
-    private function registerServices()
+    /**
+     * Owncloud dependencies, cause i don't want them in my code
+     * @return void
+     */
+    private function registerOwncloudDependencies()
+    {
+        $container = $this->getContainer();
+        $container->registerService('OwncloudUser', function() {
+            return new User();
+        });
+        $container->registerService('OwncloudStorage', function() {
+            return new Storage();
+        });
+    }
+
+    /**
+     * Register all repositories
+     * @return void
+     */
+    private function registerRepositories()
     {
         $container = $this->getContainer();
 
@@ -63,6 +86,37 @@ class Chart extends App
                 $c->query('ServerContainer')->getDb()
             );
         });
+    }
+
+    /**
+     * @return void
+     */
+    private function registerControllers()
+    {
+        $container = $this->getContainer();
+        $container->registerService('ChartController', function($c) {
+            return new ChartController(
+                $c->query('AppName'),
+                $c->query('Request'),
+                $c->query('ChartService'),
+                $c->query('ChartConfigService')
+            );
+        });
+        $container->registerService('ChartApiController', function($c) {
+            return new ChartApiController(
+                $c->query('AppName'),
+                $c->query('Request'),
+                $c->query('ChartService')
+            );
+        });
+    }
+
+    /**
+     * @return void
+     */
+    private function registerFactories()
+    {
+        $container = $this->getContainer();
 
         $container->registerService('ChartTypeAdapterFactory', function() {
             return new ChartTypeAdapterFactory();
@@ -82,7 +136,15 @@ class Chart extends App
                 $c->query('ChartTypeAdapterFactory')
             );
         });
+    }
 
+    /**
+     * Register all services
+     * @return void
+     */
+    private function registerServices()
+    {
+        $container = $this->getContainer();
 
         $container->registerService('ChartUpdaterService', function($c) {
             return new ChartUpdaterService(
@@ -105,41 +167,12 @@ class Chart extends App
             );
         });
         $container->registerService('ChartService', function($c) {
-                return new ChartService(
-                    $c->query('ChartDataProvider'),
-                    $c->query('ChartConfigService'),
-                    $c->query('ChartTypeAdapterFactory'),
-                    \OCP\User::getUser()
-                );
-            });
-
-        /**
-         * Controllers
-         */
-        $container->registerService('ChartController', function($c) {
-            return new ChartController(
-                $c->query('AppName'),
-                $c->query('Request'),
-                $c->query('ChartService'),
-                $c->query('ChartConfigService')
+            return new ChartService(
+                $c->query('ChartDataProvider'),
+                $c->query('ChartConfigService'),
+                $c->query('ChartTypeAdapterFactory'),
+                \OCP\User::getUser()
             );
-        });
-        $container->registerService('ChartApiController', function($c) {
-            return new ChartApiController(
-                $c->query('AppName'),
-                $c->query('Request'),
-                $c->query('ChartService')
-            );
-        });
-
-        /**
-         * Owncloud dependencies, cause i don't want them in my code
-         */
-        $container->registerService('OwncloudUser', function() {
-            return new User();
-        });
-        $container->registerService('OwncloudStorage', function() {
-            return new Storage();
         });
     }
 }
