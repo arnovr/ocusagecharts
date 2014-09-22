@@ -58,8 +58,6 @@ class ChartService
      * @param ChartDataProvider $provider
      * @param ChartConfigService $config
      * @param ChartTypeAdapterFactory $chartTypeAdapterFactory
-     *
-     * @throws ChartServiceException
      */
     public function __construct(ChartDataProvider $provider, ChartConfigService $config, ChartTypeAdapterFactory $chartTypeAdapterFactory)
     {

@@ -117,11 +117,9 @@ class Chart extends App
     private function registerFactories()
     {
         $container = $this->getContainer();
-
         $container->registerService('ChartTypeAdapterFactory', function() {
             return new ChartTypeAdapterFactory();
         });
-
         $container->registerService('DataProviderFactory', function($c) {
             return new DataProviderFactory(
                 $c->query('StorageUsageRepository'),
@@ -129,7 +127,6 @@ class Chart extends App
                 $c->query('OwncloudStorage')
             );
         });
-
         $container->registerService('ChartDataProvider', function($c) {
             return new ChartDataProvider(
                 $c->query('DataProviderFactory'),
@@ -170,8 +167,7 @@ class Chart extends App
             return new ChartService(
                 $c->query('ChartDataProvider'),
                 $c->query('ChartConfigService'),
-                $c->query('ChartTypeAdapterFactory'),
-                \OCP\User::getUser()
+                $c->query('ChartTypeAdapterFactory')
             );
         });
     }
