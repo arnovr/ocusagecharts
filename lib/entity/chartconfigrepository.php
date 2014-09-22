@@ -62,7 +62,16 @@ class ChartConfigRepository extends Mapper
      */
     public function save(ChartConfig $config)
     {
-        $query = $this->db->prepareQuery('INSERT INTO oc_uc_chartconfig(created, username, charttype, chartprovider) VALUES (?,?,?,?)');
-        $query->execute(Array($config->getDate()->format('Y-m-d H:i:s'), $config->getUsername(), $config->getChartType(), $config->getChartProvider()));
+        $id = $config->getId();
+        if ( !empty($id) )
+        {
+            $query = $this->db->prepareQuery('UPDATE oc_uc_chartconfig SET created = ?, username = ?, charttype = ?, chartprovider = ?, metadata = ? WHERE id = ?');
+            $query->execute(Array($config->getDate()->format('Y-m-d H:i:s'), $config->getUsername(), $config->getChartType(), $config->getChartProvider(), $config->getMetaData(), $config->getId()));
+        }
+        else
+        {
+            $query = $this->db->prepareQuery('INSERT INTO oc_uc_chartconfig(created, username, charttype, chartprovider, metadata) VALUES (?,?,?,?,?)');
+            $query->execute(Array($config->getDate()->format('Y-m-d H:i:s'), $config->getUsername(), $config->getChartType(), $config->getChartProvider(), $config->getMetaData()));
+        }
     }
 }

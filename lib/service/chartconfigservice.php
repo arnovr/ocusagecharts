@@ -104,7 +104,8 @@ class ChartConfigService
             new \DateTime(),
             $this->user->getSignedInUsername(),
             'StorageUsageCurrent',
-            'c3js'
+            'c3js',
+            json_encode(array('size' => 'gb'))
         );
         $this->repository->save($config);
 
@@ -113,7 +114,8 @@ class ChartConfigService
             new \DateTime(),
             $this->user->getSignedInUsername(),
             'StorageUsageLastMonth',
-            'c3js'
+            'c3js',
+            json_encode(array('size' => 'gb'))
         );
         $this->repository->save($config);
 
@@ -122,8 +124,17 @@ class ChartConfigService
             new \DateTime(),
             $this->user->getSignedInUsername(),
             'StorageUsagePerMonth',
-            'c3js'
+            'c3js',
+            json_encode(array('size' => 'gb'))
         );
+        $this->repository->save($config);
+    }
+
+    /**
+     * @param ChartConfig $config
+     */
+    public function save(ChartConfig $config)
+    {
         $this->repository->save($config);
     }
 }

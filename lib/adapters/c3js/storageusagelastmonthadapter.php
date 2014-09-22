@@ -46,8 +46,13 @@ class StorageUsageLastMonthAdapter extends c3jsBase
      * @param string $size Defaults on gigabytes
      * @throws ChartTypeAdapterException
      */
-    public function __construct(ChartConfig $chartConfig, $size = 'gb')
+    public function __construct(ChartConfig $chartConfig)
     {
+        $metaData = json_decode($chartConfig->getMetaData());
+        if ( !empty($metaData) )
+        {
+            $size = $metaData->size;
+        }
         if ( empty($size) || !in_array($size, $this->allowedSizes) )
         {
             $size = 'gb'; // Don't throw exception, killing the call over this is obsolete
