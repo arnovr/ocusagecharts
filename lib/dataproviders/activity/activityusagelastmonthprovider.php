@@ -24,7 +24,8 @@
 namespace OCA\ocUsageCharts\DataProviders\Activity;
 
 use OCA\ocUsageCharts\DataProviders\DataProviderInterface;
-use OCA\ocUsageCharts\Entity\ActivityUsageRepository;
+use OCA\ocUsageCharts\Entity\Activity\ActivityDayCollection;
+use OCA\ocUsageCharts\Entity\Activity\ActivityUsageRepository;
 use OCA\ocUsageCharts\Entity\ChartConfig;
 use OCA\ocUsageCharts\Owncloud\User;
 
@@ -33,7 +34,6 @@ use OCA\ocUsageCharts\Owncloud\User;
  */
 class ActivityUsageLastMonthProvider implements DataProviderInterface
 {
-
     /**
      * @var ChartConfig
      */
@@ -64,13 +64,24 @@ class ActivityUsageLastMonthProvider implements DataProviderInterface
     /**
      * Return the chart data you want to return based on the ChartConfig
      *
-     * @return mixed
+     * @return array
      */
     public function getChartUsage()
     {
-        $created = new \DateTime();
-        $created->sub(new \DateInterval('P1M'));
-        return $this->repository->findAfterCreated($this->user->getSignedInUsername(), $created);
+        $created = new \DateTime("-1 month");
+        $username = $this->chartConfig->getUsername();
+        if ( $this->user->isAdminUser($this->user->getSignedInUsername()) )
+        {
+            $username = '';
+        }
+
+        $data = $this->repository->findAfterCreated($created, $username);
+        $collection = new ActivityDayCollection();
+        foreach($data as $activityUsage)
+        {
+            $collection->add($activityUsage);
+        }
+        return array($username => $collection);
     }
 
     /**

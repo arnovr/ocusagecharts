@@ -20,33 +20,53 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-namespace OCA\ocUsageCharts\Entity;
 
-use OCP\IDb;
+namespace OCA\ocUsageCharts\Entity\Activity;
 
-class ActivityUsageRepository
-{
+/**
+ * @author Arno van Rossum <arno@van-rossum.com>
+ */
+class ActivityUsage {
+    /**
+     * @var \DateTime
+     */
+    private $date;
 
     /**
-     * @var \OCP\IDb
+     * @var string
      */
-    protected $db;
+    private $subject;
 
     /**
-     * @param IDb $db
+     * @var string
      */
-    public function __construct(IDb $db) {
-        $this->db = $db;
+    private $username;
+
+    /**
+     * @param \DateTime $date
+     * @param string $subject
+     * @param string $username
+     */
+    public function __construct(\DateTime $date, $subject, $username)
+    {
+        $this->date = $date;
+        $this->subject = $subject;
+        $this->username = $username;
     }
 
     /**
-     * @param string $userName
-     * @param \DateTime $created
-     * @return array
+     * @return \DateTime
      */
-    public function findAfterCreated($userName, \DateTime $created) {
-        $sql = 'SELECT * FROM `oc_uc_storageusage` WHERE `username` = ? AND `created` > ? ORDER BY created DESC';
-        //return $this->findEntities($sql, array($userName, $created->format('Y-m-d H:i:s')));
+    public function getDate()
+    {
+        return $this->date;
     }
 
+    /**
+     * @return string
+     */
+    public function getSubject()
+    {
+        return $this->subject;
+    }
 }
