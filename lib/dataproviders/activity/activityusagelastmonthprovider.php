@@ -24,7 +24,7 @@
 namespace OCA\ocUsageCharts\DataProviders\Activity;
 
 use OCA\ocUsageCharts\DataProviders\DataProviderInterface;
-use OCA\ocUsageCharts\Entity\Activity\ActivityDayCollection;
+use OCA\ocUsageCharts\Entity\Activity\Collections\ActivityDayCollection;
 use OCA\ocUsageCharts\Entity\Activity\ActivityUsageRepository;
 use OCA\ocUsageCharts\Entity\ChartConfig;
 use OCA\ocUsageCharts\Owncloud\User;

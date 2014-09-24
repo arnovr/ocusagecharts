@@ -62,7 +62,7 @@ class ChartTypeAdapterFactory
     /**
      * @param string $provider
      * @param ChartConfig $config
-     * @return Adapters\c3js\StorageUsageCurrentAdapter
+     * @return Adapters\c3js\Storage\StorageUsageCurrentAdapter
      */
     public function getStorageUsageCurrentAdapter($provider, ChartConfig $config)
     {
@@ -70,7 +70,7 @@ class ChartTypeAdapterFactory
         {
             case 'c3js':
             default:
-                $adapter = new Adapters\c3js\StorageUsageCurrentAdapter($config);
+                $adapter = new Adapters\c3js\Storage\StorageUsageCurrentAdapter($config);
         }
         return $adapter;
     }
@@ -78,7 +78,7 @@ class ChartTypeAdapterFactory
     /**
      * @param string $provider
      * @param ChartConfig $config
-     * @return Adapters\c3js\StorageUsageLastMonthAdapter
+     * @return Adapters\c3js\Storage\StorageUsageLastMonthAdapter
      */
     public function getStorageUsageLastMonthAdapter($provider, ChartConfig $config)
     {
@@ -86,7 +86,7 @@ class ChartTypeAdapterFactory
         {
             case 'c3js':
             default:
-                $adapter = new Adapters\c3js\StorageUsageLastMonthAdapter($config);
+                $adapter = new Adapters\c3js\Storage\StorageUsageLastMonthAdapter($config);
         }
         return $adapter;
     }
@@ -94,7 +94,7 @@ class ChartTypeAdapterFactory
     /**
      * @param string $provider
      * @param ChartConfig $config
-     * @return Adapters\c3js\StorageUsagePerMonthAdapter
+     * @return Adapters\c3js\Storage\StorageUsagePerMonthAdapter
      */
     public function getStorageUsagePerMonthAdapter($provider, ChartConfig $config)
     {
@@ -102,7 +102,24 @@ class ChartTypeAdapterFactory
         {
             case 'c3js':
             default:
-                $adapter = new Adapters\c3js\StorageUsagePerMonthAdapter($config);
+                $adapter = new Adapters\c3js\Storage\StorageUsagePerMonthAdapter($config);
+        }
+        return $adapter;
+    }
+
+
+    /**
+     * @param string $provider
+     * @param ChartConfig $config
+     * @return Adapters\c3js\Activity\ActivityUsageLastMonthAdapter
+     */
+    public function getActivityUsageLastMonthAdapter($provider, ChartConfig $config)
+    {
+        switch($provider)
+        {
+            case 'c3js':
+            default:
+                $adapter = new Adapters\c3js\Activity\ActivityUsageLastMonthAdapter($config);
         }
         return $adapter;
     }

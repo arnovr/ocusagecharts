@@ -20,15 +20,56 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+namespace OCA\ocUsageCharts\Entity\Activity\Collections;
 
-namespace OCA\ocUsageCharts\Adapters\c3js;
+use \Iterator;
+use OCA\ocUsageCharts\Entity\Activity\ActivityUsage;
 
-use OCA\ocUsageCharts\Adapters\ChartTypeAdapterInterface;
-
-/**
- * @author Arno van Rossum <arno@van-rossum.com>
- */
-class StorageUsagePerMonthAdapter extends StorageUsageLastMonthAdapter implements ChartTypeAdapterInterface
+class ActivityDayCollection implements Iterator
 {
+    /**
+     * @var array
+     */
+    private $subjectCollections = array();
 
+    /**
+     * @param ActivityUsage $usage
+     */
+    public function add(ActivityUsage $usage)
+    {
+        $date = $usage->getDate();
+        $key = $date->format('Y-m-d');
+
+        if ( empty($this->subjectCollections[$key]) )
+        {
+            $this->subjectCollections[$key] = new ActivitySubjectCollection();
+        }
+
+        $this->subjectCollections[$key]->add($usage);
+    }
+
+    public function current()
+    {
+        return current($this->subjectCollections);
+    }
+
+    public function next()
+    {
+        next($this->subjectCollections);
+    }
+
+    public function key()
+    {
+        return key($this->subjectCollections);
+    }
+
+    public function valid()
+    {
+        return $this->key() !== null;
+    }
+
+    public function rewind()
+    {
+        reset($this->subjectCollections);
+    }
 }

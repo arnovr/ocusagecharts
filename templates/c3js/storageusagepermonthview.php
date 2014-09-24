@@ -16,4 +16,4 @@ echo '
 <h1>';
 p($l->t($chartConfig->getChartType()));
 echo '</h1>
-<div class="chart defaultChart" id="chart" data-url="' . $url . '" data-type="bar" data-format="%Y-%m" data-label="' . $label . '"><div class="icon-loading" style="height: 60px;"></div></div>';
+<div class="chart defaultBar" id="chart" data-url="' . $url . '" data-type="bar" data-format="%Y-%m" data-label="' . $label . '"><div class="icon-loading" style="height: 60px;"></div></div>';

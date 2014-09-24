@@ -21,9 +21,10 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\Adapters\c3js;
+namespace OCA\ocUsageCharts\Adapters\c3js\Storage;
 
 use OCA\ocUsageCharts\Entity\ChartConfig;
+use OCA\ocUsageCharts\Adapters\c3js\c3jsBase;
 
 /**
  * @author Arno van Rossum <arno@van-rossum.com>
@@ -143,8 +144,6 @@ class StorageUsageLastMonthAdapter extends c3jsBase
         {
             $row[] = $this->calculateUsage($items[$i]->getUsage());
         }
-        $row = array_reverse($row);
-        $row = array_reverse($row);
         return $row;
     }
 }

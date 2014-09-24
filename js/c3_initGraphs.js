@@ -17,7 +17,7 @@ function loadGraph(url, yLabel, graphType, format)
             type: graphType,
             labels: {
                 format: {
-                    y: d3.format("")
+                    y: d3.format("$,")
                 }
             }
         },
@@ -34,7 +34,7 @@ function loadGraph(url, yLabel, graphType, format)
         },
         tooltip: {
             format: {
-                value: function (value, ratio, id) {
+                value: function (value) {
                     return value + yLabel;
                 }
             }
@@ -66,8 +66,16 @@ $( document ).ready(function() {
             $(".defaultChart").data("format")
         );
     }
-
     if ($(".defaultBar").length > 0 )
+    {
+        loadGraph(
+            $(".defaultBar").data("url"),
+            $(".defaultBar").data("label"),
+            $(".defaultBar").data("type"),
+            $(".defaultBar").data("format")
+        );
+    }
+    if ($(".defaultPie").length > 0 )
     {
         loadPie(
             $(".defaultBar").data("url")

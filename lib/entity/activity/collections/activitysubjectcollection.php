@@ -20,11 +20,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-namespace OCA\ocUsageCharts\Entity\Activity;
+namespace OCA\ocUsageCharts\Entity\Activity\Collections;
 
-use Iterator;
+use \Iterator;
+use OCA\ocUsageCharts\Entity\Activity\ActivityUsage;
 
-class ActivitySubjectCollection extends Iterator
+class ActivitySubjectCollection implements Iterator
 {
     /**
      * @var array
@@ -40,28 +41,38 @@ class ActivitySubjectCollection extends Iterator
             $this->usage[$key] = $usage;
         }
     }
+
+    /**
+     * Return the total number of ActivityUsages in this collection
+     * @return integer
+     */
+    public function count()
+    {
+        return count($this->usage);
+    }
+
     public function current()
     {
-
+        return current($this->usage);
     }
 
     public function next()
     {
-
+        next($this->usage);
     }
 
     public function key()
     {
-
+        return key($this->usage);
     }
 
     public function valid()
     {
-
+        return $this->key() !== null;
     }
 
     public function rewind()
     {
-
+        reset($this->usage);
     }
 }
