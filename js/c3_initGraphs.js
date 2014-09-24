@@ -14,7 +14,12 @@ function loadGraph(url, yLabel, graphType, format)
             x: 'x',
             mimeType: 'json',
             url: url ,
-            type: graphType
+            type: graphType,
+            labels: {
+                format: {
+                    y: d3.format("")
+                }
+            }
         },
         axis: {
             x: {
@@ -25,6 +30,13 @@ function loadGraph(url, yLabel, graphType, format)
             },
             y: {
                 label: yLabel
+            }
+        },
+        tooltip: {
+            format: {
+                value: function (value, ratio, id) {
+                    return value + yLabel;
+                }
             }
         }
     });
