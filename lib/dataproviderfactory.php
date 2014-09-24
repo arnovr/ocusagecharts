@@ -23,9 +23,11 @@
 
 namespace OCA\ocUsageCharts;
 
+use OCA\ocUsageCharts\DataProviders\Activity\ActivityUsageLastMonthProvider;
 use OCA\ocUsageCharts\DataProviders\Storage\StorageUsageCurrentProvider;
 use OCA\ocUsageCharts\DataProviders\Storage\StorageUsageLastMonthProvider;
 use OCA\ocUsageCharts\DataProviders\Storage\StorageUsagePerMonthProvider;
+use OCA\ocUsageCharts\Entity\Activity\ActivityUsageRepository;
 use OCA\ocUsageCharts\Entity\ChartConfig;
 use OCA\ocUsageCharts\Entity\StorageUsageRepository;
 use OCA\ocUsageCharts\Exception\ChartDataProviderException;
@@ -43,6 +45,11 @@ class DataProviderFactory
     private $repository;
 
     /**
+     * @var ActivityUsageRepository
+     */
+    private $activityUsageRepository;
+
+    /**
      * @var User
      */
     private $user;
@@ -54,14 +61,16 @@ class DataProviderFactory
 
     /**
      * @param StorageUsageRepository $repository
+     * @param ActivityUsageRepository $activityUsageRepository
      * @param User $user
      * @param Storage $storage
      */
-    public function __construct(StorageUsageRepository $repository, User $user, Storage $storage)
+    public function __construct(StorageUsageRepository $repository, ActivityUsageRepository $activityUsageRepository, User $user, Storage $storage)
     {
         $this->repository = $repository;
         $this->user = $user;
         $this->storage = $storage;
+        $this->activityUsageRepository = $activityUsageRepository;
     }
 
     /**
@@ -81,6 +90,9 @@ class DataProviderFactory
                 break;
             case 'StorageUsagePerMonth':
                 $provider = new StorageUsagePerMonthProvider($config, $this->repository, $this->user, $this->storage);
+                break;
+            case 'ActivityUsageLastMonth':
+                $provider = new ActivityUsageLastMonthProvider($config, $this->activityUsageRepository, $this->user);
                 break;
             default:
                 throw new ChartDataProviderException("DataProvider for " . $config->getChartType() . ' does not exist.');

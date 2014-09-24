@@ -17,7 +17,9 @@ function loadGraph(url, yLabel, graphType, format)
             type: graphType,
             labels: {
                 format: {
-                    y: d3.format("$,")
+                    y: function (value) {
+                        return value + yLabel;
+                    }
                 }
             }
         },

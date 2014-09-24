@@ -74,7 +74,6 @@ class ActivityUsageLastMonthProvider implements DataProviderInterface
         {
             $username = '';
         }
-
         $data = $this->repository->findAfterCreated($created, $username);
         $collection = new ActivityDayCollection();
         foreach($data as $activityUsage)

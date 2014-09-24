@@ -31,7 +31,7 @@ class ActivityUsageRepository extends Mapper
      * @param IDb $db
      */
     public function __construct(IDb $db) {
-        parent::__construct($db, 'activity', '\OCA\ocUsageCharts\Entity\ActivityUsage');
+        parent::__construct($db, 'activity', '\OCA\ocUsageCharts\Entity\Activity\ActivityUsage');
     }
 
     /**
@@ -46,14 +46,13 @@ class ActivityUsageRepository extends Mapper
         $params = array(
             $created->getTimestamp()
         );
+        $sql = 'SELECT * FROM `oc_activity` WHERE `timestamp` > ? ORDER BY timestamp DESC';
 
-        $sql = 'SELECT * FROM `activity` WHERE `user` = ? AND `timestamp` > ? ORDER BY timestamp DESC';
         if ( $username !== '' )
         {
-            $sql = 'SELECT * FROM `activity` WHERE `timestamp` > ? ORDER BY timestamp DESC';
+            $sql = 'SELECT * FROM `oc_activity` WHERE `user` = ? AND `timestamp` > ? ORDER BY timestamp DESC';
             $params[] = $username;
         }
-
-        $this->findEntities($sql, $params);
+        return $this->findEntities($sql, $params);
     }
 }

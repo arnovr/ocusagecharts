@@ -69,4 +69,13 @@ class ActivityUsage {
     {
         return $this->subject;
     }
+
+    /**
+     * @param array $row
+     * @return ActivityUsage
+     */
+    public static function fromRow($row)
+    {
+        return new ActivityUsage(new \Datetime($row['created']), $row['subject'], $row['user']);
+    }
 }

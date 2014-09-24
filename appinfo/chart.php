@@ -27,6 +27,7 @@ use OCA\ocUsageCharts\ChartTypeAdapterFactory;
 use OCA\ocUsageCharts\Controller\ChartApiController;
 use OCA\ocUsageCharts\Controller\ChartController;
 use OCA\ocUsageCharts\DataProviderFactory;
+use OCA\ocUsageCharts\Entity\Activity\ActivityUsageRepository;
 use OCA\ocUsageCharts\Entity\ChartConfigRepository;
 use OCA\ocUsageCharts\Entity\StorageUsageRepository;
 use OCA\ocUsageCharts\Owncloud\Storage;
@@ -79,6 +80,12 @@ class Chart extends App
      */
     private function registerRepositories()
     {
+        $this->container->registerService('ActivityUsageRepository', function($c) {
+            return new ActivityUsageRepository(
+                $c->query('ServerContainer')->getDb()
+            );
+        });
+
         $this->container->registerService('StorageUsageRepository', function($c) {
             return new StorageUsageRepository(
                 $c->query('ServerContainer')->getDb()
@@ -118,6 +125,7 @@ class Chart extends App
         $this->container->registerService('DataProviderFactory', function($c) {
             return new DataProviderFactory(
                 $c->query('StorageUsageRepository'),
+                $c->query('ActivityUsageRepository'),
                 $c->query('OwncloudUser'),
                 $c->query('OwncloudStorage')
             );
