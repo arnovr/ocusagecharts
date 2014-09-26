@@ -23,9 +23,11 @@
 
 namespace OCA\ocUsageCharts\Service;
 
+use OCA\ocUsageCharts\AppInfo\Chart;
 use OCA\ocUsageCharts\ChartTypeAdapterFactory;
 use OCA\ocUsageCharts\DataProviderFactory;
-use OCA\ocUsageCharts\Entity\StorageUsageRepository;
+use OCA\ocUsageCharts\Entity\ChartConfig;
+use OCA\ocUsageCharts\Entity\Storage\StorageUsageRepository;
 
 class ChartDataProviderTest extends \PHPUnit_Framework_TestCase
 {
@@ -52,11 +54,11 @@ class ChartDataProviderTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $app = new \OCA\ocUsageCharts\AppInfo\Chart();
+        $app = new Chart();
         $this->container = $app->getContainer();
 
         $this->storageUsageRepository = $this
-            ->getMockBuilder('OCA\ocUsageCharts\Entity\StorageUsageRepository')
+            ->getMockBuilder('OCA\ocUsageCharts\Entity\Storage\StorageUsageRepository')
             ->disableOriginalConstructor()->getMock();
 
 
@@ -68,7 +70,7 @@ class ChartDataProviderTest extends \PHPUnit_Framework_TestCase
         $this->chartTypeAdapterFactory = $this->getMock('\OCA\ocUsageCharts\ChartTypeAdapterFactory');
 
         $this->dataProvider = new ChartDataProvider($this->dataProviderFactory, $this->chartTypeAdapterFactory);
-        $this->configMock = new \OCA\ocUsageCharts\Entity\ChartConfig(100, new \DateTime(), 'test1', 'StorageUsageLastMonth', 'c3js');
+        $this->configMock = new ChartConfig(100, new \DateTime(), 'test1', 'StorageUsageLastMonth', 'c3js');
     }
 
     public function testGetChartUsageForUpdate()
@@ -87,7 +89,7 @@ class ChartDataProviderTest extends \PHPUnit_Framework_TestCase
         $usageNumber = 2324235;
         $created = new \DateTime();
         $username = 'test1';
-        $usage = $this->getMock('\OCA\ocUsageCharts\Entity\StorageUsage', array(), array(
+        $usage = $this->getMock('\OCA\ocUsageCharts\Entity\Storage\StorageUsage', array(), array(
                 $created,
                 $usageNumber,
                 $username
@@ -111,7 +113,7 @@ class ChartDataProviderTest extends \PHPUnit_Framework_TestCase
         $usageNumber = 2324235;
         $created = new \DateTime();
         $username = 'test1';
-        $usage = $this->getMock('\OCA\ocUsageCharts\Entity\StorageUsage', array(), array(
+        $usage = $this->getMock('\OCA\ocUsageCharts\Entity\Storage\StorageUsage', array(), array(
                 $created,
                 $usageNumber,
                 $username

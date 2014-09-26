@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\Entity;
+namespace OCA\ocUsageCharts\Entity\Storage;
 
 /**
  * @author Arno van Rossum <arno@van-rossum.com>

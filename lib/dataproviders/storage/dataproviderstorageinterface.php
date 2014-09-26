@@ -24,7 +24,7 @@
 namespace OCA\ocUsageCharts\DataProviders\Storage;
 
 use OCA\ocUsageCharts\Entity\ChartConfig;
-use OCA\ocUsageCharts\Entity\StorageUsageRepository;
+use OCA\ocUsageCharts\Entity\Storage\StorageUsageRepository;
 use OCA\ocUsageCharts\Owncloud\Storage;
 use OCA\ocUsageCharts\Owncloud\User;
 

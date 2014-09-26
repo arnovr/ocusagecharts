@@ -29,7 +29,7 @@ use OCA\ocUsageCharts\DataProviders\Storage\StorageUsageLastMonthProvider;
 use OCA\ocUsageCharts\DataProviders\Storage\StorageUsagePerMonthProvider;
 use OCA\ocUsageCharts\Entity\Activity\ActivityUsageRepository;
 use OCA\ocUsageCharts\Entity\ChartConfig;
-use OCA\ocUsageCharts\Entity\StorageUsageRepository;
+use OCA\ocUsageCharts\Entity\Storage\StorageUsageRepository;
 use OCA\ocUsageCharts\Exception\ChartDataProviderException;
 use OCA\ocUsageCharts\Owncloud\Storage;
 use OCA\ocUsageCharts\Owncloud\User;

@@ -23,7 +23,7 @@
 
 namespace OCA\ocUsageCharts\DataProviders;
 
-use OCA\ocUsageCharts\Entity\StorageUsage;
+use OCA\ocUsageCharts\Entity\Storage\StorageUsage;
 
 
 /**

@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\Entity;
+namespace OCA\ocUsageCharts\Entity\Storage;
 
 use OCP\AppFramework\Db\Mapper;
 use \OCP\IDb;
@@ -35,7 +35,7 @@ class StorageUsageRepository extends Mapper
      * @param IDb $db
      */
     public function __construct(IDb $db) {
-        parent::__construct($db, 'uc_storageusage', '\OCA\ocUsageCharts\Entity\StorageUsage');
+        parent::__construct($db, 'uc_storageusage', '\OCA\ocUsageCharts\Entity\Storage\StorageUsage');
     }
 
     /**

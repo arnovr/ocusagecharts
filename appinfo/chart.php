@@ -29,7 +29,7 @@ use OCA\ocUsageCharts\Controller\ChartController;
 use OCA\ocUsageCharts\DataProviderFactory;
 use OCA\ocUsageCharts\Entity\Activity\ActivityUsageRepository;
 use OCA\ocUsageCharts\Entity\ChartConfigRepository;
-use OCA\ocUsageCharts\Entity\StorageUsageRepository;
+use OCA\ocUsageCharts\Entity\Storage\StorageUsageRepository;
 use OCA\ocUsageCharts\Owncloud\Storage;
 use OCA\ocUsageCharts\Owncloud\User;
 use OCA\ocUsageCharts\Service\AppConfigService;

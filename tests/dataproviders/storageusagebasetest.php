@@ -26,7 +26,7 @@ namespace OCA\ocUsageCharts\Tests\DataProviders;
 use OCA\ocUsageCharts\AppInfo\Chart;
 use OCA\ocUsageCharts\DataProviders\Storage\StorageUsageBase;
 use OCA\ocUsageCharts\Entity\ChartConfig;
-use OCA\ocUsageCharts\Entity\StorageUsageRepository;
+use OCA\ocUsageCharts\Entity\Storage\StorageUsageRepository;
 use OCA\ocUsageCharts\Owncloud\Storage;
 use OCA\ocUsageCharts\Owncloud\User;
 
@@ -65,7 +65,7 @@ class StorageUsageBaseTest extends \PHPUnit_Framework_TestCase
         $this->container = $app->getContainer();
 
         $this->repository = $this
-            ->getMockBuilder('OCA\ocUsageCharts\Entity\StorageUsageRepository')
+            ->getMockBuilder('OCA\ocUsageCharts\Entity\Storage\StorageUsageRepository')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -123,14 +123,14 @@ class StorageUsageBaseTest extends \PHPUnit_Framework_TestCase
         $this->storage->expects($this->once())->method('getStorageUsage')->willReturn($usage);
 
         $result = $this->abstractProvider->getChartUsageForUpdate();
-        $this->assertInstanceOf('OCA\ocUsageCharts\Entity\StorageUsage', $result);
+        $this->assertInstanceOf('OCA\ocUsageCharts\Entity\Storage\StorageUsage', $result);
         $this->assertEquals($username, $result->getUsername());
         $this->assertEquals($usage, $result->getUsage());
     }
 
     public function saveTest()
     {
-        $usageMock = $this->getMock('OCA\ocUsageCharts\Entity\StorageUsage');
+        $usageMock = $this->getMock('OCA\ocUsageCharts\Entity\Storage\StorageUsage');
         $this->repository->expects($this->once())->method('save')->willReturn(true);
         $result = $this->abstractProvider->save($usageMock);
         $this->assertTrue($result);
