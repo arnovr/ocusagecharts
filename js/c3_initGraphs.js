@@ -10,7 +10,7 @@ function loadGraph(url, yLabel, shortLable, graphType, format, appendLabel)
         appendLabelContent = ({
             format: {
                 y: function (value) {
-                    return value + yLabel;
+                    return value;
                 }
             }
         });

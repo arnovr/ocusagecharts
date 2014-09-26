@@ -63,12 +63,12 @@ class ActivityUsageLastMonthProviderTest extends \PHPUnit_Framework_TestCase
 
 
         $this->config = $this
-            ->getMockBuilder('\OCA\ocUsageCharts\Entitiy\ChartConfig')
+            ->getMockBuilder('OCA\ocUsageCharts\Entitiy\ChartConfig')
             ->disableOriginalConstructor()
             ->getMock();
 
         $this->user = $this
-            ->getMockBuilder('\OCA\ocUsageCharts\Owncloud\User')
+            ->getMockBuilder('OCA\ocUsageCharts\Owncloud\User')
             ->disableOriginalConstructor()
             ->getMock();
 

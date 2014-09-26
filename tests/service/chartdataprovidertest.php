@@ -34,6 +34,9 @@ class ChartDataProviderTest extends \PHPUnit_Framework_TestCase
      */
     private $dataProviderFactory;
     private $container;
+    /**
+     * @var ChartDataProvider
+     */
     private $dataProvider;
     /**
      * @var StorageUsageRepository
@@ -136,10 +139,14 @@ class ChartDataProviderTest extends \PHPUnit_Framework_TestCase
 
 
         $adapter = $this
-            ->getMockBuilder('OCA\ocUsageCharts\Adapters\c3js\StorageUsageLastMonthAdapter')
+            ->getMockBuilder('OCA\ocUsageCharts\Adapters\c3js\Storage\StorageUsageLastMonthAdapter')
             ->disableOriginalConstructor()
             ->getMock();
-        $adapter->expects($this->once())->method('formatData')->with($data)->willReturn($data);
+
+        $adapter
+            ->expects($this->once())
+            ->method('formatData')
+            ->willReturn($data);
 
         $this->chartTypeAdapterFactory
             ->expects($this->once())

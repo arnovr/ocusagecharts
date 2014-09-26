@@ -149,7 +149,7 @@ class StorageUsageRepository extends Mapper
     public function findAllPerMonth($username = '')
     {
         $created = new \DateTime();
-        $created->sub(new \DateInterval('P2Y'));
+        $created->sub(new \DateInterval('P1Y'));
 
         // When no username supplied, search for all information
         $sql = 'SELECT DISTINCT CONCAT(MONTH(`created`), \' \', YEAR(`created`)) as month, avg(`usage`) as average, username FROM oc_uc_storageusage WHERE `usage` > 0 AND created > ? GROUP BY username, month';
