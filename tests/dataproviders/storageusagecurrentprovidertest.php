@@ -23,17 +23,12 @@
 
 namespace OCA\ocUsageCharts\Tests\DataProviders;
 
-use OCA\ocUsageCharts\AppInfo\Chart;
-use OCA\ocUsageCharts\DataProviders\Activity\ActivityUsageLastMonthProvider;
 use OCA\ocUsageCharts\DataProviders\Storage\StorageUsageCurrentProvider;
-use OCA\ocUsageCharts\Entity\Activity\ActivityUsageRepository;
-use OCA\ocUsageCharts\Entity\ChartConfig;
-use OCA\ocUsageCharts\Owncloud\User;
 
 class StorageUsageCurrentProviderTest extends StorageUsageBaseTest
 {
     /**
-     * @var ActivityUsageLastMonthProvider
+     * @var StorageUsageCurrentProvider
      */
     private $provider;
 
@@ -43,8 +38,50 @@ class StorageUsageCurrentProviderTest extends StorageUsageBaseTest
         $this->provider = new StorageUsageCurrentProvider($this->config, $this->repository, $this->user, $this->storage);
     }
 
-    public function getChartUsageTest()
+    public function testGetChartUsageForRegularUser()
     {
+        $username = 'test1';
+        $storageInfo = array(
+            'free' => (1024 * 1024 * 1024),
+            'used' => (1024 * 1024 * 1024)
+        );
+        $this->storage->expects($this->once())->method('getCurrentStorageUsageForSignedInUser')->willReturn($storageInfo);
 
+        $this->user->expects($this->once())->method('getSignedInUsername')->willReturn($username);
+        $this->user->expects($this->once())->method('isAdminUser')->willReturn(false);
+
+        $data = $this->provider->getChartUsage();
+        $this->assertEquals($data['free'], (float) 1024);
+        $this->assertEquals($data['used'], (float) 1024);
+    }
+    public function testGetChartUsageForAdminUser()
+    {
+        $username = 'test1';
+        $storageInfo = array(
+            'free' => (1024 * 1024 * 1024),
+            'used' => (1024 * 1024 * 1024)
+        );
+        $this->storage->expects($this->once())->method('getCurrentStorageUsageForSignedInUser')->willReturn($storageInfo);
+
+        $this->user->expects($this->once())->method('getSignedInUsername')->willReturn($username);
+        $this->user->expects($this->once())->method('isAdminUser')->willReturn(true);
+        $usageMock = $this
+            ->getMockBuilder('OCA\ocUsageCharts\Entity\Storage\StorageUsage')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $usageMock->method('getUsage')->willReturn(1024 * 1024 * 1024);
+        $returnItems = array(
+            'test1' => array($usageMock),
+            'test2' => array(clone $usageMock),
+            'admin' => array(clone $usageMock)
+        );
+        $this->repository->expects($this->once())->method('findAllWithLimit')->willReturn($returnItems);
+
+
+        $data = $this->provider->getChartUsage();
+        $this->assertEquals($data['free'], (float) 1024);
+        $this->assertEquals($data['test1'], (float) 1024);
+        $this->assertEquals($data['test2'], (float) 1024);
+        $this->assertEquals($data['admin'], (float) 1024);
     }
 }
