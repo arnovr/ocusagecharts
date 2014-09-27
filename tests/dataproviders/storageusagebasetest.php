@@ -84,24 +84,16 @@ class StorageUsageBaseTest extends \PHPUnit_Framework_TestCase
             ->getMockBuilder('\OCA\ocUsageCharts\Owncloud\Storage')
             ->disableOriginalConstructor()
             ->getMock();
-
-        $this->abstractProvider = $this->getMockForAbstractClass('OCA\ocUsageCharts\DataProviders\Storage\StorageUsageBase');
+        $arguments = array(
+            $this->config,
+            $this->repository,
+            $this->user,
+            $this->storage
+        );
+        $this->abstractProvider = $this->getMockForAbstractClass('OCA\ocUsageCharts\DataProviders\Storage\StorageUsageBase', $arguments);
     }
 
-    public function isAllowedToUpdateTrueTest()
-    {
-        $username = 'test1';
-        $this->config->expects($this->once())->method('getUsername')->willReturn($username);
-
-        $results = array('testdata');
-        $this->repository->expects($this->once())->method('findAfterCreated')->willReturn($results);
-
-        $return = $this->abstractProvider->isAllowedToUpdate();
-
-        $this->assertTrue($return);
-    }
-
-    public function isAllowedToUpdateFalseTest()
+    public function testIsAllowedToUpdateTrue()
     {
         $username = 'test1';
         $this->config->expects($this->once())->method('getUsername')->willReturn($username);
@@ -111,11 +103,24 @@ class StorageUsageBaseTest extends \PHPUnit_Framework_TestCase
 
         $return = $this->abstractProvider->isAllowedToUpdate();
 
+        $this->assertTrue($return);
+    }
+
+    public function testIsAllowedToUpdateFalse()
+    {
+        $username = 'test1';
+        $this->config->expects($this->once())->method('getUsername')->willReturn($username);
+
+        $results = array('testdata');
+        $this->repository->expects($this->once())->method('findAfterCreated')->willReturn($results);
+
+        $return = $this->abstractProvider->isAllowedToUpdate();
+
         $this->assertFalse($return);
     }
 
 
-    public function getChartUsageForUpdateTest()
+    public function testGetChartUsageForUpdate()
     {
         $username = 'test1';
         $usage = 2314234;
@@ -128,12 +133,23 @@ class StorageUsageBaseTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($usage, $result->getUsage());
     }
 
-    public function saveTest()
+    public function testSaveTrue()
     {
-        $usageMock = $this->getMock('OCA\ocUsageCharts\Entity\Storage\StorageUsage');
+        $usageMock = $this
+        ->getMockBuilder('OCA\ocUsageCharts\Entity\Storage\StorageUsage')
+        ->disableOriginalConstructor()
+        ->getMock();
         $this->repository->expects($this->once())->method('save')->willReturn(true);
         $result = $this->abstractProvider->save($usageMock);
         $this->assertTrue($result);
+    }
+
+    public function testSaveFalse()
+    {
+        $usageMock = $this
+            ->getMockBuilder('OCA\ocUsageCharts\Entity\Storage\StorageUsage')
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $this->repository->expects($this->once())->method('save')->willReturn(false);
         $result = $this->abstractProvider->save($usageMock);
