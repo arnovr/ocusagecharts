@@ -81,6 +81,7 @@ class ActivityUsageLastMonthProviderTest extends \PHPUnit_Framework_TestCase
             ->getMockBuilder('\OCA\ocUsageCharts\Entity\Activity\ActivityUsage')
             ->disableOriginalConstructor()
             ->getMock();
+        $mock->method('getDate')->willReturn(new \DateTime());
         $data = array(
             $mock,
             clone $mock,
@@ -103,6 +104,7 @@ class ActivityUsageLastMonthProviderTest extends \PHPUnit_Framework_TestCase
             ->getMockBuilder('\OCA\ocUsageCharts\Entity\Activity\ActivityUsage')
             ->disableOriginalConstructor()
             ->getMock();
+        $mock->method('getDate')->willReturn(new \DateTime());
         $data = array(
             $mock,
             clone $mock,
