@@ -37,16 +37,16 @@ class ActivityUsageLastMonthAdapter extends c3jsBase implements ChartTypeAdapter
     {
         $x = array();
         $result = array();
+
+        /** @var ActivityDayCollection $collection */
+        foreach(array_values($data) as $collection)
+        {
+            $x = $this->getRowX($x, $collection);
+        }
         /** @var ActivityDayCollection $collection */
         foreach($data as $username => $collection)
         {
-            // For the first item, add to X
-            if ( count($x) === 0 )
-            {
-                $x = $this->getRowX($collection);
-            }
-            $row = $this->getRowData($collection);
-
+            $row = $this->getRowData($x, $collection);
             $result[$username] = $row;
         }
         $result["x"] = $x;
@@ -58,15 +58,18 @@ class ActivityUsageLastMonthAdapter extends c3jsBase implements ChartTypeAdapter
     /**
      * Get a data row for the X line
      *
+     * @param array $x
      * @param ActivityDayCollection $collection
      * @return array
      */
-    private function getRowX($collection)
+    private function getRowX(array $x, $collection)
     {
-        $x = array();
         foreach($collection as $date => $subjectCollection)
         {
-            $x[] = $date;
+            if ( !in_array($date, $x) )
+            {
+                $x[] = $date;
+            }
         }
         return $x;
     }
@@ -74,16 +77,28 @@ class ActivityUsageLastMonthAdapter extends c3jsBase implements ChartTypeAdapter
     /**
      * get Row Data for X/Y axes
      *
+     * @param array $x
      * @param ActivityDayCollection $collection
      * @return array
      */
-    private function getRowData($collection)
+    private function getRowData($x, $collection)
     {
         $row = array();
         /** @var ActivitySubjectCollection $subjectCollection */
-        foreach($collection as $date => $subjectCollection)
+        for($i = 0; $i < count($x); $i++)
         {
-            $row[] = $subjectCollection->totalCount();
+            $date = $x[$i];
+
+            if ( empty($row[$i]))
+            {
+                $row[$i] = 0;
+            }
+
+            $subjectCollection = $collection->getByDate(new \DateTime($date));
+            if ( !empty($subjectCollection) )
+            {
+                $row[$i] = $subjectCollection->totalCount();
+            }
         }
         return $row;
     }

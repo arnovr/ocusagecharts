@@ -32,6 +32,12 @@ class ActivityDayCollection implements Iterator
      */
     private $subjectCollections = array();
 
+    public function getByDate(\DateTime $date)
+    {
+        $key = $date->format('Y-m-d');
+        return $this->subjectCollections[$key];
+    }
+
     /**
      * @param ActivityUsage $usage
      */
