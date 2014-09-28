@@ -91,7 +91,7 @@ class ActivityUsageLastMonthProviderTest extends \PHPUnit_Framework_TestCase
         $this->config->expects($this->once())->method('getUsername')->willReturn($username);
         $this->user->expects($this->once())->method('getSignedInUsername')->willReturn($username);
         $this->user->expects($this->once())->method('isAdminUser')->willReturn(false);
-        $this->repository->expects($this->once())->method('findAfterCreated')->willReturn($data);
+        $this->repository->expects($this->once())->method('findAfterCreatedByUsername')->willReturn($data);
 
         $result = $this->provider->getChartUsage();
 
@@ -111,15 +111,14 @@ class ActivityUsageLastMonthProviderTest extends \PHPUnit_Framework_TestCase
             clone $mock
         );
         $username = 'test1';
-        $this->config->expects($this->once())->method('getUsername')->willReturn($username);
         $this->user->expects($this->once())->method('getSignedInUsername')->willReturn($username);
         $this->user->expects($this->once())->method('isAdminUser')->willReturn(true);
-        $this->repository->expects($this->once())->method('findAfterCreated')->willReturn($data);
+        $this->user->expects($this->once())->method('getSystemUsers')->willReturn(array($username));
+        $this->repository->expects($this->once())->method('findAfterCreatedByUsername')->willReturn($data);
 
         $result = $this->provider->getChartUsage();
-
-        $this->assertArrayHasKey('', $result);
-        $this->assertInstanceOf('\OCA\ocUsageCharts\Entity\Activity\Collections\ActivityDayCollection', $result['']);
+        $this->assertArrayHasKey($username, $result);
+        $this->assertInstanceOf('\OCA\ocUsageCharts\Entity\Activity\Collections\ActivityDayCollection', $result[$username]);
     }
 
     public function testGetChartUsageForUpdate()

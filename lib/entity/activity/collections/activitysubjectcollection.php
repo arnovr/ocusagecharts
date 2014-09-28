@@ -38,17 +38,24 @@ class ActivitySubjectCollection implements Iterator
         $key = $usage->getSubject();
         if ( empty($this->usage[$key]) )
         {
-            $this->usage[$key] = $usage;
+            $this->usage[$key] = array();
         }
+        $this->usage[$key][] = $usage;
     }
 
     /**
-     * Return the total number of ActivityUsages in this collection
+     * Return the total amount of usages in this collection
+     *
      * @return integer
      */
-    public function count()
+    public function totalCount()
     {
-        return count($this->usage);
+        $total = 0;
+        foreach(array_values($this->usage) as $usages)
+        {
+            $total += count($usages);
+        }
+        return $total;
     }
 
     public function current()

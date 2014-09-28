@@ -68,19 +68,39 @@ class ActivityUsageLastMonthProvider implements DataProviderInterface
      */
     public function getChartUsage()
     {
-        $created = new \DateTime("-1 month");
-        $username = $this->chartConfig->getUsername();
+        $return = array();
         if ( $this->user->isAdminUser($this->user->getSignedInUsername()) )
         {
-            $username = '';
+            $users = $this->user->getSystemUsers();
+            foreach($users as $username)
+            {
+                $return[$username] = $this->getCollectionByUsername($username);
+            }
         }
-        $data = $this->repository->findAfterCreated($created, $username);
+        else
+        {
+            $username = $this->chartConfig->getUsername();
+            $return[$username] = $this->getCollectionByUsername($username);
+        }
+        return $return;
+    }
+
+    /**
+     * Return a collection off 1 month ago based on the username supplied
+     *
+     * @param string $username
+     * @return ActivityDayCollection
+     */
+    private function getCollectionByUsername($username)
+    {
+        $created = new \DateTime("-1 month");
+        $data = $this->repository->findAfterCreatedByUsername($created, $username);
         $collection = new ActivityDayCollection();
         foreach($data as $activityUsage)
         {
             $collection->add($activityUsage);
         }
-        return array($username => $collection);
+        return $collection;
     }
 
     /**

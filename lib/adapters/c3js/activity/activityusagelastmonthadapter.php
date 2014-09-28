@@ -37,7 +37,6 @@ class ActivityUsageLastMonthAdapter extends c3jsBase implements ChartTypeAdapter
     {
         $x = array();
         $result = array();
-
         /** @var ActivityDayCollection $collection */
         foreach($data as $username => $collection)
         {
@@ -84,7 +83,7 @@ class ActivityUsageLastMonthAdapter extends c3jsBase implements ChartTypeAdapter
         /** @var ActivitySubjectCollection $subjectCollection */
         foreach($collection as $date => $subjectCollection)
         {
-            $row[] = $subjectCollection->count();
+            $row[] = $subjectCollection->totalCount();
         }
         return $row;
     }

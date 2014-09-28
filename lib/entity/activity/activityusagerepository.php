@@ -42,17 +42,12 @@ class ActivityUsageRepository extends Mapper
      * @param string $username
      * @return ActivityUsage[]
      */
-    public function findAfterCreated(\DateTime $created, $username = '') {
+    public function findAfterCreatedByUsername(\DateTime $created, $username) {
         $params = array(
+            $username,
             $created->getTimestamp()
         );
-        $sql = 'SELECT * FROM `oc_activity` WHERE `timestamp` > ? ORDER BY timestamp DESC';
-
-        if ( $username !== '' )
-        {
-            $sql = 'SELECT * FROM `oc_activity` WHERE `user` = ? AND `timestamp` > ? ORDER BY timestamp DESC';
-            $params[] = $username;
-        }
+        $sql = 'SELECT * FROM `oc_activity` WHERE `user` = ? AND `timestamp` > ? ORDER BY timestamp DESC';
         return $this->findEntities($sql, $params);
     }
 }

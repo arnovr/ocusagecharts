@@ -89,7 +89,7 @@ $( document ).ready(function() {
     if ($(".defaultPie").length > 0 )
     {
         loadPie(
-            $(".defaultBar").data("url")
+            $(".defaultPie").data("url")
         );
     }
 });

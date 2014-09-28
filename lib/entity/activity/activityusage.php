@@ -76,6 +76,8 @@ class ActivityUsage {
      */
     public static function fromRow($row)
     {
-        return new ActivityUsage(new \Datetime($row['created']), $row['subject'], $row['user']);
+        $created = new \DateTime();
+        $created->setTimestamp($row['timestamp']);
+        return new ActivityUsage($created, $row['subject'], $row['user']);
     }
 }

@@ -39,7 +39,6 @@ class ActivityDayCollection implements Iterator
     {
         $date = $usage->getDate();
         $key = $date->format('Y-m-d');
-
         if ( empty($this->subjectCollections[$key]) )
         {
             $this->subjectCollections[$key] = new ActivitySubjectCollection();
