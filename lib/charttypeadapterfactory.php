@@ -56,6 +56,9 @@ class ChartTypeAdapterFactory
             case 'ActivityUsageLastMonth':
                 $adapter = $this->getActivityUsageLastMonthAdapter($config->getChartProvider(), $config);
                 break;
+            case 'ActivityUsagePerMonth':
+                $adapter = $this->getActivityUsagePerMonthAdapter($config->getChartProvider(), $config);
+                break;
             default:
                 throw new ChartTypeAdapterException("ChartType Adapter for " . $config->getChartType() . ' does not exist.');
         }
@@ -110,7 +113,6 @@ class ChartTypeAdapterFactory
         return $adapter;
     }
 
-
     /**
      * @param string $provider
      * @param ChartConfig $config
@@ -123,6 +125,22 @@ class ChartTypeAdapterFactory
             case 'c3js':
             default:
                 $adapter = new Adapters\c3js\Activity\ActivityUsageLastMonthAdapter($config);
+        }
+        return $adapter;
+    }
+
+    /**
+     * @param string $provider
+     * @param ChartConfig $config
+     * @return Adapters\c3js\Activity\ActivityUsagePerMonthAdapter
+     */
+    public function getActivityUsagePerMonthAdapter($provider, ChartConfig $config)
+    {
+        switch($provider)
+        {
+            case 'c3js':
+            default:
+                $adapter = new Adapters\c3js\Activity\ActivityUsagePerMonthAdapter($config);
         }
         return $adapter;
     }

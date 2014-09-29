@@ -24,6 +24,7 @@
 namespace OCA\ocUsageCharts;
 
 use OCA\ocUsageCharts\DataProviders\Activity\ActivityUsageLastMonthProvider;
+use OCA\ocUsageCharts\DataProviders\Activity\ActivityUsagePerMonthProvider;
 use OCA\ocUsageCharts\DataProviders\Storage\StorageUsageCurrentProvider;
 use OCA\ocUsageCharts\DataProviders\Storage\StorageUsageLastMonthProvider;
 use OCA\ocUsageCharts\DataProviders\Storage\StorageUsagePerMonthProvider;
@@ -93,6 +94,9 @@ class DataProviderFactory
                 break;
             case 'ActivityUsageLastMonth':
                 $provider = new ActivityUsageLastMonthProvider($config, $this->activityUsageRepository, $this->user);
+                break;
+            case 'ActivityUsagePerMonth':
+                $provider = new ActivityUsagePerMonthProvider($config, $this->activityUsageRepository, $this->user);
                 break;
             default:
                 throw new ChartDataProviderException("DataProvider for " . $config->getChartType() . ' does not exist.');

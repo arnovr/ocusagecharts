@@ -141,7 +141,7 @@ class StorageUsageRepository extends Mapper
     /**
      * Find all storage usages grouped by username and month
      * When username supplied, only for that user
-     * With a maximum of going back 2 years
+     * With a maximum of going back 1 year
      *
      * @param string $username
      * @return array

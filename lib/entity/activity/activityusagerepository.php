@@ -22,6 +22,7 @@
  */
 namespace OCA\ocUsageCharts\Entity\Activity;
 
+use OC_DB_StatementWrapper;
 use OCP\AppFramework\Db\Mapper;
 use OCP\IDb;
 
@@ -49,5 +50,73 @@ class ActivityUsageRepository extends Mapper
         );
         $sql = 'SELECT * FROM `oc_activity` WHERE `user` = ? AND `timestamp` > ? ORDER BY timestamp DESC';
         return $this->findEntities($sql, $params);
+    }
+
+
+
+    /**
+     * Find all activity usages grouped by username and month
+     * When username supplied, only for that user
+     * With a maximum of going back 1 year
+     *
+     * @param string $username
+     * @return array
+     */
+    public function findAllPerMonth($username = '')
+    {
+        $return = array();
+        $created = new \DateTime();
+        // Months
+        $runs = 12;
+        for($i = 1; $i <= $runs; $i++)
+        {
+            $endStamp = $created->getTimestamp();
+
+            // First month is first day for this month
+            if ( $i == 1 )
+            {
+                $created->setDate($created->format('Y'), $created->format('m'), 1);
+            }
+            else
+            {
+                $created->sub(new \DateInterval('P1M'));
+            }
+            $startStamp = $created->getTimestamp();
+
+
+            $sql = 'SELECT user, count(1) as activities, user FROM oc_activity WHERE timestamp >= ? AND timestamp < ? GROUP BY user';
+            $params = array(
+                $startStamp, $endStamp
+            );
+
+            if ( $username !== '' )
+            {
+                $sql = 'SELECT user, count(1) as activities, user FROM oc_activity WHERE timestamp >= ? AND timestamp < ? AND user = ? GROUP BY user';
+                $params = array($username);
+            }
+
+            $query = $this->db->prepareQuery($sql);
+            $result = $query->execute($params);
+            $return[$created->format('Y-m-d')] = $this->parsePerMonthEntities($result);
+        }
+
+        return $return;
+    }
+
+    /**
+     * @param OC_DB_StatementWrapper $result
+     * @return array
+     */
+    private function parsePerMonthEntities($result)
+    {
+        $entities = array();
+        while($row = $result->fetch()){
+            if ( !isset($entities[$row['user']]))
+            {
+                $entities[$row['user']] = "";
+            }
+            $entities[$row['user']] = $row['activities'];
+        }
+        return $entities;
     }
 }
