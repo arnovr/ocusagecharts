@@ -110,10 +110,7 @@ class ActivityUsageRepository extends Mapper
         $params = array(
             $startTimestamp, $endTimestamp
         );
-
-        $query = $this->db->prepareQuery($sql);
-        $result = $query->execute($params);
-        return $this->parsePerMonthEntities($result);
+        return $this->findActivitiesBySQLAndParams($sql, $params);
     }
 
     /**
@@ -126,11 +123,20 @@ class ActivityUsageRepository extends Mapper
      */
     private function findActivitiesBetweenTimestampAndUser($startTimestamp, $endTimestamp, $username)
     {
+        $sql = 'SELECT user, count(1) as activities, user FROM oc_activity WHERE timestamp >= ? AND timestamp < ? AND user = ? GROUP BY user';
         $params = array(
             $startTimestamp, $endTimestamp, $username
         );
-        $sql = 'SELECT user, count(1) as activities, user FROM oc_activity WHERE timestamp >= ? AND timestamp < ? AND user = ? GROUP BY user';
+        return $this->findActivitiesBySQLAndParams($sql, $params);
+    }
 
+    /**
+     * @param $sql
+     * @param $params
+     * @return array
+     */
+    private function findActivitiesBySQLAndParams($sql, $params)
+    {
         $query = $this->db->prepareQuery($sql);
         $result = $query->execute($params);
         return $this->parsePerMonthEntities($result);
