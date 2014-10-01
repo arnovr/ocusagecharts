@@ -21,45 +21,33 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\DataProviders\Storage;
+namespace OCA\ocUsageCharts\DataProviders;
 
-use OCA\ocUsageCharts\DataProviders\ChartUsageHelper;
-use OCA\ocUsageCharts\DataProviders\DataProviderInterface;
+use OCA\ocUsageCharts\Entity\Activity\ActivityUsageRepository;
 use OCA\ocUsageCharts\Entity\ChartConfig;
 use OCA\ocUsageCharts\Entity\Storage\StorageUsageRepository;
-use OCA\ocUsageCharts\Owncloud\Storage;
 use OCA\ocUsageCharts\Owncloud\User;
 
-/**
- * @author Arno van Rossum <arno@van-rossum.com>
- */
-class StorageUsagePerMonthProvider extends StorageUsageBase implements DataProviderInterface, DataProviderStorageInterface
+class ChartUsageHelper
 {
-    /**
-     * @var ChartUsageHelper
-     */
-    private $chartUsageHelper;
-
-    /**
-     * @param ChartConfig $chartConfig
-     * @param StorageUsageRepository $repository
-     * @param User $user
-     * @param Storage $storage
-     * @param ChartUsageHelper $chartUsageHelper
-     */
-    public function __construct(ChartConfig $chartConfig, StorageUsageRepository $repository, User $user, Storage $storage, ChartUsageHelper $chartUsageHelper)
-    {
-        parent::__construct($chartConfig, $repository, $user, $storage);
-        $this->chartUsageHelper = $chartUsageHelper;
-    }
-
     /**
      * Return the chart data you want to return based on the ChartConfig
      *
+     * @param User $user
+     * @param ActivityUsageRepository|StorageUsageRepository $repository
+     * @param ChartConfig $chartConfig
      * @return mixed
      */
-    public function getChartUsage()
+    public function getChartUsage(User $user, $repository, ChartConfig $chartConfig)
     {
-        $this->chartUsageHelper->getChartUsage($this->user, $this->repository, $this->chartConfig);
+        if ( $user->isAdminUser($user->getSignedInUsername()) )
+        {
+            $data = $repository->findAllPerMonth();
+        }
+        else
+        {
+            $data = $repository->findAllPerMonth($chartConfig->getUsername());
+        }
+        return $data;
     }
 }

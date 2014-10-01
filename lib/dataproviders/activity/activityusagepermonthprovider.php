@@ -23,6 +23,7 @@
 
 namespace OCA\ocUsageCharts\DataProviders\Activity;
 
+use OCA\ocUsageCharts\DataProviders\ChartUsageHelper;
 use OCA\ocUsageCharts\DataProviders\DataProviderInterface;
 use OCA\ocUsageCharts\Entity\Activity\ActivityUsageRepository;
 use OCA\ocUsageCharts\Entity\ChartConfig;
@@ -33,7 +34,6 @@ use OCA\ocUsageCharts\Owncloud\User;
  */
 class ActivityUsagePerMonthProvider implements DataProviderInterface
 {
-
     /**
      * @var ChartConfig
      */
@@ -50,15 +50,22 @@ class ActivityUsagePerMonthProvider implements DataProviderInterface
     protected $user;
 
     /**
+     * @var ChartUsageHelper
+     */
+    private $chartUsageHelper;
+
+    /**
      * @param ChartConfig $chartConfig
      * @param ActivityUsageRepository $repository
      * @param User $user
+     * @param ChartUsageHelper $chartUsageHelper
      */
-    public function __construct(ChartConfig $chartConfig, ActivityUsageRepository $repository, User $user)
+    public function __construct(ChartConfig $chartConfig, ActivityUsageRepository $repository, User $user, ChartUsageHelper $chartUsageHelper)
     {
         $this->chartConfig = $chartConfig;
         $this->repository = $repository;
         $this->user = $user;
+        $this->chartUsageHelper = $chartUsageHelper;
     }
 
     /**
@@ -68,19 +75,8 @@ class ActivityUsagePerMonthProvider implements DataProviderInterface
      */
     public function getChartUsage()
     {
-        if ( $this->user->isAdminUser($this->user->getSignedInUsername()) )
-        {
-            $data = $this->repository->findAllPerMonth();
-        }
-        else
-        {
-            $data = $this->repository->findAllPerMonth($this->chartConfig->getUsername());
-        }
-        return $data;
+        return $this->chartUsageHelper->getChartUsage($this->user, $this->repository, $this->chartConfig);
     }
-
-
-
 
     /**
      * NEVER UPDATE, this is handled by activity app

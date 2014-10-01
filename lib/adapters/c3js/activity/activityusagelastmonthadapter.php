@@ -84,8 +84,9 @@ class ActivityUsageLastMonthAdapter extends c3jsBase implements ChartTypeAdapter
     private function getRowData($x, $collection)
     {
         $row = array();
+        $total = count($x);
         /** @var ActivitySubjectCollection $subjectCollection */
-        for($i = 0; $i < count($x); $i++)
+        for($i = 0; $i < $total; $i++)
         {
             $date = $x[$i];
 

@@ -33,13 +33,12 @@ class ActivityUsagePerMonthAdapter extends c3jsBase implements ChartTypeAdapterI
 {
     /**
      * This method gives the ability to parse the data in any form you would like
+     *
      * @param $data
      * @return mixed
      */
     public function formatData($data)
     {
-        //array(date => $usernames);
-
         $x = array();
         $result = array();
         foreach($data as $date => $usernames)
@@ -48,16 +47,7 @@ class ActivityUsagePerMonthAdapter extends c3jsBase implements ChartTypeAdapterI
             {
                 $x[] = $date;
             }
-            foreach($usernames as $username => $count)
-            {
-                if ( !in_array($username, array_keys($result)) )
-                {
-                    $result[$username] = array();
-                }
-
-                $result[$username][] = $count;
-
-            }
+            $result = $this->parseUsernamesToRow($usernames);
         }
 
         $result["x"] = $x;
@@ -66,5 +56,24 @@ class ActivityUsagePerMonthAdapter extends c3jsBase implements ChartTypeAdapterI
         return $result;
     }
 
+    /**
+     * @TODO Check if this isn't obsolete, what goes in and what goes out
+     * @param array $usernames
+     * @return array
+     */
+    private function parseUsernamesToRow(array $usernames)
+    {
+        $result = array();
+        foreach($usernames as $username => $count)
+        {
+            if ( !in_array($username, array_keys($result)) )
+            {
+                $result[$username] = array();
+            }
+
+            $result[$username][] = $count;
+        }
+        return $result;
+    }
 
 }

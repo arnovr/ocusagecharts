@@ -66,7 +66,7 @@ class ActivityUsageRepository extends Mapper
     {
         $return = array();
         $created = new \DateTime();
-        // Months
+        // Months, maximum 1 year
         $runs = 12;
         for($i = 1; $i <= $runs; $i++)
         {
@@ -84,26 +84,61 @@ class ActivityUsageRepository extends Mapper
             $startStamp = $created->getTimestamp();
 
 
-            $sql = 'SELECT user, count(1) as activities, user FROM oc_activity WHERE timestamp >= ? AND timestamp < ? GROUP BY user';
-            $params = array(
-                $startStamp, $endStamp
-            );
-
             if ( $username !== '' )
             {
-                $sql = 'SELECT user, count(1) as activities, user FROM oc_activity WHERE timestamp >= ? AND timestamp < ? AND user = ? GROUP BY user';
-                $params = array($username);
+                $return[$created->format('Y-m-d')] = $this->findActivitiesBetweenTimestampAndUser($startStamp, $endStamp, $username);
             }
-
-            $query = $this->db->prepareQuery($sql);
-            $result = $query->execute($params);
-            $return[$created->format('Y-m-d')] = $this->parsePerMonthEntities($result);
+            else
+            {
+                $return[$created->format('Y-m-d')] = $this->findActivitiesBetweenTimestamp($startStamp, $endStamp);
+            }
         }
 
         return $return;
     }
 
     /**
+     * Return all activities for all users between a certain timestamp
+     *
+     * @param integer $startTimestamp
+     * @param integer $endTimestamp
+     * @return array
+     */
+    private function findActivitiesBetweenTimestamp($startTimestamp, $endTimestamp)
+    {
+        $sql = 'SELECT user, count(1) as activities, user FROM oc_activity WHERE timestamp >= ? AND timestamp < ? GROUP BY user';
+        $params = array(
+            $startTimestamp, $endTimestamp
+        );
+
+        $query = $this->db->prepareQuery($sql);
+        $result = $query->execute($params);
+        return $this->parsePerMonthEntities($result);
+    }
+
+    /**
+     * * Return all activities between a certain timestamp, for a specific username
+     *
+     * @param integer $startTimestamp
+     * @param integer $endTimestamp
+     * @param string $username
+     * @return array
+     */
+    private function findActivitiesBetweenTimestampAndUser($startTimestamp, $endTimestamp, $username)
+    {
+        $params = array(
+            $startTimestamp, $endTimestamp, $username
+        );
+        $sql = 'SELECT user, count(1) as activities, user FROM oc_activity WHERE timestamp >= ? AND timestamp < ? AND user = ? GROUP BY user';
+
+        $query = $this->db->prepareQuery($sql);
+        $result = $query->execute($params);
+        return $this->parsePerMonthEntities($result);
+    }
+
+    /**
+     * Just some method to parse database results for
+     *
      * @param OC_DB_StatementWrapper $result
      * @return array
      */
