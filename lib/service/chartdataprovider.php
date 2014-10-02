@@ -23,7 +23,6 @@
 
 namespace OCA\ocUsageCharts\Service;
 
-use OCA\ocUsageCharts\Adapters\ChartTypeAdapterInterface;
 use OCA\ocUsageCharts\ChartTypeAdapterFactory;
 use OCA\ocUsageCharts\DataProviderFactory;
 use OCA\ocUsageCharts\Entity\ChartConfig;
