@@ -52,7 +52,29 @@ class ActivityUsageRepository extends Mapper
         return $this->findEntities($sql, $params);
     }
 
+    /**
+     * Calculate the start and end timestamp based on parameters given
+     *
+     * @param integer $month
+     * @param \DateTime $created
+     * @return array
+     */
+    private function calculateStartAndEndTimestamp($month, \DateTime $created)
+    {
+        $endTimestamp = $created->getTimestamp();
 
+        // First month is first day for this month
+        if ( $month == 1 )
+        {
+            $created->setDate($created->format('Y'), $created->format('m'), 1);
+        }
+        else
+        {
+            $created->sub(new \DateInterval('P1M'));
+        }
+        $startTimestamp = $created->getTimestamp();
+        return array($startTimestamp, $endTimestamp);
+    }
 
     /**
      * Find all activity usages grouped by username and month
@@ -70,27 +92,15 @@ class ActivityUsageRepository extends Mapper
         $runs = 12;
         for($i = 1; $i <= $runs; $i++)
         {
-            $endStamp = $created->getTimestamp();
-
-            // First month is first day for this month
-            if ( $i == 1 )
-            {
-                $created->setDate($created->format('Y'), $created->format('m'), 1);
-            }
-            else
-            {
-                $created->sub(new \DateInterval('P1M'));
-            }
-            $startStamp = $created->getTimestamp();
-
+            list($startTimestamp, $endTimestamp) = $this->calculateStartAndEndTimestamp($i, $created);
 
             if ( $username !== '' )
             {
-                $return[$created->format('Y-m-d')] = $this->findActivitiesBetweenTimestampAndUser($startStamp, $endStamp, $username);
+                $return[$created->format('Y-m-d')] = $this->findActivitiesBetweenTimestampAndUser($startTimestamp, $endTimestamp, $username);
             }
             else
             {
-                $return[$created->format('Y-m-d')] = $this->findActivitiesBetweenTimestamp($startStamp, $endStamp);
+                $return[$created->format('Y-m-d')] = $this->findActivitiesBetweenTimestamp($startTimestamp, $endTimestamp);
             }
         }
 

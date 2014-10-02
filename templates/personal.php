@@ -15,10 +15,12 @@ foreach($_['charts'] as $chart)
 
     $userSelected = 'gb';
     $metaData = json_decode($config->getMetaData());
-    if ( !empty($metaData) )
+    if ( empty($metaData) )
     {
-        $userSelected = $metaData->size;
+        // No metadata, no choice in gb or kb
+        break;
     }
+    $userSelected = $metaData->size;
     p($l->t($config->getChartType()));
 
 

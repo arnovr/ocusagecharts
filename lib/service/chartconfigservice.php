@@ -99,35 +99,26 @@ class ChartConfigService
      */
     public function createDefaultConfig()
     {
-        $config = new ChartConfig(
-            null,
-            new \DateTime(),
-            $this->user->getSignedInUsername(),
-            'StorageUsageCurrent',
-            'c3js',
-            json_encode(array('size' => 'gb'))
+        $types = array(
+            'StorageUsageCurrent' => '',
+            'StorageUsageLastMonth' => json_encode(array('size' => 'gb')),
+            'StorageUsagePerMonth' => json_encode(array('size' => 'gb')),
+            'ActivityUsagePerMonth' => '',
+            'ActivityUsageLastMonth' => ''
         );
-        $this->repository->save($config);
 
-        $config = new ChartConfig(
-            null,
-            new \DateTime(),
-            $this->user->getSignedInUsername(),
-            'StorageUsageLastMonth',
-            'c3js',
-            json_encode(array('size' => 'gb'))
-        );
-        $this->repository->save($config);
-
-        $config = new ChartConfig(
-            null,
-            new \DateTime(),
-            $this->user->getSignedInUsername(),
-            'StorageUsagePerMonth',
-            'c3js',
-            json_encode(array('size' => 'gb'))
-        );
-        $this->repository->save($config);
+        foreach($types as $type => $metaData)
+        {
+            $config = new ChartConfig(
+                null,
+                new \DateTime(),
+                $this->user->getSignedInUsername(),
+                $type,
+                'c3js',
+                $metaData
+            );
+            $this->repository->save($config);
+        }
     }
 
     /**

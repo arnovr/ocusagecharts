@@ -110,23 +110,38 @@ class StorageUsageRepository extends Mapper
         $result = $query->execute();
         $entities = array();
         while($row = $result->fetch()){
-            if ( !isset($entities[$row['username']]))
+            if ( empty($entities[$row['username']]) )
             {
                 $entities[$row['username']] = array();
             }
 
-            if ( !is_null($afterCreated) )
-            {
-                $entities[$row['username']] = array_merge($entities[$row['username']], $this->findAfterCreated($row['username'], $afterCreated));
-            }
-            else
-            {
-                $entities[$row['username']] = array_merge($entities[$row['username']], $this->find($row['username'], $limit));
-            }
+            $entities[$row['username']] = array_merge(
+                $entities[$row['username']],
+                $this->findEntitiesBasedOnOrCreated($row, $row['username'], $limit)
+            );
         }
         return $entities;
     }
 
+    /**
+     * @param $username
+     * @param $limit
+     * @param $afterCreated
+     * @return array
+     */
+    private function findEntitiesBasedOnOrCreated($username, $limit, $afterCreated)
+    {
+        if ( !is_null($afterCreated) )
+        {
+            $return = $this->findAfterCreated($username, $afterCreated);
+        }
+        else
+        {
+            $return = $this->find($username, $limit);
+        }
+
+        return $return;
+    }
 
     /**
      * @param string $userName

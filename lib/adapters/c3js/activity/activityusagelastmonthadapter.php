@@ -85,22 +85,27 @@ class ActivityUsageLastMonthAdapter extends c3jsBase implements ChartTypeAdapter
     {
         $row = array();
         $total = count($x);
-        /** @var ActivitySubjectCollection $subjectCollection */
         for($i = 0; $i < $total; $i++)
         {
-            $date = $x[$i];
-
-            if ( empty($row[$i]))
-            {
-                $row[$i] = 0;
-            }
-
-            $subjectCollection = $collection->getByDate(new \DateTime($date));
-            if ( !empty($subjectCollection) )
-            {
-                $row[$i] = $subjectCollection->totalCount();
-            }
+            $row[$i] = $this->calculateTotalCountByCollection(new \DateTime($x[$i]), $collection);
         }
         return $row;
+    }
+
+    /**
+     * @param \DateTime $date
+     * @param ActivityDayCollection $collection
+     * @return integer
+     */
+    private function calculateTotalCountByCollection(\DateTime $date, $collection)
+    {
+        $return = 0;
+        $subjectCollection = $collection->getByDate($date);
+        if ( !empty($subjectCollection) )
+        {
+            $return = $subjectCollection->totalCount();
+        }
+
+        return $return;
     }
 }
