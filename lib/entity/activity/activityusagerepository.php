@@ -141,8 +141,8 @@ class ActivityUsageRepository extends Mapper
     }
 
     /**
-     * @param $sql
-     * @param $params
+     * @param string $sql
+     * @param array $params
      * @return array
      */
     private function findActivitiesBySQLAndParams($sql, $params)

@@ -46,5 +46,5 @@ abstract class AbstractByteMetric
      *
      * @return float
      */
-    abstract function getValue();
+    abstract public function getValue();
 }

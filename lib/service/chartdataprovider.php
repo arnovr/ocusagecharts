@@ -94,7 +94,7 @@ class ChartDataProvider
      * This method returns all usage for a chart based on the chartconfig given
      *
      * @param ChartConfig $chartConfig
-     * @return ChartTypeAdapterInterface
+     * @return array
      */
     public function getChartUsage(ChartConfig $chartConfig)
     {

@@ -115,7 +115,7 @@ class ChartService
     /**
      * @param ChartConfig $chartConfig
      *
-     * @return mixed
+     * @return array
      */
     public function getChartUsage(ChartConfig $chartConfig)
     {

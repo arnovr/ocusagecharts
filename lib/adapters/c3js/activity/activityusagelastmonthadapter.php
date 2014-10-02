@@ -26,13 +26,16 @@ namespace OCA\ocUsageCharts\Adapters\c3js\Activity;
 use OCA\ocUsageCharts\Adapters\ChartTypeAdapterInterface;
 use OCA\ocUsageCharts\Adapters\c3js\c3jsBase;
 use OCA\ocUsageCharts\Entity\Activity\Collections\ActivityDayCollection;
-use OCA\ocUsageCharts\Entity\Activity\Collections\ActivitySubjectCollection;
 
 /**
  * @author Arno van Rossum <arno@van-rossum.com>
  */
 class ActivityUsageLastMonthAdapter extends c3jsBase implements ChartTypeAdapterInterface
 {
+    /**
+     * @param array $data
+     * @return array
+     */
     public function formatData($data)
     {
         $x = array();

@@ -117,19 +117,19 @@ class StorageUsageRepository extends Mapper
 
             $entities[$row['username']] = array_merge(
                 $entities[$row['username']],
-                $this->findEntitiesBasedOnOrCreated($row, $row['username'], $limit)
+                $this->findEntitiesBasedOnOrCreated($row['username'], $limit, $afterCreated)
             );
         }
         return $entities;
     }
 
     /**
-     * @param $username
-     * @param $limit
-     * @param $afterCreated
+     * @param string $username
+     * @param integer $limit
+     * @param \DateTime $afterCreated
      * @return array
      */
-    private function findEntitiesBasedOnOrCreated($username, $limit, $afterCreated)
+    private function findEntitiesBasedOnOrCreated($username, $limit, \DateTime $afterCreated)
     {
         if ( !is_null($afterCreated) )
         {
