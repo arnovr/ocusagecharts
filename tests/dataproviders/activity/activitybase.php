@@ -21,36 +21,53 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\Adapters;
+namespace OCA\ocUsageCharts\Tests\DataProviders;
 
+use OCA\ocUsageCharts\AppInfo\Chart;
+use OCA\ocUsageCharts\DataProviders\Activity\ActivityUsageLastMonthProvider;
+use OCA\ocUsageCharts\Entity\Activity\ActivityUsageRepository;
 use OCA\ocUsageCharts\Entity\ChartConfig;
+use OCA\ocUsageCharts\Owncloud\User;
 
-/**
- * @author Arno van Rossum <arno@van-rossum.com>
- */
-interface ChartTypeAdapterInterface
+class ActivityBase extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @param ChartConfig $config
-     * @return ChartTypeAdapterInterface
+     * @var ChartConfig
      */
-    public function __construct(ChartConfig $config);
+    protected $config;
 
     /**
-     * This method gives the ability to parse the data in any form you would like
-     * @param $data
-     * @return mixed
+     * @var ActivityUsageRepository
      */
-    public function formatData($data);
+    protected $repository;
 
     /**
-     * @return ChartConfig
+     * @var User
      */
-    public function getConfig();
+    protected $user;
 
     /**
-     * This method should initialize all the styles and javascripts to be loaded
-     * @return void
+     * @var ActivityUsageLastMonthProvider
      */
-    public function loadFrontend();
+    protected $provider;
+
+    public function setUp()
+    {
+        $this->repository = $this
+            ->getMockBuilder('OCA\ocUsageCharts\Entity\Activity\ActivityUsageRepository')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+
+        $this->config = $this
+            ->getMockBuilder('OCA\ocUsageCharts\Entity\ChartConfig')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->user = $this
+            ->getMockBuilder('OCA\ocUsageCharts\Owncloud\User')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+    }
 }

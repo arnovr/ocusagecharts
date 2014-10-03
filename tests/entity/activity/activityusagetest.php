@@ -21,36 +21,49 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\Adapters;
+namespace OCA\ocUsageCharts\Tests\Entity;
 
-use OCA\ocUsageCharts\Entity\ChartConfig;
 
-/**
- * @author Arno van Rossum <arno@van-rossum.com>
- */
-interface ChartTypeAdapterInterface
+use OCA\ocUsageCharts\Entity\Activity\ActivityUsage;
+
+class ActivityUsageTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @param ChartConfig $config
-     * @return ChartTypeAdapterInterface
+     * @var ActivityUsage
      */
-    public function __construct(ChartConfig $config);
+    private $activityUsage;
 
     /**
-     * This method gives the ability to parse the data in any form you would like
-     * @param $data
-     * @return mixed
+     * @var \DateTime
      */
-    public function formatData($data);
+    private $date;
 
-    /**
-     * @return ChartConfig
-     */
-    public function getConfig();
+    public function setUp()
+    {
+        $this->date = new \DateTime();
 
-    /**
-     * This method should initialize all the styles and javascripts to be loaded
-     * @return void
-     */
-    public function loadFrontend();
+        $this->activityUsage = new ActivityUsage($this->date, "created_from", 'test1');
+    }
+    public function testGetDate()
+    {
+        $this->assertEquals($this->date, $this->activityUsage->getDate());
+    }
+
+    public function testGetSubject()
+    {
+        $this->assertEquals('created_from', $this->activityUsage->getSubject());
+    }
+    public function testFromRow()
+    {
+        $row = array(
+            'created' => $this->date->format('Y-m-d H:i:s'),
+            'username' => 'test1',
+            'subject' => 'created_from'
+        );
+        $activity = ActivityUsage::fromRow($row);
+        $this->assertInstanceOf('OCA\ocUsageCharts\Entity\Activity\ActivityUsage', $activity);
+
+        $this->assertEquals("created_from", $activity->getSubject());
+        $this->assertEquals($this->date, $activity->getDate());
+    }
 }

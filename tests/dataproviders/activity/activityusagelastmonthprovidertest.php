@@ -29,52 +29,12 @@ use OCA\ocUsageCharts\Entity\Activity\ActivityUsageRepository;
 use OCA\ocUsageCharts\Entity\ChartConfig;
 use OCA\ocUsageCharts\Owncloud\User;
 
-class ActivityUsageLastMonthProviderTest extends \PHPUnit_Framework_TestCase
+class ActivityUsageLastMonthProviderTest extends ActivityBase
 {
-    /**
-     * @var ChartConfig
-     */
-    private $config;
-
-    /**
-     * @var ActivityUsageRepository
-     */
-    private $repository;
-
-    /**
-     * @var User
-     */
-    private $user;
-
-    /**
-     * @var ActivityUsageLastMonthProvider
-     */
-    private $provider;
-
     public function setUp()
     {
-        $app = new Chart();
-        $this->container = $app->getContainer();
-
-        $this->repository = $this
-            ->getMockBuilder('OCA\ocUsageCharts\Entity\Activity\ActivityUsageRepository')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-
-        $this->config = $this
-            ->getMockBuilder('OCA\ocUsageCharts\Entity\ChartConfig')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->user = $this
-            ->getMockBuilder('OCA\ocUsageCharts\Owncloud\User')
-            ->disableOriginalConstructor()
-            ->getMock();
-
         $this->provider = new ActivityUsageLastMonthProvider($this->config, $this->repository, $this->user);
     }
-
     public function testGetChartUsageRegularUser()
     {
         $mock = $this

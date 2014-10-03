@@ -21,36 +21,36 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\Adapters;
+namespace OCA\ocUsageCharts\Tests\DataProviders;
 
-use OCA\ocUsageCharts\Entity\ChartConfig;
 
-/**
- * @author Arno van Rossum <arno@van-rossum.com>
- */
-interface ChartTypeAdapterInterface
+use OCA\ocUsageCharts\DataProviders\Storage\StorageUsagePerMonthProvider;
+
+class StorageUsagePerMonthProviderTest extends StorageUsageBaseTest
 {
     /**
-     * @param ChartConfig $config
-     * @return ChartTypeAdapterInterface
+     * @var StorageUsagePerMonthProvider
      */
-    public function __construct(ChartConfig $config);
+    private $provider;
 
-    /**
-     * This method gives the ability to parse the data in any form you would like
-     * @param $data
-     * @return mixed
-     */
-    public function formatData($data);
+    private $chartUsageHelper;
 
-    /**
-     * @return ChartConfig
-     */
-    public function getConfig();
+    public function setUp()
+    {
+        parent::setUp();
 
-    /**
-     * This method should initialize all the styles and javascripts to be loaded
-     * @return void
-     */
-    public function loadFrontend();
+        $this->chartUsageHelper = $this
+            ->getMockBuilder('OCA\ocUsageCharts\DataProviders\ChartUsageHelper')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->provider = new StorageUsagePerMonthProvider($this->config, $this->repository, $this->user, $this->storage, $this->chartUsageHelper);
+    }
+
+    public function testGetChartUsage()
+    {
+        $data = array('xxxx');
+        $this->chartUsageHelper->expects($this->once())->method('getChartUsage')->willReturn($data);
+        $return = $this->provider->getChartUsage();
+        $this->assertEquals($data, $return);
+    }
 }

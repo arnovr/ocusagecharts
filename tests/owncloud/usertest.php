@@ -21,36 +21,36 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\Adapters;
+namespace OCA\ocUsageCharts\Tests\Owncloud;
 
-use OCA\ocUsageCharts\Entity\ChartConfig;
 
-/**
- * @author Arno van Rossum <arno@van-rossum.com>
- */
-interface ChartTypeAdapterInterface
+use OCA\ocUsageCharts\Owncloud\User;
+
+class UserTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @param ChartConfig $config
-     * @return ChartTypeAdapterInterface
+     * @var User
      */
-    public function __construct(ChartConfig $config);
-
-    /**
-     * This method gives the ability to parse the data in any form you would like
-     * @param $data
-     * @return mixed
-     */
-    public function formatData($data);
-
-    /**
-     * @return ChartConfig
-     */
-    public function getConfig();
-
-    /**
-     * This method should initialize all the styles and javascripts to be loaded
-     * @return void
-     */
-    public function loadFrontend();
+    private $user;
+    public function setUp()
+    {
+        $this->user = new User();
+    }
+    public function testGetSignedInUsername()
+    {
+        $username = $this->user->getSignedInUsername();
+        $this->assertEquals('', $username);
+    }
+    public function testIsAdminUser()
+    {
+        $this->assertEquals(true, $this->user->isAdminUser('admin'));
+        $this->assertEquals(false, $this->user->isAdminUser('test1'));
+    }
+    public function testGetSystemUsers()
+    {
+        $users = $this->user->getSystemUsers();
+        $this->assertArrayHasKey('admin', $users);
+        $this->assertArrayHasKey('test1', $users);
+        $this->assertArrayHasKey('test2', $users);
+    }
 }

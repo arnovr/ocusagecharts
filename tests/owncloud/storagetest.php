@@ -21,36 +21,31 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\Adapters;
+namespace OCA\ocUsageCharts\Tests\Owncloud;
 
-use OCA\ocUsageCharts\Entity\ChartConfig;
 
-/**
- * @author Arno van Rossum <arno@van-rossum.com>
- */
-interface ChartTypeAdapterInterface
+use OCA\ocUsageCharts\Owncloud\Storage;
+
+class StorageTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @param ChartConfig $config
-     * @return ChartTypeAdapterInterface
+     * @var Storage
      */
-    public function __construct(ChartConfig $config);
-
-    /**
-     * This method gives the ability to parse the data in any form you would like
-     * @param $data
-     * @return mixed
-     */
-    public function formatData($data);
-
-    /**
-     * @return ChartConfig
-     */
-    public function getConfig();
-
-    /**
-     * This method should initialize all the styles and javascripts to be loaded
-     * @return void
-     */
-    public function loadFrontend();
+    private $storage;
+    public function setUp()
+    {
+        $this->storage = new Storage();
+    }
+    public function testGetCurrentStorageUsageForSignedInUser()
+    {
+        $result = $this->storage->getCurrentStorageUsageForSignedInUser();
+        $this->assertArrayHasKey('free', $result);
+        $this->assertArrayHasKey('used', $result);
+    }
+    public function testGetStorageUsage()
+    {
+        //@TODO
+        $result = $this->storage->getStorageUsage('admin');
+        $this->assertEquals($result, $result);
+    }
 }
