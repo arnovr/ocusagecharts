@@ -30,6 +30,7 @@ class ActivityUsageLastMonthProviderTest extends ActivityBase
 {
     public function setUp()
     {
+        parent::setUp();
         $this->provider = new ActivityUsageLastMonthProvider($this->config, $this->repository, $this->user);
     }
     public function testGetChartUsageRegularUser()

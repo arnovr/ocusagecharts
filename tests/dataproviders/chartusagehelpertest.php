@@ -62,6 +62,7 @@ class ChartUsageHelperTest extends \PHPUnit_Framework_TestCase
 
         $this->user->expects($this->once())->method('getSignedInUsername')->willReturn($username);
         $this->user->expects($this->once())->method('isAdminUser')->willReturn(false);
+        $this->config->expects($this->once())->method('getUsername')->willReturn($username);
 
         $return = $this->helper->getChartUsage($this->user, $this->repository, $this->config);
 
@@ -76,7 +77,6 @@ class ChartUsageHelperTest extends \PHPUnit_Framework_TestCase
 
         $this->user->expects($this->once())->method('getSignedInUsername')->willReturn($username);
         $this->user->expects($this->once())->method('isAdminUser')->willReturn(true);
-        $this->config->expects($this->once)->method('getUsername')->willReturn($username);
         $return = $this->helper->getChartUsage($this->user, $this->repository, $this->config);
 
         $this->assertEquals($return, $data);

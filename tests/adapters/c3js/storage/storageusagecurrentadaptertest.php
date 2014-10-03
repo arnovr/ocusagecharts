@@ -21,45 +21,33 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\DataProviders\Storage;
+namespace OCA\ocUsageCharts\Tests\Adapters\c3js\Storage;
+use OCA\ocUsageCharts\Adapters\c3js\Storage\StorageUsageCurrentAdapter;
+use OCA\ocUsageCharts\Tests\Adapters\c3js\c3jsBaseTest;
 
-use OCA\ocUsageCharts\DataProviders\ChartUsageHelper;
-use OCA\ocUsageCharts\DataProviders\DataProviderInterface;
-use OCA\ocUsageCharts\Entity\ChartConfig;
-use OCA\ocUsageCharts\Entity\Storage\StorageUsageRepository;
-use OCA\ocUsageCharts\Owncloud\Storage;
-use OCA\ocUsageCharts\Owncloud\User;
 
 /**
  * @author Arno van Rossum <arno@van-rossum.com>
  */
-class StorageUsagePerMonthProvider extends StorageUsageBase implements DataProviderInterface
+class StorageUsageCurrentAdapterTest extends c3jsBaseTest
 {
     /**
-     * @var ChartUsageHelper
+     * @var StorageUsageCurrentAdapter
      */
-    private $chartUsageHelper;
+    private $adapter;
 
-    /**
-     * @param ChartConfig $chartConfig
-     * @param StorageUsageRepository $repository
-     * @param User $user
-     * @param Storage $storage
-     * @param ChartUsageHelper $chartUsageHelper
-     */
-    public function __construct(ChartConfig $chartConfig, StorageUsageRepository $repository, User $user, Storage $storage, ChartUsageHelper $chartUsageHelper)
+    public function setUp()
     {
-        parent::__construct($chartConfig, $repository, $user, $storage);
-        $this->chartUsageHelper = $chartUsageHelper;
+        parent::setUp();
+        $this->adapter = new StorageUsageCurrentAdapter($this->config);
     }
-
-    /**
-     * Return the chart data you want to return based on the ChartConfig
-     *
-     * @return mixed
-     */
-    public function getChartUsage()
+    public function testFormatData()
     {
-        return $this->chartUsageHelper->getChartUsage($this->user, $this->repository, $this->chartConfig);
+        $data = array(
+            'used' => 23124125,
+            'free' => 45567678
+        );
+
+        $this->assertEquals($data, $this->adapter->formatData($data));
     }
 }

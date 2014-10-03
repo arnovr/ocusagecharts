@@ -21,36 +21,18 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\Tests\Owncloud;
+namespace OCA\ocUsageCharts\Tests\Adapters\c3js\Activity;
+use OCA\ocUsageCharts\Tests\Adapters\c3js\c3jsBaseTest;
 
 
-use OCA\ocUsageCharts\Owncloud\User;
-
-class UserTest extends \PHPUnit_Framework_TestCase
+/**
+ * @author Arno van Rossum <arno@van-rossum.com>
+ */
+class ActivityUsageLastMonthAdapterTest extends c3jsBaseTest
 {
-    /**
-     * @var User
-     */
-    private $user;
-    public function setUp()
+    public function testFormatData()
     {
-        $this->user = new User();
+        $this->assertTrue(true);
     }
-    public function testGetSignedInUsername()
-    {
-        $username = $this->user->getSignedInUsername();
-        $this->assertEquals('', $username);
-    }
-    public function testIsAdminUser()
-    {
-        $this->assertEquals(true, $this->user->isAdminUser('admin'));
-        $this->assertEquals(false, $this->user->isAdminUser('test1'));
-    }
-    public function testGetSystemUsers()
-    {
-        $users = $this->user->getSystemUsers();
-        $this->assertContains('admin', $users);
-        $this->assertContains('test1', $users);
-        $this->assertContains('test2', $users);
-    }
+
 }

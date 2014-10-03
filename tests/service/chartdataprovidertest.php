@@ -162,4 +162,34 @@ class ChartDataProviderTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey($this->configMock->getUsername(), $data);
 
     }
+
+    public function testIsAllowedToUpdateFailed()
+    {
+        $provider = $this
+            ->getMockBuilder('OCA\ocUsageCharts\DataProviders\Storage\StorageUsageCurrentProvider')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $provider
+            ->expects($this->once())
+            ->method('isAllowedToUpdate')->willReturn(false);
+
+        $this->dataProviderFactory->method('getDataProviderByConfig')->willReturn($provider);
+
+        $this->assertFalse($this->dataProvider->isAllowedToUpdate($this->configMock));
+    }
+
+    public function testIsAllowedToUpdateSucceeded()
+    {
+        $provider = $this
+            ->getMockBuilder('OCA\ocUsageCharts\DataProviders\Storage\StorageUsageCurrentProvider')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $provider
+            ->expects($this->once())
+            ->method('isAllowedToUpdate')->willReturn(true);
+
+        $this->dataProviderFactory->method('getDataProviderByConfig')->willReturn($provider);
+
+        $this->assertTrue($this->dataProvider->isAllowedToUpdate($this->configMock));
+    }
 }

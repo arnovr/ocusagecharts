@@ -56,8 +56,8 @@ class ActivityUsageTest extends \PHPUnit_Framework_TestCase
     public function testFromRow()
     {
         $row = array(
-            'created' => $this->date->format('Y-m-d H:i:s'),
-            'username' => 'test1',
+            'timestamp' => $this->date->getTimestamp(),
+            'user' => 'test1',
             'subject' => 'created_from'
         );
         $activity = ActivityUsage::fromRow($row);

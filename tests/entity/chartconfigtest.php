@@ -62,6 +62,12 @@ class ChartConfigTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals('1', $this->chartConfig->getId());
     }
+
+    public function testSetMetaData()
+    {
+        $this->chartConfig->setMetaData('changed');
+        $this->assertEquals('changed', $this->chartConfig->getMetaData());
+    }
     public function testGetMetaData()
     {
         $this->assertEquals('metadata', $this->chartConfig->getMetaData());

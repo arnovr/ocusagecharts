@@ -123,9 +123,10 @@ class ChartConfigService
 
     /**
      * @param ChartConfig $config
+     * @return boolean
      */
     public function save(ChartConfig $config)
     {
-        $this->repository->save($config);
+        return $this->repository->save($config);
     }
 }

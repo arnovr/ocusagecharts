@@ -56,7 +56,7 @@ class ChartDataProvider
      * Get the current usage for a chart given
      *
      * @param ChartConfig $chartConfig
-     * @return mixed
+     * @return boolean
      */
     public function isAllowedToUpdate(ChartConfig $chartConfig)
     {

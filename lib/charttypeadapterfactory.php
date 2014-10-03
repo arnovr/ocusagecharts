@@ -70,7 +70,7 @@ class ChartTypeAdapterFactory
      * @param ChartConfig $config
      * @return Adapters\c3js\Storage\StorageUsageCurrentAdapter
      */
-    public function getStorageUsageCurrentAdapter($provider, ChartConfig $config)
+    private function getStorageUsageCurrentAdapter($provider, ChartConfig $config)
     {
         switch($provider)
         {
@@ -86,7 +86,7 @@ class ChartTypeAdapterFactory
      * @param ChartConfig $config
      * @return Adapters\c3js\Storage\StorageUsageLastMonthAdapter
      */
-    public function getStorageUsageLastMonthAdapter($provider, ChartConfig $config)
+    private function getStorageUsageLastMonthAdapter($provider, ChartConfig $config)
     {
         switch($provider)
         {
@@ -102,7 +102,7 @@ class ChartTypeAdapterFactory
      * @param ChartConfig $config
      * @return Adapters\c3js\Storage\StorageUsagePerMonthAdapter
      */
-    public function getStorageUsagePerMonthAdapter($provider, ChartConfig $config)
+    private function getStorageUsagePerMonthAdapter($provider, ChartConfig $config)
     {
         switch($provider)
         {
@@ -118,7 +118,7 @@ class ChartTypeAdapterFactory
      * @param ChartConfig $config
      * @return Adapters\c3js\Activity\ActivityUsageLastMonthAdapter
      */
-    public function getActivityUsageLastMonthAdapter($provider, ChartConfig $config)
+    private function getActivityUsageLastMonthAdapter($provider, ChartConfig $config)
     {
         switch($provider)
         {
@@ -134,7 +134,7 @@ class ChartTypeAdapterFactory
      * @param ChartConfig $config
      * @return Adapters\c3js\Activity\ActivityUsagePerMonthAdapter
      */
-    public function getActivityUsagePerMonthAdapter($provider, ChartConfig $config)
+    private function getActivityUsagePerMonthAdapter($provider, ChartConfig $config)
     {
         switch($provider)
         {

@@ -28,7 +28,7 @@ use OCA\ocUsageCharts\Entity\Activity\ActivityUsageRepository;
 use OCA\ocUsageCharts\Entity\ChartConfig;
 use OCA\ocUsageCharts\Owncloud\User;
 
-class ActivityBase extends \PHPUnit_Framework_TestCase
+abstract class ActivityBase extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var ChartConfig
@@ -67,6 +67,5 @@ class ActivityBase extends \PHPUnit_Framework_TestCase
             ->getMockBuilder('OCA\ocUsageCharts\Owncloud\User')
             ->disableOriginalConstructor()
             ->getMock();
-
     }
 }

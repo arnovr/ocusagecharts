@@ -33,7 +33,7 @@ use OCA\ocUsageCharts\Owncloud\User;
 /**
  * @author Arno van Rossum <arno@van-rossum.com>
  */
-abstract class StorageUsageBase implements DataProviderInterface, DataProviderStorageInterface
+abstract class StorageUsageBase implements DataProviderInterface
 {
     /**
      * @var ChartConfig

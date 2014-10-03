@@ -21,36 +21,23 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\Tests\Owncloud;
+namespace OCA\ocUsageCharts\Tests\Adapters\c3js;
 
-
-use OCA\ocUsageCharts\Owncloud\User;
-
-class UserTest extends \PHPUnit_Framework_TestCase
+/**
+ * @author Arno van Rossum <arno@van-rossum.com>
+ */
+abstract class c3jsBaseTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var User
+     * @var ChartConfig
      */
-    private $user;
+    protected $config;
+
     public function setUp()
     {
-        $this->user = new User();
-    }
-    public function testGetSignedInUsername()
-    {
-        $username = $this->user->getSignedInUsername();
-        $this->assertEquals('', $username);
-    }
-    public function testIsAdminUser()
-    {
-        $this->assertEquals(true, $this->user->isAdminUser('admin'));
-        $this->assertEquals(false, $this->user->isAdminUser('test1'));
-    }
-    public function testGetSystemUsers()
-    {
-        $users = $this->user->getSystemUsers();
-        $this->assertContains('admin', $users);
-        $this->assertContains('test1', $users);
-        $this->assertContains('test2', $users);
+        $this->config = $this
+            ->getMockBuilder('\OCA\ocUsageCharts\Entity\ChartConfig')
+            ->disableOriginalConstructor()
+            ->getMock();
     }
 }

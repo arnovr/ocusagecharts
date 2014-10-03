@@ -21,36 +21,38 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\Tests\Owncloud;
+namespace OCA\ocUsageCharts\Tests\Adapters\c3js\Storage;
+use OCA\ocUsageCharts\Adapters\c3js\Storage\StorageUsageLastMonthAdapter;
+use OCA\ocUsageCharts\Entity\Storage\StorageUsage;
+use OCA\ocUsageCharts\Tests\Adapters\c3js\c3jsBaseTest;
 
 
-use OCA\ocUsageCharts\Owncloud\User;
-
-class UserTest extends \PHPUnit_Framework_TestCase
+/**
+ * @author Arno van Rossum <arno@van-rossum.com>
+ */
+class StorageUsageLastMonthAdapterTest extends c3jsBaseTest
 {
     /**
-     * @var User
+     * @var StorageUsageLastMonthAdapter
      */
-    private $user;
+    protected $adapter;
     public function setUp()
     {
-        $this->user = new User();
+        parent::setUp();
+        $this->adapter = new StorageUsageLastMonthAdapter($this->config);
     }
-    public function testGetSignedInUsername()
+    public function testFormatData()
     {
-        $username = $this->user->getSignedInUsername();
-        $this->assertEquals('', $username);
-    }
-    public function testIsAdminUser()
-    {
-        $this->assertEquals(true, $this->user->isAdminUser('admin'));
-        $this->assertEquals(false, $this->user->isAdminUser('test1'));
-    }
-    public function testGetSystemUsers()
-    {
-        $users = $this->user->getSystemUsers();
-        $this->assertContains('admin', $users);
-        $this->assertContains('test1', $users);
-        $this->assertContains('test2', $users);
+        //$metaData = json_encode(array('size' => 'kb'));
+        //$this->config->expects($this->once())->method('getMetaData')->willReturn($metaData);
+        $data = array('test1' => array(
+            new StorageUsage(new \DateTime("-1 day"), 234234, 'test1'),
+            new StorageUsage(new \DateTime(), 23423422, 'test1')
+        ));
+        $result = $this->adapter->formatData($data);
+        $this->assertArrayHasKey('x', $result);
+        $this->assertArrayHasKey('test1', $result);
+        $this->assertCount(2, $result['x']);
+        $this->assertCount(2, $result['test1']);
     }
 }
