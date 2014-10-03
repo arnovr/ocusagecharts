@@ -23,11 +23,8 @@
 
 namespace OCA\ocUsageCharts\Tests\DataProviders;
 
-use OCA\ocUsageCharts\AppInfo\Chart;
 use OCA\ocUsageCharts\DataProviders\Activity\ActivityUsageLastMonthProvider;
-use OCA\ocUsageCharts\Entity\Activity\ActivityUsageRepository;
-use OCA\ocUsageCharts\Entity\ChartConfig;
-use OCA\ocUsageCharts\Owncloud\User;
+use OCA\ocUsageCharts\Tests\DataProviders\Activity\ActivityBase;
 
 class ActivityUsageLastMonthProviderTest extends ActivityBase
 {

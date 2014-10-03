@@ -21,9 +21,8 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\Tests\DataProviders;
+namespace OCA\ocUsageCharts\Tests\DataProviders\Activity;
 
-use OCA\ocUsageCharts\AppInfo\Chart;
 use OCA\ocUsageCharts\DataProviders\Activity\ActivityUsageLastMonthProvider;
 use OCA\ocUsageCharts\Entity\Activity\ActivityUsageRepository;
 use OCA\ocUsageCharts\Entity\ChartConfig;

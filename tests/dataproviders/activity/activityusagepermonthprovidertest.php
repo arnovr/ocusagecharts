@@ -24,6 +24,7 @@
 namespace OCA\ocUsageCharts\Tests\DataProviders;
 
 use OCA\ocUsageCharts\DataProviders\Activity\ActivityUsagePerMonthProvider;
+use OCA\ocUsageCharts\Tests\DataProviders\Activity\ActivityBase;
 
 class ActivityUsagePerMonthProviderTest extends ActivityBase
 {
