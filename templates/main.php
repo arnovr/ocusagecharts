@@ -1,15 +1,28 @@
 <?php
 echo '<div id="app">
     <div id="app-navigation">
-        <ul>';
+<ul>    ';
 
-foreach($_['configs'] as $config)
+$chartTypes = array(
+    'Storage',
+    'Activity'
+);
+foreach($chartTypes as $possibleType)
 {
-    $url = \OCP\Util::linkToRoute('ocusagecharts.chart.display_chart', array('id' => $config->getId()));
-    echo '<li><a href="' . $url . '">' . $l->t($config->getChartType()) . '</a></li>';
+    echo '<li class="menu-title"><h2>' . $l->t($possibleType . '_title') . '</h2></li>';
+
+    foreach($_['configs'] as $config)
+    {
+        if ( substr($possibleType, 0, 7) !== substr($config->getChartType(), 0, 7) )
+        {
+            continue;
+        }
+        $url = \OCP\Util::linkToRoute('ocusagecharts.chart.display_chart', array('id' => $config->getId()));
+        echo '<li><a href="' . $url . '">' . $l->t($config->getChartType()) . '</a></li>';
+    }
 }
 echo '
-        </ul>
+</ul>
     </div>
     <div id="app-content">';
 

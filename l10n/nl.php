@@ -13,4 +13,6 @@ $TRANSLATIONS = array(
     "ActivityUsageLastMonth"=> "Activiteiten over de afgelopen maand",
     "activities"            => "Activiteiten",
     "ActivityUsagePerMonth" => "Activiteiten per maand",
+    "Storage_title"         => "Data verbruik",
+    "Activity_title"        => "Activiteiten"
 );
