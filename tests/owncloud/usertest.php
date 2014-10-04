@@ -40,18 +40,18 @@ class UserTest extends \PHPUnit_Framework_TestCase
     {
         $username = $this->user->getSignedInUsername();
         //$this->assertEquals('', $username);
-        $this->asserTrue(true);
+        $this->assertTrue(true);
     }
     public function testIsAdminUser()
     {
-        $this->asserTrue(true);
+        $this->assertTrue(true);
         //$this->assertEquals(true, $this->user->isAdminUser('admin'));
         //$this->assertEquals(false, $this->user->isAdminUser('test1'));
     }
     public function testGetSystemUsers()
     {
         $users = $this->user->getSystemUsers();
-        $this->asserTrue(true);
+        $this->assertTrue(true);
         //$this->assertContains('admin', $users);
         //$this->assertContains('test1', $users);
         //$this->assertContains('test2', $users);
