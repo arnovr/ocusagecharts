@@ -23,6 +23,8 @@
 
 namespace OCA\ocUsageCharts\Tests\Adapters\c3js;
 
+use OCA\ocUsageCharts\Entity\ChartConfig;
+
 /**
  * @author Arno van Rossum <arno@van-rossum.com>
  */

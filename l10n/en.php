@@ -9,6 +9,8 @@ $TRANSLATIONS = array(
     "sizes_mb"              => "Megabytes",
     "sizes_gb"              => "Gigabytes",
     "sizes_tb"              => "Terabytes",
+
     "ActivityUsageLastMonth"=> "Activities over the last month",
     "activities"            => "Activities",
+    "ActivityUsagePerMonth" => "Activities per month",
 );
