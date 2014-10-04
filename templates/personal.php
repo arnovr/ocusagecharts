@@ -1,5 +1,4 @@
 <?php
-$userSelected = 'gb'; // @TODO this should go from the appconfigservice
 $selected = ' selected="selected"';
 
 echo '
