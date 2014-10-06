@@ -1,5 +1,4 @@
 <?php
-$userSelected = 'gb'; // @TODO this should go from the appconfigservice
 $selected = ' selected="selected"';
 
 echo '
@@ -9,9 +8,15 @@ echo '
     echo '</h2>
 <div><div id="ocusagecharts-msg"></div>
 ';
+$allowedType = array('StorageUsageLastMonth', 'StorageUsagePerMonth');
 foreach($_['charts'] as $chart)
 {
     $config = $chart->getConfig();
+    if ( !in_array($config->getChartType(), $allowedType) )
+    {
+        continue;
+    }
+
 
     $userSelected = 'gb';
     $metaData = json_decode($config->getMetaData());
@@ -20,7 +25,6 @@ foreach($_['charts'] as $chart)
         $userSelected = $metaData->size;
     }
     p($l->t($config->getChartType()));
-
 
     echo '
     <select name="ocusagecharts-charts-' . $config->getId() . '">

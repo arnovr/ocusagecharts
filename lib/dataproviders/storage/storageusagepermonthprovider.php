@@ -23,13 +23,36 @@
 
 namespace OCA\ocUsageCharts\DataProviders\Storage;
 
+use OCA\ocUsageCharts\DataProviders\ChartUsageHelper;
 use OCA\ocUsageCharts\DataProviders\DataProviderInterface;
+use OCA\ocUsageCharts\Entity\ChartConfig;
+use OCA\ocUsageCharts\Entity\Storage\StorageUsageRepository;
+use OCA\ocUsageCharts\Owncloud\Storage;
+use OCA\ocUsageCharts\Owncloud\User;
 
 /**
  * @author Arno van Rossum <arno@van-rossum.com>
  */
-class StorageUsagePerMonthProvider extends StorageUsageBase implements DataProviderInterface, DataProviderStorageInterface
+class StorageUsagePerMonthProvider extends StorageUsageBase implements DataProviderInterface
 {
+    /**
+     * @var ChartUsageHelper
+     */
+    private $chartUsageHelper;
+
+    /**
+     * @param ChartConfig $chartConfig
+     * @param StorageUsageRepository $repository
+     * @param User $user
+     * @param Storage $storage
+     * @param ChartUsageHelper $chartUsageHelper
+     */
+    public function __construct(ChartConfig $chartConfig, StorageUsageRepository $repository, User $user, Storage $storage, ChartUsageHelper $chartUsageHelper)
+    {
+        parent::__construct($chartConfig, $repository, $user, $storage);
+        $this->chartUsageHelper = $chartUsageHelper;
+    }
+
     /**
      * Return the chart data you want to return based on the ChartConfig
      *
@@ -37,14 +60,6 @@ class StorageUsagePerMonthProvider extends StorageUsageBase implements DataProvi
      */
     public function getChartUsage()
     {
-        if ( $this->user->isAdminUser($this->user->getSignedInUsername()) )
-        {
-            $data = $this->repository->findAllPerMonth();
-        }
-        else
-        {
-            $data = $this->repository->findAllPerMonth($this->chartConfig->getUsername());
-        }
-        return $data;
+        return $this->chartUsageHelper->getChartUsage($this->user, $this->repository, $this->chartConfig);
     }
 }

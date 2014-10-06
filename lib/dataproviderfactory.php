@@ -23,11 +23,15 @@
 
 namespace OCA\ocUsageCharts;
 
+use OCA\ocUsageCharts\DataProviders\Activity\ActivityUsageLastMonthProvider;
+use OCA\ocUsageCharts\DataProviders\Activity\ActivityUsagePerMonthProvider;
+use OCA\ocUsageCharts\DataProviders\ChartUsageHelper;
 use OCA\ocUsageCharts\DataProviders\Storage\StorageUsageCurrentProvider;
 use OCA\ocUsageCharts\DataProviders\Storage\StorageUsageLastMonthProvider;
 use OCA\ocUsageCharts\DataProviders\Storage\StorageUsagePerMonthProvider;
+use OCA\ocUsageCharts\Entity\Activity\ActivityUsageRepository;
 use OCA\ocUsageCharts\Entity\ChartConfig;
-use OCA\ocUsageCharts\Entity\StorageUsageRepository;
+use OCA\ocUsageCharts\Entity\Storage\StorageUsageRepository;
 use OCA\ocUsageCharts\Exception\ChartDataProviderException;
 use OCA\ocUsageCharts\Owncloud\Storage;
 use OCA\ocUsageCharts\Owncloud\User;
@@ -43,6 +47,11 @@ class DataProviderFactory
     private $repository;
 
     /**
+     * @var ActivityUsageRepository
+     */
+    private $activityUsageRepository;
+
+    /**
      * @var User
      */
     private $user;
@@ -53,15 +62,24 @@ class DataProviderFactory
     private $storage;
 
     /**
+     * @var ChartUsageHelper
+     */
+    private $chartUsageHelper;
+
+    /**
      * @param StorageUsageRepository $repository
+     * @param ActivityUsageRepository $activityUsageRepository
      * @param User $user
      * @param Storage $storage
+     * @param ChartUsageHelper $chartUsageHelper
      */
-    public function __construct(StorageUsageRepository $repository, User $user, Storage $storage)
+    public function __construct(StorageUsageRepository $repository, ActivityUsageRepository $activityUsageRepository, User $user, Storage $storage, ChartUsageHelper $chartUsageHelper)
     {
         $this->repository = $repository;
         $this->user = $user;
         $this->storage = $storage;
+        $this->activityUsageRepository = $activityUsageRepository;
+        $this->chartUsageHelper = $chartUsageHelper;
     }
 
     /**
@@ -80,7 +98,13 @@ class DataProviderFactory
                 $provider = new StorageUsageLastMonthProvider($config, $this->repository, $this->user, $this->storage);
                 break;
             case 'StorageUsagePerMonth':
-                $provider = new StorageUsagePerMonthProvider($config, $this->repository, $this->user, $this->storage);
+                $provider = new StorageUsagePerMonthProvider($config, $this->repository, $this->user, $this->storage, $this->chartUsageHelper);
+                break;
+            case 'ActivityUsageLastMonth':
+                $provider = new ActivityUsageLastMonthProvider($config, $this->activityUsageRepository, $this->user);
+                break;
+            case 'ActivityUsagePerMonth':
+                $provider = new ActivityUsagePerMonthProvider($config, $this->activityUsageRepository, $this->user, $this->chartUsageHelper);
                 break;
             default:
                 throw new ChartDataProviderException("DataProvider for " . $config->getChartType() . ' does not exist.');

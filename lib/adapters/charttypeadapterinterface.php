@@ -32,7 +32,7 @@ interface ChartTypeAdapterInterface
 {
     /**
      * @param ChartConfig $config
-     * @return void
+     * @return ChartTypeAdapterInterface
      */
     public function __construct(ChartConfig $config);
 

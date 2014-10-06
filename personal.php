@@ -30,15 +30,11 @@ $l = \OCP\Util::getL10N('ocusagecharts');
 
 $app = new Chart();
 $container = $app->getContainer();
+$chartConfigService = $container->query('ChartConfigService');
+$chartConfigService->setDefaultConfigs();
+
 $chartService = $container->query('ChartService');
 $chartConfigs = $chartService->getCharts();
-if ( count($chartConfigs) == 0 )
-{
-    $chartConfigService = $container->query('ChartConfigService');
-    $chartConfigService->createDefaultConfig();
-    $chartConfigs = $chartService->getCharts();
-}
-
 $template = new \OCP\Template('ocusagecharts', 'personal');
 $template->assign('charts', $chartConfigs);
 

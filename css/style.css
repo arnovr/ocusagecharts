@@ -8,3 +8,22 @@
 {
     margin-top: 50px;
 }
+#app-navigation .menu-title
+{
+    display: block;
+    width: 100%;
+    line-height: 44px;
+    padding: 0 12px;
+    overflow: hidden;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: #333;
+}
+
+#app-navigation .menu-title h2
+{
+    font-size: 14px;
+    font-weight: bold;
+}

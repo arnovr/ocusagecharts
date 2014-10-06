@@ -21,70 +21,57 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\Entity;
+namespace OCA\ocUsageCharts\Adapters\c3js\Activity;
+
+use OCA\ocUsageCharts\Adapters\ChartTypeAdapterInterface;
+use OCA\ocUsageCharts\Adapters\c3js\c3jsBase;
 
 /**
  * @author Arno van Rossum <arno@van-rossum.com>
  */
-class StorageUsage
+class ActivityUsagePerMonthAdapter extends c3jsBase implements ChartTypeAdapterInterface
 {
     /**
-     * @var \DateTime
+     * This method gives the ability to parse the data in any form you would like
+     *
+     * @param $data
+     * @return mixed
      */
-    private $date;
-
-    /**
-     * @var integer Kilobytes
-     */
-    private $usage;
-
-    /**
-     * @var string
-     */
-    private $username;
-
-    /**
-     * @param \DateTime $date
-     * @param integer $usage
-     * @param string $username
-     */
-    public function __construct(\DateTime $date, $usage, $username)
+    public function formatData($data)
     {
-        $this->date = $date;
-        $this->usage = $usage;
-        $this->username = $username;
+        $x = array();
+        $result = array();
+        foreach($data as $date => $usernames)
+        {
+            if ( !in_array($date, $x) )
+            {
+                $x[] = $date;
+            }
+            $this->parseUsernamesToRow($result, $usernames);
+        }
+
+        $result["x"] = $x;
+        $result = array_reverse($result);
+
+        return $result;
     }
 
     /**
-     * @return \DateTime
+     * @param array $result
+     * @param array $usernames
+     * @return array
      */
-    public function getDate()
+    private function parseUsernamesToRow(&$result, array $usernames)
     {
-        return $this->date;
+        foreach($usernames as $username => $count)
+        {
+            if ( !in_array($username, array_keys($result)) )
+            {
+                $result[$username] = array();
+            }
+
+            $result[$username][] = $count;
+        }
     }
 
-    /**
-     * @return integer
-     */
-    public function getUsage()
-    {
-        return $this->usage;
-    }
-
-    /**
-     * @return string
-     */
-    public function getUsername()
-    {
-        return $this->username;
-    }
-
-    /**
-     * @param array $row
-     * @return StorageUsage
-     */
-    public static function fromRow($row)
-    {
-        return new StorageUsage(new \Datetime($row['created']), $row['usage'], $row['username']);
-    }
 }

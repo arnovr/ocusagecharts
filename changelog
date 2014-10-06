@@ -1,1 +1,14 @@
-- Moved Gigabyte / Megabyte selector to personal page, reason, it was cluttering interface
+0.3:
+- Added activity graph: Activities over the last month, and activities per month
+- Appending byte size to tooltip values
+- Added numeric values above bar's within bar charts
+- Technical improvements ( bower for javascript, travis CI implementation, unit tests, code improvements )
+- Moved Gigabyte / Megabyte selector to personal page, because it is cluttering the interface
+
+0.2:
+- The same cron job command existed twice, one with capitalized, one without. This gives problems on windows machines.
+- Fix error:
+"Argument 1 passed to OCA\ocUsageCharts\Service\ChartService::getUsage() must be an instance of OCA\ocUsageCharts\ChartType\ChartTypeViewInterface........."
+
+0.1:
+- Initial release

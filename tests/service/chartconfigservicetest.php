@@ -90,4 +90,24 @@ class ChartConfigServiceTest extends \PHPUnit_Framework_TestCase
         $result = $this->configService->getChartsByUsername('test1');
         $this->assertCount(1, $result);
     }
+
+    public function testSaveSucces()
+    {
+        $configMock = $this
+            ->getMockBuilder('OCA\ocUsageCharts\Entity\ChartConfig')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->configRepository->method('save')->willReturn(true);
+        $this->assertTrue($this->configService->save($configMock));
+    }
+    public function testSaveFailed()
+    {
+        $configMock = $this
+            ->getMockBuilder('OCA\ocUsageCharts\Entity\ChartConfig')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->configRepository->expects($this->once())->method('save')->willReturn(false);
+
+        $this->assertFalse($this->configService->save($configMock));
+    }
 }

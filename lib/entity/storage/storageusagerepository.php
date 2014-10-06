@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\Entity;
+namespace OCA\ocUsageCharts\Entity\Storage;
 
 use OCP\AppFramework\Db\Mapper;
 use \OCP\IDb;
@@ -35,7 +35,7 @@ class StorageUsageRepository extends Mapper
      * @param IDb $db
      */
     public function __construct(IDb $db) {
-        parent::__construct($db, 'uc_storageusage', '\OCA\ocUsageCharts\Entity\StorageUsage');
+        parent::__construct($db, 'uc_storageusage', '\OCA\ocUsageCharts\Entity\Storage\StorageUsage');
     }
 
     /**
@@ -110,23 +110,38 @@ class StorageUsageRepository extends Mapper
         $result = $query->execute();
         $entities = array();
         while($row = $result->fetch()){
-            if ( !isset($entities[$row['username']]))
+            if ( empty($entities[$row['username']]) )
             {
                 $entities[$row['username']] = array();
             }
 
-            if ( !is_null($afterCreated) )
-            {
-                $entities[$row['username']] = array_merge($entities[$row['username']], $this->findAfterCreated($row['username'], $afterCreated));
-            }
-            else
-            {
-                $entities[$row['username']] = array_merge($entities[$row['username']], $this->find($row['username'], $limit));
-            }
+            $entities[$row['username']] = array_merge(
+                $entities[$row['username']],
+                $this->findEntitiesBasedOnOrCreated($row['username'], $limit, $afterCreated)
+            );
         }
         return $entities;
     }
 
+    /**
+     * @param string $username
+     * @param integer $limit
+     * @param \DateTime $afterCreated
+     * @return array
+     */
+    private function findEntitiesBasedOnOrCreated($username, $limit, \DateTime $afterCreated)
+    {
+        if ( !is_null($afterCreated) )
+        {
+            $return = $this->findAfterCreated($username, $afterCreated);
+        }
+        else
+        {
+            $return = $this->find($username, $limit);
+        }
+
+        return $return;
+    }
 
     /**
      * @param string $userName
@@ -141,7 +156,7 @@ class StorageUsageRepository extends Mapper
     /**
      * Find all storage usages grouped by username and month
      * When username supplied, only for that user
-     * With a maximum of going back 2 years
+     * With a maximum of going back 1 year
      *
      * @param string $username
      * @return array
@@ -149,7 +164,7 @@ class StorageUsageRepository extends Mapper
     public function findAllPerMonth($username = '')
     {
         $created = new \DateTime();
-        $created->sub(new \DateInterval('P2Y'));
+        $created->sub(new \DateInterval('P1Y'));
 
         // When no username supplied, search for all information
         $sql = 'SELECT DISTINCT CONCAT(MONTH(`created`), \' \', YEAR(`created`)) as month, avg(`usage`) as average, username FROM oc_uc_storageusage WHERE `usage` > 0 AND created > ? GROUP BY username, month';
@@ -158,7 +173,7 @@ class StorageUsageRepository extends Mapper
         // Username is supplied, get results only for that user
         if ( $username !== '' )
         {
-            $sql = 'SELECT DISTINCT CONCAT(MONTH(`created`), \' \', YEAR(`created`)) as month, avg(`usage`) as average FROM oc_uc_storageusage WHERE `usage` > 0 AND username = ? AND created > ? GROUP BY month';
+            $sql = 'SELECT DISTINCT CONCAT(MONTH(`created`), \' \', YEAR(`created`)) as month, avg(`usage`) as average, username FROM oc_uc_storageusage WHERE `usage` > 0 AND username = ? AND created > ? GROUP BY month';
             $params = array($username);
         }
         $params[] = $created->format('Y-m-d H:I:s');

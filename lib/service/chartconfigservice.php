@@ -97,44 +97,44 @@ class ChartConfigService
      *
      * Create default config for a user
      */
-    public function createDefaultConfig()
+    public function setDefaultConfigs()
     {
-        $config = new ChartConfig(
-            null,
-            new \DateTime(),
-            $this->user->getSignedInUsername(),
-            'StorageUsageCurrent',
-            'c3js',
-            json_encode(array('size' => 'gb'))
+        $types = array(
+            'StorageUsageCurrent' => '',
+            'StorageUsageLastMonth' => json_encode(array('size' => 'gb')),
+            'StorageUsagePerMonth' => json_encode(array('size' => 'gb')),
+            'ActivityUsagePerMonth' => '',
+            'ActivityUsageLastMonth' => ''
         );
-        $this->repository->save($config);
-
-        $config = new ChartConfig(
-            null,
-            new \DateTime(),
-            $this->user->getSignedInUsername(),
-            'StorageUsageLastMonth',
-            'c3js',
-            json_encode(array('size' => 'gb'))
-        );
-        $this->repository->save($config);
-
-        $config = new ChartConfig(
-            null,
-            new \DateTime(),
-            $this->user->getSignedInUsername(),
-            'StorageUsagePerMonth',
-            'c3js',
-            json_encode(array('size' => 'gb'))
-        );
-        $this->repository->save($config);
+        $charts = $this->getCharts();
+        foreach($charts as $chart)
+        {
+            $type = $chart->getChartType();
+            if ( in_array($type, array_keys($types)))
+            {
+                unset($types[$type]);
+            }
+        }
+        foreach($types as $type => $metaData)
+        {
+            $config = new ChartConfig(
+                null,
+                new \DateTime(),
+                $this->user->getSignedInUsername(),
+                $type,
+                'c3js',
+                $metaData
+            );
+            $this->repository->save($config);
+        }
     }
 
     /**
      * @param ChartConfig $config
+     * @return boolean
      */
     public function save(ChartConfig $config)
     {
-        $this->repository->save($config);
+        return $this->repository->save($config);
     }
 }

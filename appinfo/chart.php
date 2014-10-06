@@ -27,11 +27,12 @@ use OCA\ocUsageCharts\ChartTypeAdapterFactory;
 use OCA\ocUsageCharts\Controller\ChartApiController;
 use OCA\ocUsageCharts\Controller\ChartController;
 use OCA\ocUsageCharts\DataProviderFactory;
+use OCA\ocUsageCharts\DataProviders\ChartUsageHelper;
+use OCA\ocUsageCharts\Entity\Activity\ActivityUsageRepository;
 use OCA\ocUsageCharts\Entity\ChartConfigRepository;
-use OCA\ocUsageCharts\Entity\StorageUsageRepository;
+use OCA\ocUsageCharts\Entity\Storage\StorageUsageRepository;
 use OCA\ocUsageCharts\Owncloud\Storage;
 use OCA\ocUsageCharts\Owncloud\User;
-use OCA\ocUsageCharts\Service\AppConfigService;
 use OCA\ocUsageCharts\Service\ChartConfigService;
 use OCA\ocUsageCharts\Service\ChartDataProvider;
 use OCA\ocUsageCharts\Service\ChartService;
@@ -79,6 +80,12 @@ class Chart extends App
      */
     private function registerRepositories()
     {
+        $this->container->registerService('ActivityUsageRepository', function($c) {
+            return new ActivityUsageRepository(
+                $c->query('ServerContainer')->getDb()
+            );
+        });
+
         $this->container->registerService('StorageUsageRepository', function($c) {
             return new StorageUsageRepository(
                 $c->query('ServerContainer')->getDb()
@@ -118,10 +125,16 @@ class Chart extends App
         $this->container->registerService('DataProviderFactory', function($c) {
             return new DataProviderFactory(
                 $c->query('StorageUsageRepository'),
+                $c->query('ActivityUsageRepository'),
                 $c->query('OwncloudUser'),
-                $c->query('OwncloudStorage')
+                $c->query('OwncloudStorage'),
+                $c->query('ChartUsageHelper')
             );
         });
+        $this->container->registerService('ChartUsageHelper', function() {
+            return new ChartUsageHelper();
+        });
+
     }
 
     /**
@@ -134,13 +147,6 @@ class Chart extends App
             return new ChartUpdaterService(
                 $c->query('ChartDataProvider'),
                 $c->query('ChartConfigService'),
-                $c->query('OwncloudUser')
-            );
-        });
-        $this->container->registerService('AppConfigService', function($c) {
-            return new AppConfigService(
-                $c->query('ServerContainer')->getConfig(),
-                $c->query('AppName'),
                 $c->query('OwncloudUser')
             );
         });

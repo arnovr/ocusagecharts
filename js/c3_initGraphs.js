@@ -1,8 +1,19 @@
-function loadGraph(url, yLabel, graphType, format)
+function loadGraph(url, yLabel, shortLable, graphType, format, appendLabel)
 {
     if ( format == undefined )
     {
         format = '%Y-%m-%d';
+    }
+    var appendLabelContent = '';
+    if ( appendLabel )
+    {
+        appendLabelContent = ({
+            format: {
+                y: function (value) {
+                    return value;
+                }
+            }
+        });
     }
 
     c3.generate({
@@ -14,7 +25,8 @@ function loadGraph(url, yLabel, graphType, format)
             x: 'x',
             mimeType: 'json',
             url: url ,
-            type: graphType
+            type: graphType,
+            labels: appendLabelContent
         },
         axis: {
             x: {
@@ -25,6 +37,13 @@ function loadGraph(url, yLabel, graphType, format)
             },
             y: {
                 label: yLabel
+            }
+        },
+        tooltip: {
+            format: {
+                value: function (value) {
+                    return value + ' ' + shortLable;
+                }
             }
         }
     });
@@ -50,15 +69,27 @@ $( document ).ready(function() {
         loadGraph(
             $(".defaultChart").data("url"),
             $(".defaultChart").data("label"),
+            $(".defaultChart").data("shortlabel"),
             $(".defaultChart").data("type"),
-            $(".defaultChart").data("format")
+            $(".defaultChart").data("format"),
+            false
         );
     }
-
     if ($(".defaultBar").length > 0 )
     {
+        loadGraph(
+            $(".defaultBar").data("url"),
+            $(".defaultBar").data("label"),
+            $(".defaultBar").data("shortlabel"),
+            $(".defaultBar").data("type"),
+            $(".defaultBar").data("format"),
+            true
+        );
+    }
+    if ($(".defaultPie").length > 0 )
+    {
         loadPie(
-            $(".defaultBar").data("url")
+            $(".defaultPie").data("url")
         );
     }
 });

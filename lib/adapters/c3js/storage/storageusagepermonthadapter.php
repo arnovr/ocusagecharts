@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\Adapters\c3js;
+namespace OCA\ocUsageCharts\Adapters\c3js\Storage;
 
 use OCA\ocUsageCharts\Adapters\ChartTypeAdapterInterface;
 

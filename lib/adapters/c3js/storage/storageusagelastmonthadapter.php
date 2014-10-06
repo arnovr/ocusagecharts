@@ -21,9 +21,14 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\Adapters\c3js;
+namespace OCA\ocUsageCharts\Adapters\c3js\Storage;
 
 use OCA\ocUsageCharts\Entity\ChartConfig;
+use OCA\ocUsageCharts\Adapters\c3js\c3jsBase;
+use OCA\ocUsageCharts\ValueObject\Measurements\GigaByteMetric;
+use OCA\ocUsageCharts\ValueObject\Measurements\KiloByteMetric;
+use OCA\ocUsageCharts\ValueObject\Measurements\MegaByteMetric;
+use OCA\ocUsageCharts\ValueObject\Measurements\TeraByteMetric;
 
 /**
  * @author Arno van Rossum <arno@van-rossum.com>
@@ -53,7 +58,7 @@ class StorageUsageLastMonthAdapter extends c3jsBase
         }
         if ( empty($size) || !in_array($size, $this->allowedSizes) )
         {
-            $size = 'gb'; // Don't throw exception, killing the call over this is obsolete
+            $size = 'gb';
         }
 
         $this->size = $size;
@@ -72,16 +77,20 @@ class StorageUsageLastMonthAdapter extends c3jsBase
         switch($this->size)
         {
             case 'tb':
-                $usage = $usage / 1024;
+                $metric = new TeraByteMetric($usage);
+                break;
             case 'gb':
-                $usage = $usage / 1024;
+                $metric = new GigaByteMetric($usage);
+                break;
             case 'mb':
-                $usage = $usage / 1024;
+                $metric = new MegaByteMetric($usage);
+                break;
             case 'kb':
-                $usage = $usage / 1024;
+            default:
+                $metric = new KiloByteMetric($usage);
                 break;
         }
-        return round($usage, 2);
+        return $metric->getValue();
     }
 
     /**
@@ -94,7 +103,6 @@ class StorageUsageLastMonthAdapter extends c3jsBase
     {
         $x = array();
         $result = array();
-
         foreach($data as $username => $items )
         {
             // For the first item, add to X
@@ -143,8 +151,6 @@ class StorageUsageLastMonthAdapter extends c3jsBase
         {
             $row[] = $this->calculateUsage($items[$i]->getUsage());
         }
-        $row = array_reverse($row);
-        $row = array_reverse($row);
         return $row;
     }
 }

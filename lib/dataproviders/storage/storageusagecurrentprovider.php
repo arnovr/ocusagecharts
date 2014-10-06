@@ -23,6 +23,7 @@
 
 namespace OCA\ocUsageCharts\DataProviders\Storage;
 use OCA\ocUsageCharts\DataProviders\DataProviderInterface;
+use OCA\ocUsageCharts\Entity\Storage\StorageUsage;
 
 /**
  * @author Arno van Rossum <arno@van-rossum.com>
@@ -36,25 +37,16 @@ class StorageUsageCurrentProvider extends StorageUsageBase implements DataProvid
      */
     public function getChartUsage()
     {
-        $new = array();
         $storageInfo = $this->storage->getCurrentStorageUsageForSignedInUser();
         $free = ceil($storageInfo['free'] / 1024 / 1024);
+
         if ( $this->user->isAdminUser($this->user->getSignedInUsername()) )
         {
-            $data = $this->repository->findAllWithLimit(1);
-            foreach($data as $username => $items)
-            {
-                foreach($items as $item)
-                {
-                    $new[$username] = ceil($item->getUsage() / 1024 / 1024);
-                }
-            }
-            $new['free'] = $free;
-            $data = $new;
+            $data = $this->retrieveStorageUsagePerUser();
+            $data['free'] = $free;
         }
         else
         {
-            $free = ceil($storageInfo['free'] / 1024 / 1024);
             $used = ceil($storageInfo['used'] / 1024 / 1024);
             $data = array(
                 'used' => $used,
@@ -62,5 +54,23 @@ class StorageUsageCurrentProvider extends StorageUsageBase implements DataProvid
             );
         }
         return $data;
+    }
+
+    /**
+     * @return array
+     */
+    private function retrieveStorageUsagePerUser()
+    {
+        $new = array();
+        $data = $this->repository->findAllWithLimit(1);
+        foreach($data as $username => $items)
+        {
+            /** @var StorageUsage $item */
+            foreach($items as $item)
+            {
+                $new[$username] = ceil($item->getUsage() / 1024 / 1024);
+            }
+        }
+        return $new;
     }
 }

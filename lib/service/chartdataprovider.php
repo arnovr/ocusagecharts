@@ -23,7 +23,6 @@
 
 namespace OCA\ocUsageCharts\Service;
 
-use OCA\ocUsageCharts\Adapters\ChartTypeAdapterInterface;
 use OCA\ocUsageCharts\ChartTypeAdapterFactory;
 use OCA\ocUsageCharts\DataProviderFactory;
 use OCA\ocUsageCharts\Entity\ChartConfig;
@@ -57,7 +56,7 @@ class ChartDataProvider
      * Get the current usage for a chart given
      *
      * @param ChartConfig $chartConfig
-     * @return mixed
+     * @return boolean
      */
     public function isAllowedToUpdate(ChartConfig $chartConfig)
     {
@@ -94,7 +93,7 @@ class ChartDataProvider
      * This method returns all usage for a chart based on the chartconfig given
      *
      * @param ChartConfig $chartConfig
-     * @return ChartTypeAdapterInterface
+     * @return array
      */
     public function getChartUsage(ChartConfig $chartConfig)
     {

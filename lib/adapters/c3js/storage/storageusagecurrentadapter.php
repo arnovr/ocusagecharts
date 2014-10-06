@@ -21,10 +21,10 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\Adapters\c3js;
+namespace OCA\ocUsageCharts\Adapters\c3js\Storage;
 
 use OCA\ocUsageCharts\Adapters\ChartTypeAdapterInterface;
-
+use OCA\ocUsageCharts\Adapters\c3js\c3jsBase;
 /**
  * @author Arno van Rossum <arno@van-rossum.com>
  */

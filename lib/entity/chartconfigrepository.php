@@ -57,10 +57,9 @@ class ChartConfigRepository extends Mapper
 
     /**
      * Save a chartconfig entity to the database
-     * @TODO make it update and create
-     *
      *
      * @param ChartConfig $config
+     * @return boolean
      */
     public function save(ChartConfig $config)
     {
@@ -75,5 +74,6 @@ class ChartConfigRepository extends Mapper
             $query = $this->db->prepareQuery('INSERT INTO oc_uc_chartconfig(created, username, charttype, chartprovider, metadata) VALUES (?,?,?,?,?)');
             $query->execute(Array($config->getDate()->format('Y-m-d H:i:s'), $config->getUsername(), $config->getChartType(), $config->getChartProvider(), $config->getMetaData()));
         }
+        return true;
     }
 }

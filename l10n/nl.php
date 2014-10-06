@@ -8,5 +8,11 @@ $TRANSLATIONS = array(
     "sizes_kb"              => "Kilobytes",
     "sizes_mb"              => "Megabytes",
     "sizes_gb"              => "Gigabytes",
-    "sizes_tb"              => "Terabytes"
+    "sizes_tb"              => "Terabytes",
+
+    "ActivityUsageLastMonth"=> "Activiteiten over de afgelopen maand",
+    "activities"            => "Activiteiten",
+    "ActivityUsagePerMonth" => "Activiteiten per maand",
+    "Storage_title"         => "Data verbruik",
+    "Activity_title"        => "Activiteiten"
 );
