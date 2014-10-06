@@ -97,7 +97,7 @@ class ChartConfigService
      *
      * Create default config for a user
      */
-    public function createDefaultConfig()
+    public function setDefaultConfigs()
     {
         $types = array(
             'StorageUsageCurrent' => '',
@@ -106,7 +106,15 @@ class ChartConfigService
             'ActivityUsagePerMonth' => '',
             'ActivityUsageLastMonth' => ''
         );
-
+        $charts = $this->getCharts();
+        foreach($charts as $chart)
+        {
+            $type = $chart->getChartType();
+            if ( in_array($type, array_keys($types)))
+            {
+                unset($types[$type]);
+            }
+        }
         foreach($types as $type => $metaData)
         {
             $config = new ChartConfig(

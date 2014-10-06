@@ -68,12 +68,9 @@ class ChartController extends Controller
      */
     public function frontpage()
     {
+        $this->configService->setDefaultConfigs();
+
         $charts = $this->configService->getCharts();
-        if ( count($charts) == 0 )
-        {
-            $this->configService->createDefaultConfig();
-            $charts = $this->configService->getCharts();
-        }
         $id = $charts[0]->getId();
         $url = \OCP\Util::linkToRoute('ocusagecharts.chart.display_chart', array('id' => $id));
         return new RedirectResponse($url);

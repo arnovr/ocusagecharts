@@ -2,14 +2,16 @@
 use OCA\ocUsageCharts\Entity\ChartConfig;
 
 $label = $l->t('sizes_gb');
-
+$shortLabel = 'gb';
 /** @var ChartConfig $chartConfig */
 $chartConfig = $_['chart']->getConfig();
 $meta = json_decode($chartConfig->getMetaData());
 if ( !empty($meta) )
 {
     $label = $l->t('sizes_' . $meta->size);
+    $shortLabel = $meta->size;
 }
+
 
 $url =\OCP\Util::linkToRoute('ocusagecharts.chart_api.load_chart', array('id' => $chartConfig->getId(), 'requesttoken' => $_['requesttoken']));
 echo '

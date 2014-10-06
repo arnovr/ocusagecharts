@@ -173,7 +173,7 @@ class StorageUsageRepository extends Mapper
         // Username is supplied, get results only for that user
         if ( $username !== '' )
         {
-            $sql = 'SELECT DISTINCT CONCAT(MONTH(`created`), \' \', YEAR(`created`)) as month, avg(`usage`) as average FROM oc_uc_storageusage WHERE `usage` > 0 AND username = ? AND created > ? GROUP BY month';
+            $sql = 'SELECT DISTINCT CONCAT(MONTH(`created`), \' \', YEAR(`created`)) as month, avg(`usage`) as average, username FROM oc_uc_storageusage WHERE `usage` > 0 AND username = ? AND created > ? GROUP BY month';
             $params = array($username);
         }
         $params[] = $created->format('Y-m-d H:I:s');

@@ -58,7 +58,7 @@ class StorageUsageLastMonthAdapter extends c3jsBase
         }
         if ( empty($size) || !in_array($size, $this->allowedSizes) )
         {
-            $size = 'gb'; // Don't throw exception, killing the call over this is obsolete
+            $size = 'gb';
         }
 
         $this->size = $size;
@@ -103,7 +103,6 @@ class StorageUsageLastMonthAdapter extends c3jsBase
     {
         $x = array();
         $result = array();
-
         foreach($data as $username => $items )
         {
             // For the first item, add to X

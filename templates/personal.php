@@ -8,20 +8,23 @@ echo '
     echo '</h2>
 <div><div id="ocusagecharts-msg"></div>
 ';
+$allowedType = array('StorageUsageLastMonth', 'StorageUsagePerMonth');
 foreach($_['charts'] as $chart)
 {
     $config = $chart->getConfig();
+    if ( !in_array($config->getChartType(), $allowedType) )
+    {
+        continue;
+    }
+
 
     $userSelected = 'gb';
     $metaData = json_decode($config->getMetaData());
-    if ( empty($metaData) )
+    if ( !empty($metaData) )
     {
-        // No metadata, no choice in gb or kb
-        break;
+        $userSelected = $metaData->size;
     }
-    $userSelected = $metaData->size;
     p($l->t($config->getChartType()));
-
 
     echo '
     <select name="ocusagecharts-charts-' . $config->getId() . '">
