@@ -93,7 +93,6 @@ class ActivityUsageRepository extends Mapper
         for($i = 1; $i <= $runs; $i++)
         {
             list($startTimestamp, $endTimestamp) = $this->calculateStartAndEndTimestamp($i, $created);
-
             if ( $username !== '' )
             {
                 $return[$created->format('Y-m-d')] = $this->findActivitiesBetweenTimestampAndUser($startTimestamp, $endTimestamp, $username);
@@ -103,7 +102,6 @@ class ActivityUsageRepository extends Mapper
                 $return[$created->format('Y-m-d')] = $this->findActivitiesBetweenTimestamp($startTimestamp, $endTimestamp);
             }
         }
-
         return $return;
     }
 
