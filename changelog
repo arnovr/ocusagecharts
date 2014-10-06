@@ -4,3 +4,11 @@
 - Added numeric values above bar's within bar charts
 - Technical improvements ( bower for javascript, travis CI implementation, unit tests, code improvements )
 - Moved Gigabyte / Megabyte selector to personal page, because it is cluttering the interface
+
+0.2:
+- The same cron job command existed twice, one with capitalized, one without. This gives problems on windows machines.
+- Fix error:
+"Argument 1 passed to OCA\ocUsageCharts\Service\ChartService::getUsage() must be an instance of OCA\ocUsageCharts\ChartType\ChartTypeViewInterface........."
+
+0.1:
+- Initial release

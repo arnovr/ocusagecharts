@@ -13,7 +13,7 @@ Graphs
     - A Bar chart with average data used in the last months
     - An Activity chart over the last month
     - An Activity chart with activities over the last months
-- Admin mode
+- Admin mode:
     - A pie chart showing space used by all users
     - A graph with data used over the course of the last month for all users
     - A Bar chart with average data used in the last months for all users
@@ -22,7 +22,7 @@ Graphs
 
 Future ideas
 ============
-- Improve User Interface to handle alot of users
+- Improve User Interface to handle a lot of users
 - Graphs:
     - Files downloaded
     - Option to use alternative for C3.js
