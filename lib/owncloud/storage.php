@@ -23,8 +23,20 @@
 
 namespace OCA\ocUsageCharts\Owncloud;
 
+use OC\Files\View as FilesView;
+
 class Storage
 {
+    /**
+     * @var User
+     */
+    private $user;
+
+    public function __construct(User $user)
+    {
+        $this->user = $user;
+    }
+
     /**
      * Retrieve storage usage username
      *
@@ -41,12 +53,20 @@ class Storage
     }
 
     /**
-     * Retrieve the current storage usage for the user that is signedin
+     * Retrieve the current storage usage for the user that is signed in
      *
      * @return array ( array('free' => bytes, 'used' => bytes) )
      */
     public function getCurrentStorageUsageForSignedInUser()
     {
-        return \OC_Helper::getStorageInfo('/');
+        $username = $this->user->getSignedInUsername();
+        $view = new FilesView('/' . $username . '/files');
+        $freeSpace = $view->free_space();
+        $usedSpace = $view->getFileInfo('/')->getSize();
+
+        return array(
+            'free' => $freeSpace,
+            'used' => $usedSpace
+        );
     }
 }
