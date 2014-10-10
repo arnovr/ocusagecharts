@@ -69,8 +69,10 @@ class Chart extends App
         $this->container->registerService('OwncloudUser', function() {
             return new User();
         });
-        $this->container->registerService('OwncloudStorage', function() {
-            return new Storage();
+        $this->container->registerService('OwncloudStorage', function($c) {
+            return new Storage(
+                $c->query('OwncloudUser')
+            );
         });
     }
 

@@ -32,13 +32,16 @@ class StorageTest extends \PHPUnit_Framework_TestCase
      * @var Storage
      */
     private $storage;
+    private $user;
     public function setUp()
     {
-        $this->storage = new Storage();
+        $this->user = $this->getMock('\OCA\ocUsageCharts\Owncloud\User');
+        $this->storage = new Storage($this->user);
     }
     /*
      * This test fails on:
-     * PHP Fatal error:  Call to a member function getFileInfo() on a non-object in /media/sf_usage_charts/lib/private/files/filesystem.php on line 740
+     * .PHP Fatal error:  Call to a member function getSize() on a non-object in /media/sf_usage_charts/apps/ocusagecharts/lib/owncloud/storage.php on line 66
+     *
     public function testGetCurrentStorageUsageForSignedInUser()
     {
         $result = $this->storage->getCurrentStorageUsageForSignedInUser();
@@ -46,6 +49,7 @@ class StorageTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('used', $result);
     }
     */
+
     public function testGetStorageUsage()
     {
         $result = $this->storage->getStorageUsage('admin');
