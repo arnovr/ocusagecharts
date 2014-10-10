@@ -1,3 +1,6 @@
+0.3.1:
+- Fixed installation issue ( issue 41 on github )
+
 0.3:
 - Added activity graph: Activities over the last month, and activities per month
 - Appending byte size to tooltip values
