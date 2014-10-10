@@ -7,8 +7,10 @@
         A pie chart showing space used / free space;
         A graph with data used over the course of the last month;
         A Bar chart with average data used in the last months;
+        An Activity chart over the last month;
+        An Activity chart with activities over the last months;
     </description>
-    <version>1.0</version>
+    <version>3</version>
     <licence>MIT</licence>
     <author>Arno van Rossum, github:arnovr</author>
     <requiremin>7</requiremin>
