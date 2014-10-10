@@ -129,7 +129,7 @@ class StorageUsageRepository extends Mapper
      * @param \DateTime $afterCreated
      * @return array
      */
-    private function findEntitiesBasedOnOrCreated($username, $limit, \DateTime $afterCreated)
+    private function findEntitiesBasedOnOrCreated($username, $limit, \DateTime $afterCreated = null)
     {
         if ( !is_null($afterCreated) )
         {
