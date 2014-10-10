@@ -1,5 +1,6 @@
 0.3.1:
-- Fixed installation issue ( issue 41 on github )
+- Fixed: installation issue ( issue 41 on github )
+- Fixed: Argument 3 passed to OCA\ocUsageCharts\Entity\Storage\StorageUsageRepository::findEntitiesBasedOnOrCreated() must be an instance of DateTime, null given, called in /lib/entity/storage/storageusagerepository.php on line 120....
 
 0.3:
 - Added activity graph: Activities over the last month, and activities per month
