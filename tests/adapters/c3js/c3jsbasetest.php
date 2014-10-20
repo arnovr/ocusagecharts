@@ -24,6 +24,7 @@
 namespace OCA\ocUsageCharts\Tests\Adapters\c3js;
 
 use OCA\ocUsageCharts\Entity\ChartConfig;
+use OCA\ocUsageCharts\Owncloud\User;
 
 /**
  * @author Arno van Rossum <arno@van-rossum.com>
@@ -35,10 +36,20 @@ abstract class c3jsBaseTest extends \PHPUnit_Framework_TestCase
      */
     protected $config;
 
+    /**
+     * @var User
+     */
+    protected $user;
+
     public function setUp()
     {
         $this->config = $this
             ->getMockBuilder('\OCA\ocUsageCharts\Entity\ChartConfig')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->user = $this
+            ->getMockBuilder('\OCA\ocUsageCharts\Owncloud\User')
             ->disableOriginalConstructor()
             ->getMock();
     }

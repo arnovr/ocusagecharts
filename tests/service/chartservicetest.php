@@ -55,8 +55,12 @@ class ChartServiceTest extends \PHPUnit_Framework_TestCase
         $this->container->registerService('ChartDataProvider', function($c) use ($dataProvider) {
             return $dataProvider;
         });
+
+        $user = $this->getMock('\OCA\ocUsageCharts\Owncloud\User');
+
+
         $this->configMock = new \OCA\ocUsageCharts\Entity\ChartConfig(100, new \DateTime(), 'test1', 'StorageUsageCurrent', 'c3js');
-        $this->chartService = new ChartService($this->dataProvider, $this->configService, new ChartTypeAdapterFactory());
+        $this->chartService = new ChartService($this->dataProvider, $this->configService, new ChartTypeAdapterFactory($user));
     }
 
     public function testGetCharts()
