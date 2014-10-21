@@ -63,8 +63,9 @@ class StorageUsageCurrentProvider extends StorageUsageBase implements DataProvid
     {
         $new = array();
         $data = $this->repository->findAllWithLimit(1);
-        foreach($data as $username => $items)
+        foreach($data as $uid => $items)
         {
+            $username = $this->user->getDisplayName($uid);
             /** @var StorageUsage $item */
             foreach($items as $item)
             {

@@ -77,11 +77,14 @@ class StorageUsageCurrentProviderTest extends StorageUsageBaseTest
         );
         $this->repository->expects($this->once())->method('findAllWithLimit')->willReturn($returnItems);
 
+        $this->user->expects($this->at(2))->method('getDisplayName')->with('test1')->will($this->returnValue('test name1'));
+        $this->user->expects($this->at(3))->method('getDisplayName')->with('test2')->will($this->returnValue('test name2'));
+        $this->user->expects($this->at(4))->method('getDisplayName')->with('admin')->will($this->returnValue('administrator'));
 
         $data = $this->provider->getChartUsage();
         $this->assertEquals($data['free'], (float) 1024);
-        $this->assertEquals($data['test1'], (float) 1024);
-        $this->assertEquals($data['test2'], (float) 1024);
-        $this->assertEquals($data['admin'], (float) 1024);
+        $this->assertEquals($data['test name1'], (float) 1024);
+        $this->assertEquals($data['test name2'], (float) 1024);
+        $this->assertEquals($data['administrator'], (float) 1024);
     }
 }

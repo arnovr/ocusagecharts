@@ -63,8 +63,9 @@ class ActivityUsagePerMonthAdapter extends c3jsBase implements ChartTypeAdapterI
      */
     private function parseUsernamesToRow(&$result, array $usernames)
     {
-        foreach($usernames as $username => $count)
+        foreach($usernames as $uid => $count)
         {
+            $username = $this->user->getDisplayName($uid);
             if ( !in_array($username, array_keys($result)) )
             {
                 $result[$username] = array();

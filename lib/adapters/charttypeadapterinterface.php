@@ -24,6 +24,7 @@
 namespace OCA\ocUsageCharts\Adapters;
 
 use OCA\ocUsageCharts\Entity\ChartConfig;
+use OCA\ocUsageCharts\Owncloud\User;
 
 /**
  * @author Arno van Rossum <arno@van-rossum.com>
@@ -32,9 +33,10 @@ interface ChartTypeAdapterInterface
 {
     /**
      * @param ChartConfig $config
+     * @param User $user
      * @return ChartTypeAdapterInterface
      */
-    public function __construct(ChartConfig $config);
+    public function __construct(ChartConfig $config, User $user);
 
     /**
      * This method gives the ability to parse the data in any form you would like

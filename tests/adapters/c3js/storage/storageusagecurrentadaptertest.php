@@ -39,7 +39,7 @@ class StorageUsageCurrentAdapterTest extends c3jsBaseTest
     public function setUp()
     {
         parent::setUp();
-        $this->adapter = new StorageUsageCurrentAdapter($this->config);
+        $this->adapter = new StorageUsageCurrentAdapter($this->config, $this->user);
     }
     public function testFormatData()
     {

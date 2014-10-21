@@ -47,8 +47,9 @@ class ActivityUsageLastMonthAdapter extends c3jsBase implements ChartTypeAdapter
             $x = $this->getRowX($x, $collection);
         }
         /** @var ActivityDayCollection $collection */
-        foreach($data as $username => $collection)
+        foreach($data as $uid => $collection)
         {
+            $username = $this->user->getDisplayName($uid);
             $row = $this->getRowData($x, $collection);
             $result[$username] = $row;
         }

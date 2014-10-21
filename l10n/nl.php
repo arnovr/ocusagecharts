@@ -1,6 +1,8 @@
 <?php
 $TRANSLATIONS = array(
     "ocUsageCharts"         => "Grafieken",
+
+    "Storage_title"         => "Data verbruik",
     "StorageUsageLastMonth" => "Data verbruik de afgelopen maand",
     "StorageUsagePerMonth"  => "Gemiddelde data verbruik per maand",
     "StorageUsageCurrent"   => "Huidig data verbruik",
@@ -13,6 +15,5 @@ $TRANSLATIONS = array(
     "ActivityUsageLastMonth"=> "Activiteiten over de afgelopen maand",
     "activities"            => "Activiteiten",
     "ActivityUsagePerMonth" => "Activiteiten per maand",
-    "Storage_title"         => "Data verbruik",
     "Activity_title"        => "Activiteiten"
 );

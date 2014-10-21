@@ -25,6 +25,7 @@ namespace OCA\ocUsageCharts\Adapters\c3js\Storage;
 
 use OCA\ocUsageCharts\Entity\ChartConfig;
 use OCA\ocUsageCharts\Adapters\c3js\c3jsBase;
+use OCA\ocUsageCharts\Owncloud\User;
 use OCA\ocUsageCharts\ValueObject\Measurements\GigaByteMetric;
 use OCA\ocUsageCharts\ValueObject\Measurements\KiloByteMetric;
 use OCA\ocUsageCharts\ValueObject\Measurements\MegaByteMetric;
@@ -47,9 +48,9 @@ class StorageUsageLastMonthAdapter extends c3jsBase
 
     /**
      * @param ChartConfig $chartConfig
-     * @internal param string $size Defaults on gigabytes
+     * @param User $user
      */
-    public function __construct(ChartConfig $chartConfig)
+    public function __construct(ChartConfig $chartConfig, User $user)
     {
         $metaData = json_decode($chartConfig->getMetaData());
         if ( !empty($metaData) )
@@ -62,7 +63,7 @@ class StorageUsageLastMonthAdapter extends c3jsBase
         }
 
         $this->size = $size;
-        parent::__construct($chartConfig);
+        parent::__construct($chartConfig, $user);
     }
 
 
@@ -103,8 +104,9 @@ class StorageUsageLastMonthAdapter extends c3jsBase
     {
         $x = array();
         $result = array();
-        foreach($data as $username => $items )
+        foreach($data as $uid => $items )
         {
+            $username = $this->user->getDisplayName($uid);
             // For the first item, add to X
             if ( count($x) === 0 )
             {

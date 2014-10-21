@@ -30,6 +30,7 @@ use OCA\ocUsageCharts\ChartTypeAdapterFactory;
 class ChartTypeAdapterFactoryTest extends \PHPUnit_Framework_TestCase
 {
     private $config;
+    private $user;
 
     public function setUp()
     {
@@ -38,11 +39,16 @@ class ChartTypeAdapterFactoryTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
+        $this->user = $this
+            ->getMockBuilder('\OCA\ocUsageCharts\Owncloud\User')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $this->config->expects($this->exactly(5))->method('getChartProvider')->willReturn('c3js');
     }
     public function testGetChartTypeAdapterByConfigTest()
     {
-        $factory = new ChartTypeAdapterFactory();
+        $factory = new ChartTypeAdapterFactory($this->user);
 
         $mock1 = clone $this->config;
         $mock1->expects($this->once())->method('getChartType')->willReturn("StorageUsageCurrent");
