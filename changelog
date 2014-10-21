@@ -1,6 +1,6 @@
 0.3.2:
 - French text
--
+- Fixed displaying uuid instead of fullname
 
 0.3.1:
 - Fixed: installation issue ( issue 41 on github )
