@@ -1,8 +1,15 @@
-0.3.2:
-- French text
-- Fixed displaying uuid instead of fullname
+3.3:
+- Spanish text
 
-0.3.1:
+3.2.1:
+- French text
+- Fixed displaying full name in charts instead of uid
+
+3.2:
+- Made store versioning consistent with version within info.xml / version. Therefor hopping to version 3.
+- Made info.xml and version identical numbers.
+
+3.1:
 - Fixed: installation issue ( issue 41 on github )
 - Fixed: Argument 3 passed to OCA\ocUsageCharts\Entity\Storage\StorageUsageRepository::findEntitiesBasedOnOrCreated() must be an instance of DateTime, null given, called in /lib/entity/storage/storageusagerepository.php on line 120....
 
