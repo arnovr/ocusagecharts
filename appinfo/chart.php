@@ -121,8 +121,10 @@ class Chart extends App
             );
         });
 
-        $this->container->registerService('ChartTypeAdapterFactory', function() {
-            return new ChartTypeAdapterFactory();
+        $this->container->registerService('ChartTypeAdapterFactory', function($c) {
+            return new ChartTypeAdapterFactory(
+                $c->query('OwncloudUser')
+            );
         });
         $this->container->registerService('DataProviderFactory', function($c) {
             return new DataProviderFactory(

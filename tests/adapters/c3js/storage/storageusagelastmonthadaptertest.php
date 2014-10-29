@@ -39,12 +39,11 @@ class StorageUsageLastMonthAdapterTest extends c3jsBaseTest
     public function setUp()
     {
         parent::setUp();
-        $this->adapter = new StorageUsageLastMonthAdapter($this->config);
+        $this->adapter = new StorageUsageLastMonthAdapter($this->config, $this->user);
     }
     public function testFormatData()
     {
-        //$metaData = json_encode(array('size' => 'kb'));
-        //$this->config->expects($this->once())->method('getMetaData')->willReturn($metaData);
+        $this->user->expects($this->once())->method('getDisplayName')->willReturn('test1');
         $data = array('test1' => array(
             new StorageUsage(new \DateTime("-1 day"), 234234, 'test1'),
             new StorageUsage(new \DateTime(), 23423422, 'test1')

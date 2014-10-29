@@ -27,12 +27,26 @@ use OCA\ocUsageCharts\Adapters as Adapters;
 use OCA\ocUsageCharts\Adapters\ChartTypeAdapterInterface;
 use OCA\ocUsageCharts\Entity\ChartConfig;
 use OCA\ocUsageCharts\Exception\ChartTypeAdapterException;
+use OCA\ocUsageCharts\Owncloud\User;
 
 /**
  * @author Arno van Rossum <arno@van-rossum.com>
  */
 class ChartTypeAdapterFactory
 {
+    /**
+     * @var User
+     */
+    private $user;
+
+    /**
+     * @param User $user
+     */
+    public function __construct(User $user)
+    {
+        $this->user = $user;
+    }
+
     /**
      * Return the proper adapter based on the chartconfig given
      *
@@ -76,7 +90,7 @@ class ChartTypeAdapterFactory
         {
             case 'c3js':
             default:
-                $adapter = new Adapters\c3js\Storage\StorageUsageCurrentAdapter($config);
+                $adapter = new Adapters\c3js\Storage\StorageUsageCurrentAdapter($config, $this->user);
         }
         return $adapter;
     }
@@ -92,7 +106,7 @@ class ChartTypeAdapterFactory
         {
             case 'c3js':
             default:
-                $adapter = new Adapters\c3js\Storage\StorageUsageLastMonthAdapter($config);
+                $adapter = new Adapters\c3js\Storage\StorageUsageLastMonthAdapter($config, $this->user);
         }
         return $adapter;
     }
@@ -108,7 +122,7 @@ class ChartTypeAdapterFactory
         {
             case 'c3js':
             default:
-                $adapter = new Adapters\c3js\Storage\StorageUsagePerMonthAdapter($config);
+                $adapter = new Adapters\c3js\Storage\StorageUsagePerMonthAdapter($config, $this->user);
         }
         return $adapter;
     }
@@ -124,7 +138,7 @@ class ChartTypeAdapterFactory
         {
             case 'c3js':
             default:
-                $adapter = new Adapters\c3js\Activity\ActivityUsageLastMonthAdapter($config);
+                $adapter = new Adapters\c3js\Activity\ActivityUsageLastMonthAdapter($config, $this->user);
         }
         return $adapter;
     }
@@ -140,7 +154,7 @@ class ChartTypeAdapterFactory
         {
             case 'c3js':
             default:
-                $adapter = new Adapters\c3js\Activity\ActivityUsagePerMonthAdapter($config);
+                $adapter = new Adapters\c3js\Activity\ActivityUsagePerMonthAdapter($config, $this->user);
         }
         return $adapter;
     }

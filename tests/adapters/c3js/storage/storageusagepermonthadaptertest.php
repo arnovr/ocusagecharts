@@ -34,7 +34,7 @@ class StorageUsagePerMonthAdapterTest extends StorageUsageLastMonthAdapterTest
     public function setUp()
     {
         parent::setUp();
-        $this->adapter = new StorageUsagePerMonthAdapter($this->config);
+        $this->adapter = new StorageUsagePerMonthAdapter($this->config, $this->user);
     }
     public function testFormatData()
     {

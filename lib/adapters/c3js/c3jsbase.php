@@ -24,6 +24,7 @@
 namespace OCA\ocUsageCharts\Adapters\c3js;
 
 use OCA\ocUsageCharts\Entity\ChartConfig;
+use OCA\ocUsageCharts\Owncloud\User;
 
 
 /**
@@ -37,11 +38,18 @@ abstract class c3jsBase
     private $config;
 
     /**
-     * @param ChartConfig $chartConfig
+     * @var User
      */
-    public function __construct(ChartConfig $chartConfig)
+    protected $user;
+
+    /**
+     * @param ChartConfig $chartConfig
+     * @param User $user
+     */
+    public function __construct(ChartConfig $chartConfig, User $user)
     {
         $this->config = $chartConfig;
+        $this->user = $user;
     }
 
     /**

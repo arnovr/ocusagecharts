@@ -67,7 +67,9 @@ class ChartDataProviderTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->chartTypeAdapterFactory = $this->getMock('\OCA\ocUsageCharts\ChartTypeAdapterFactory');
+        $this->chartTypeAdapterFactory = $this->getMockBuilder('\OCA\ocUsageCharts\ChartTypeAdapterFactory')
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $this->dataProvider = new ChartDataProvider($this->dataProviderFactory, $this->chartTypeAdapterFactory);
         $this->configMock = new ChartConfig(100, new \DateTime(), 'test1', 'StorageUsageLastMonth', 'c3js');

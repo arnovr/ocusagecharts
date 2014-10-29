@@ -53,4 +53,15 @@ class User
     {
         return \OC_User::getUsers();
     }
+
+    /**
+     * Returns the display name for the uid given
+     *
+     * @param string $uid
+     * @return string
+     */
+    public function getDisplayName($uid)
+    {
+        return \OC_User::getDisplayName($uid);
+    }
 }
