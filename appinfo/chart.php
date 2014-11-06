@@ -31,6 +31,7 @@ use OCA\ocUsageCharts\DataProviders\ChartUsageHelper;
 use OCA\ocUsageCharts\Entity\Activity\ActivityUsageRepository;
 use OCA\ocUsageCharts\Entity\ChartConfigRepository;
 use OCA\ocUsageCharts\Entity\Storage\StorageUsageRepository;
+use OCA\ocUsageCharts\Owncloud\L10n;
 use OCA\ocUsageCharts\Owncloud\Storage;
 use OCA\ocUsageCharts\Owncloud\User;
 use OCA\ocUsageCharts\Service\ChartConfigService;
@@ -72,6 +73,11 @@ class Chart extends App
         $this->container->registerService('OwncloudStorage', function($c) {
             return new Storage(
                 $c->query('OwncloudUser')
+            );
+        });
+        $this->container->registerService('OwncloudL10n', function($c) {
+            return new L10n(
+                $c->query('ServerContainer')->getL10N($c->query('AppName'))
             );
         });
     }

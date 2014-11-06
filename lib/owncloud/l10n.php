@@ -21,51 +21,33 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\Adapters\c3js\Storage;
+namespace OCA\ocUsageCharts\Owncloud;
 
-use OCA\ocUsageCharts\Adapters\c3js\c3jsBase;
-use OCA\ocUsageCharts\Entity\ChartConfig;
-use OCA\ocUsageCharts\Owncloud\L10n;
-use OCA\ocUsageCharts\Owncloud\User;
+use \OCP\IL10N;
 
-/**
- * @author Arno van Rossum <arno@van-rossum.com>
- */
-class StorageUsageCurrentAdapter extends c3jsBase
+
+class L10n
 {
     /**
-     * @var L10n
+     * @var \OCP\IL10N
      */
     private $translator;
 
-    /**
-     * @param ChartConfig $chartConfig
-     * @param User $user
-     * @param L10n $translator
-     */
-    public function __construct(ChartConfig $chartConfig, User $user, L10n $translator)
-    {
+    public function __construct(IL10N $translator){
         $this->translator = $translator;
-        parent::__construct($chartConfig, $user);
     }
 
     /**
-     * Format the keys from the given data to be translated
-     * (should be used and free)
+     * Translating
+     * @param string $text The text we need a translation for
+     * @param array $parameters default:array() Parameters for sprintf
+     * @return \OC_L10N_String Translation or the same text
      *
-     * @param array $data
-     * @return array mixed
+     * Returns the translation. If no translation is found, $text will be
+     * returned.
      */
-    public function formatData($data)
+    public function t($text, $parameters = array())
     {
-        foreach($data as &$key => $value)
-        {
-            $newKey = $this->translator->t('storage_' . $key);
-            if ( $newKey != 'storage_' . $key )
-            {
-                $key = $newKey;
-            }
-        }
-        return $data;
+        return $this->translator->t($text, $parameters);
     }
 }

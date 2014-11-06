@@ -28,6 +28,7 @@ use OCA\ocUsageCharts\Adapters\ChartTypeAdapterInterface;
 use OCA\ocUsageCharts\Entity\ChartConfig;
 use OCA\ocUsageCharts\Exception\ChartTypeAdapterException;
 use OCA\ocUsageCharts\Owncloud\User;
+use OCA\ocUsageCharts\Owncloud\L10n;
 
 /**
  * @author Arno van Rossum <arno@van-rossum.com>
@@ -40,11 +41,17 @@ class ChartTypeAdapterFactory
     private $user;
 
     /**
+     * @var L10n
+     */
+    private $translator;
+
+    /**
      * @param User $user
      */
-    public function __construct(User $user)
+    public function __construct(User $user, L10n $translator)
     {
         $this->user = $user;
+        $this->translator = $translator;
     }
 
     /**
@@ -90,7 +97,7 @@ class ChartTypeAdapterFactory
         {
             case 'c3js':
             default:
-                $adapter = new Adapters\c3js\Storage\StorageUsageCurrentAdapter($config, $this->user);
+                $adapter = new Adapters\c3js\Storage\StorageUsageCurrentAdapter($config, $this->user, $this->translator);
         }
         return $adapter;
     }

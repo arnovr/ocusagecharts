@@ -11,6 +11,8 @@ $TRANSLATIONS = array(
     "sizes_mb"              => "Megabytes",
     "sizes_gb"              => "Gigabytes",
     "sizes_tb"              => "Terabytes",
+    "storage_free"          => "Espace dégager",
+    "storage_used"          => "Espace usagé",
 
     "Activity_title"        => "Activité",
     "ActivityUsageLastMonth"=> "Activité - 30 derniers jours",
