@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>ocUsageCharts by arnovr</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>ocUsageCharts</h1>
+        <h2>Owncloud 7 usage statistics</h2>
+        <a href="https://github.com/arnovr/ocusagecharts" class="button"><small>View project on</small> GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h1>
+<a id="ocusagecharts" class="anchor" href="#ocusagecharts" aria-hidden="true"><span class="octicon octicon-link"></span></a>ocUsageCharts</h1>
+
+<p>ocUsageCharts is created due to the fact that the original usage_charts is no longer updated to work properly with owncloud 7.
+This application is from the base up designed for Owncloud 7.
+ocUsageCharts gives the ability to display various statistics about your users within owncloud.
+These statistics include storage usage charts and activities charts.</p>
+
+<h1>
+<a id="graphs" class="anchor" href="#graphs" aria-hidden="true"><span class="octicon octicon-link"></span></a>Graphs</h1>
+
+<ul>
+<li>User mode:
+
+<ul>
+<li>A pie chart showing space used / free space</li>
+<li>A graph with data used over the course of the last month</li>
+<li>A Bar chart with average data used in the last months</li>
+<li>An Activity chart over the last month</li>
+<li>An Activity chart with activities over the last months</li>
+</ul>
+</li>
+<li>Admin mode:
+
+<ul>
+<li>A pie chart showing space used by all users</li>
+<li>A graph with data used over the course of the last month for all users</li>
+<li>A Bar chart with average data used in the last months for all users</li>
+<li>An Activity chart over the last month for all users</li>
+<li>An Activity chart with activities over the last months for all users</li>
+</ul>
+</li>
+</ul>
+
+<h1>
+<a id="future-ideas" class="anchor" href="#future-ideas" aria-hidden="true"><span class="octicon octicon-link"></span></a>Future ideas</h1>
+
+<ul>
+<li>Improve User Interface to handle a lot of users</li>
+<li>Graphs:
+
+<ul>
+<li>Files downloaded</li>
+<li>Option to use alternative for C3.js</li>
+</ul>
+</li>
+</ul>
+
+<h1>
+<a id="requirements" class="anchor" href="#requirements" aria-hidden="true"><span class="octicon octicon-link"></span></a>Requirements</h1>
+
+<ul>
+<li>Cronjobs must run every day!</li>
+<li>For activity charts, the activity app needs to be enabled</li>
+<li>Owncloud 7.0.1 ( untested with versions before 7.0.1 )</li>
+</ul>
+
+<h1>
+<a id="install" class="anchor" href="#install" aria-hidden="true"><span class="octicon octicon-link"></span></a>Install</h1>
+
+<ul>
+<li>Download all files to owncloud/apps/ocusagecharts directory</li>
+<li>Login as admin on owncloud</li>
+<li>Press Apps in the menu</li>
+<li>Open app Charts</li>
+<li>Enable app Charts</li>
+<li>App is installed, check menu for Charts</li>
+</ul>
+
+<h1>
+<a id="product-reference" class="anchor" href="#product-reference" aria-hidden="true"><span class="octicon octicon-link"></span></a>Product reference</h1>
+
+<ul>
+<li>ocUsagechart official release channel: <a href="http://apps.owncloud.com/content/show.php/Usage+Charts+%28+owncloud+7+%29?content=166746">http://apps.owncloud.com/content/show.php/Usage+Charts+%28+owncloud+7+%29?content=166746</a>
+</li>
+<li>C3.js: <a href="http://c3js.org/">http://c3js.org/</a> - <a href="https://github.com/masayuki0812/c3">https://github.com/masayuki0812/c3</a>
+</li>
+<li>usage_charts: <a href="http://apps.owncloud.com/content/show.php/Usage+Charts?content=164956">http://apps.owncloud.com/content/show.php/Usage+Charts?content=164956</a> - <a href="https://github.com/alanv72/usage_charts">https://github.com/alanv72/usage_charts</a> ( a fork from StorageCharts/ocStorage )</li>
+</ul>
+
+<h1>
+<a id="build-status" class="anchor" href="#build-status" aria-hidden="true"><span class="octicon octicon-link"></span></a>Build Status</h1>
+
+<p><a href="https://travis-ci.org/arnovr/ocusagecharts"><img src="https://travis-ci.org/arnovr/ocusagecharts.svg?branch=master" alt="Build Status"></a>
+<a href="https://scrutinizer-ci.com/g/arnovr/ocusagecharts/?branch=master"><img src="https://scrutinizer-ci.com/g/arnovr/ocusagecharts/badges/quality-score.png?b=master" alt="Scrutinizer Code Quality"></a></p>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/arnovr/ocusagecharts/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/arnovr/ocusagecharts/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/arnovr/ocusagecharts"></a> is maintained by <a href="https://github.com/arnovr">arnovr</a>.</p>
+
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+  
+  </body>
+</html>
