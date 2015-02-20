@@ -61,10 +61,8 @@ class StorageUsageCurrentAdapter extends c3jsBase
         foreach($data as $key => $value)
         {
             $newKey = $this->translator->t('storage_' . $key);
-            if ( $newKey != 'storage_' . $key )
-            {
-                $key = $newKey;
-            }
+            $data[$newKey] = $value;
+            unset($data[$key]);
         }
         return $data;
     }

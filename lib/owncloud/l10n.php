@@ -41,13 +41,13 @@ class L10n
      * Translating
      * @param string $text The text we need a translation for
      * @param array $parameters default:array() Parameters for sprintf
-     * @return \OC_L10N_String Translation or the same text
+     * @return string Translation or the same text
      *
      * Returns the translation. If no translation is found, $text will be
      * returned.
      */
     public function t($text, $parameters = array())
     {
-        return $this->translator->t($text, $parameters);
+        return $this->translator->t($text, $parameters)->__toString();
     }
 }
