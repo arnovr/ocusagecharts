@@ -58,7 +58,7 @@ class StorageUsageCurrentAdapter extends c3jsBase
      */
     public function formatData($data)
     {
-        foreach($data as &$key => $value)
+        foreach($data as $key => $value)
         {
             $newKey = $this->translator->t('storage_' . $key);
             if ( $newKey != 'storage_' . $key )
