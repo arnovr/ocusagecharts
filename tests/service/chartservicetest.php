@@ -80,20 +80,20 @@ class ChartServiceTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(count($configs), $charts);
         foreach($charts as $adapter)
         {
-            $this->assertInstanceOf('OCA\ocUsageCharts\Adapters\ChartTypeAdapterInterface', $adapter);
+            $this->assertInstanceOf('OCA\ocUsageCharts\Adapters\c3js\Storage\StorageUsageCurrentAdapter', $adapter);
         }
     }
     public function testGetChart()
     {
         $this->configService->method('getChartConfigById')->willReturn($this->configMock);
         $adapter = $this->chartService->getChart($this->configMock->getId());
-        $this->assertInstanceOf('OCA\ocUsageCharts\Adapters\ChartTypeAdapterInterface', $adapter);
+        $this->assertInstanceOf('OCA\ocUsageCharts\Adapters\c3js\Storage\StorageUsageCurrentAdapter', $adapter);
 
     }
     public function testGetChartByConfig()
     {
         $adapter = $this->chartService->getChartByConfig($this->configMock);
-        $this->assertInstanceOf('OCA\ocUsageCharts\Adapters\ChartTypeAdapterInterface', $adapter);
+        $this->assertInstanceOf('OCA\ocUsageCharts\Adapters\c3js\Storage\StorageUsageCurrentAdapter', $adapter);
     }
 
     public function testGetChartUsage()

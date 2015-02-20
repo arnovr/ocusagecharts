@@ -63,8 +63,7 @@ class StorageUsageCurrentAdapterTest extends c3jsBaseTest
 
         $this->L10n
             ->expects($this->exactly(2))
-            ->method('t')
-            ->will('storage_' . $this->returnArgument(0));
+            ->method('t');
 
         $this->assertEquals($data, $this->adapter->formatData($data));
     }
