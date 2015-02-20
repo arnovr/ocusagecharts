@@ -44,6 +44,12 @@ class ChartServiceTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
+
+        $L10n = $this
+            ->getMockBuilder('\OCA\ocUsageCharts\Owncloud\L10n')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $this->container->registerService('ChartConfigService', function($c) use ($configService) {
             return $configService;
         });
@@ -60,7 +66,7 @@ class ChartServiceTest extends \PHPUnit_Framework_TestCase
 
 
         $this->configMock = new \OCA\ocUsageCharts\Entity\ChartConfig(100, new \DateTime(), 'test1', 'StorageUsageCurrent', 'c3js');
-        $this->chartService = new ChartService($this->dataProvider, $this->configService, new ChartTypeAdapterFactory($user));
+        $this->chartService = new ChartService($this->dataProvider, $this->configService, new ChartTypeAdapterFactory($user, $L10n));
     }
 
     public function testGetCharts()

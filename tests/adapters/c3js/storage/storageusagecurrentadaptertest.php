@@ -24,6 +24,7 @@
 namespace OCA\ocUsageCharts\Tests\Adapters\c3js\Storage;
 use OCA\ocUsageCharts\Adapters\c3js\Storage\StorageUsageCurrentAdapter;
 use OCA\ocUsageCharts\Tests\Adapters\c3js\c3jsBaseTest;
+use OCA\ocUsageCharts\Owncloud\L10n;
 
 
 /**
@@ -36,10 +37,22 @@ class StorageUsageCurrentAdapterTest extends c3jsBaseTest
      */
     private $adapter;
 
+    /**
+     * @var L10n
+     */
+    private $L10n;
+
     public function setUp()
     {
         parent::setUp();
-        $this->adapter = new StorageUsageCurrentAdapter($this->config, $this->user);
+
+
+        $this->L10n = $this
+            ->getMockBuilder('\OCA\ocUsageCharts\Owncloud\L10n')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->adapter = new StorageUsageCurrentAdapter($this->config, $this->user, $this->L10n);
     }
     public function testFormatData()
     {
@@ -47,6 +60,11 @@ class StorageUsageCurrentAdapterTest extends c3jsBaseTest
             'used' => 23124125,
             'free' => 45567678
         );
+
+        $this->L10n
+            ->expects($this->exactly(2))
+            ->method('t')
+            ->will('storage_' . $this->returnArgument(0));
 
         $this->assertEquals($data, $this->adapter->formatData($data));
     }
