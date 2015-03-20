@@ -1,5 +1,6 @@
 3.4.2:
-- https://github.com/arnovr/ocusagecharts/issues/49 , database error when not using postgresql
+- Fixed: Undefined index: DATE at apps/ocusagecharts/lib/entity/activity/collections/activitydaycollection.php#42	
+- https://github.com/arnovr/ocusagecharts/issues/49 , database error when not using mysql
 
 3.4.1:
 - Added german translation
