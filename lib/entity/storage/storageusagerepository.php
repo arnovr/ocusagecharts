@@ -169,7 +169,7 @@ class StorageUsageRepository extends Mapper
         $sql = '
             SELECT
             DISTINCT CONCAT(
-                extract(MONTH from created), \' \', extract(YEAR from created_at)
+                extract(MONTH from created), \' \', extract(YEAR from created)
               ) as month,
               avg(`usage`) as average,
               username
