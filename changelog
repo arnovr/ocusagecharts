@@ -1,3 +1,6 @@
+3.4.2:
+- https://github.com/arnovr/ocusagecharts/issues/49 , database error when not using postgresql
+
 3.4.1:
 - Added german translation
 

@@ -165,19 +165,27 @@ class StorageUsageRepository extends Mapper
     {
         $created = new \DateTime();
         $created->sub(new \DateInterval('P1Y'));
-
         // When no username supplied, search for all information
-        $sql = 'SELECT DISTINCT CONCAT(MONTH(`created`), \' \', YEAR(`created`)) as month, avg(`usage`) as average, username FROM oc_uc_storageusage WHERE `usage` > 0 AND created > ? GROUP BY username, month';
+        $sql = '
+            SELECT
+            DISTINCT CONCAT(
+                extract(MONTH from created), \' \', extract(YEAR from created_at)
+              ) as month,
+              avg(`usage`) as average,
+              username
+              FROM oc_uc_storageusage';
+        $whereClause = ' WHERE `usage` > 0 AND created > ? GROUP BY username, month';
+
         $params = array();
 
         // Username is supplied, get results only for that user
         if ( $username !== '' )
         {
-            $sql = 'SELECT DISTINCT CONCAT(MONTH(`created`), \' \', YEAR(`created`)) as month, avg(`usage`) as average, username FROM oc_uc_storageusage WHERE `usage` > 0 AND username = ? AND created > ? GROUP BY month';
+            $whereClause = ' WHERE `usage` > 0 AND username = ? AND created > ? GROUP BY month';
             $params = array($username);
         }
         $params[] = $created->format('Y-m-d H:I:s');
-        $query = $this->db->prepareQuery($sql);
+        $query = $this->db->prepareQuery($sql . $whereClause);
         $result = $query->execute($params);
 
         return $this->parsePerMonthEntities($result);
