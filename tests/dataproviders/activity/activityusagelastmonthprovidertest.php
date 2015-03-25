@@ -28,10 +28,18 @@ use OCA\ocUsageCharts\Tests\DataProviders\Activity\ActivityBase;
 
 class ActivityUsageLastMonthProviderTest extends ActivityBase
 {
+    private $users;
+
     public function setUp()
     {
         parent::setUp();
-        $this->provider = new ActivityUsageLastMonthProvider($this->config, $this->repository, $this->user);
+
+        $this->users = $this
+            ->getMockBuilder('OCA\ocUsageCharts\Owncloud\Users')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->provider = new ActivityUsageLastMonthProvider($this->config, $this->repository, $this->user, $this->users);
     }
     public function testGetChartUsageRegularUser()
     {
@@ -71,7 +79,7 @@ class ActivityUsageLastMonthProviderTest extends ActivityBase
         $username = 'test1';
         $this->user->expects($this->once())->method('getSignedInUsername')->willReturn($username);
         $this->user->expects($this->once())->method('isAdminUser')->willReturn(true);
-        $this->user->expects($this->once())->method('getSystemUsers')->willReturn(array($username));
+        $this->users->expects($this->once())->method('getSystemUsers')->willReturn(array($username));
         $this->repository->expects($this->once())->method('findAfterCreatedByUsername')->willReturn($data);
 
         $result = $this->provider->getChartUsage();

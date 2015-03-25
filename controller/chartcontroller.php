@@ -24,7 +24,9 @@
 namespace OCA\ocUsageCharts\Controller;
 
 use OCA\ocUsageCharts\Exception\ChartServiceException;
+use OCA\ocUsageCharts\Owncloud\User;
 use OCA\ocUsageCharts\Service\ChartConfigService;
+use OCA\ocUsageCharts\Service\ChartCreator;
 use OCA\ocUsageCharts\Service\ChartService;
 use \OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\RedirectResponse;
@@ -47,15 +49,29 @@ class ChartController extends Controller
     private $configService;
 
     /**
+     * @var ChartCreator
+     */
+    private $chartCreator;
+
+    /**
+     * @var User
+     */
+    private $user;
+
+    /**
      * @param string $appName
      * @param IRequest $request
      * @param ChartService $chartService
      * @param ChartConfigService $configService
+     * @param ChartCreator $chartCreator
+     * @param User $user
      */
-    public function __construct($appName, IRequest $request, ChartService $chartService, ChartConfigService $configService)
+    public function __construct($appName, IRequest $request, ChartService $chartService, ChartConfigService $configService, ChartCreator $chartCreator, User $user)
     {
         $this->chartService = $chartService;
         $this->configService = $configService;
+        $this->chartCreator = $chartCreator;
+        $this->user = $user;
         parent::__construct($appName, $request);
     }
 
@@ -68,12 +84,20 @@ class ChartController extends Controller
      */
     public function frontpage()
     {
-        $this->configService->setDefaultConfigs();
+        $this->createDefaultChartsForLoggedInUser();
 
-        $charts = $this->configService->getCharts();
+        $charts = $this->configService->getChartsForLoggedInUser();
         $id = $charts[0]->getId();
         $url = \OCP\Util::linkToRoute('ocusagecharts.chart.display_chart', array('id' => $id));
         return new RedirectResponse($url);
+    }
+
+    /**
+     * Create default charts for the logged in user
+     */
+    private function createDefaultChartsForLoggedInUser()
+    {
+        $this->chartCreator->createDefaultConfigFor($this->user->getSignedInUsername());
     }
 
     /**
@@ -89,7 +113,7 @@ class ChartController extends Controller
     public function displayChart($id)
     {
         $selectedConfig = null;
-        $chartConfigs = $this->configService->getCharts();
+        $chartConfigs = $this->configService->getChartsForLoggedInUser();
         foreach($chartConfigs as $config)
         {
             if ( $config->getId() == $id )

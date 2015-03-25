@@ -54,7 +54,7 @@ class ChartConfigService
      *
      * @return array|\OCA\ocUsageCharts\Entity\ChartConfig[]
      */
-    public function getCharts()
+    public function getChartsForLoggedInUser()
     {
         return $this->repository->findByUsername($this->user->getSignedInUsername());
     }
@@ -89,44 +89,6 @@ class ChartConfigService
         }
 
         throw new ChartConfigServiceException("No config found for given id " . $id);
-    }
-
-    /**
-     * @TODO Should be converted to something smarter.
-     * Method is untested, because i want this to be better
-     *
-     * Create default config for a user
-     */
-    public function setDefaultConfigs()
-    {
-        $types = array(
-            'StorageUsageCurrent' => '',
-            'StorageUsageLastMonth' => json_encode(array('size' => 'gb')),
-            'StorageUsagePerMonth' => json_encode(array('size' => 'gb')),
-            'ActivityUsagePerMonth' => '',
-            'ActivityUsageLastMonth' => ''
-        );
-        $charts = $this->getCharts();
-        foreach($charts as $chart)
-        {
-            $type = $chart->getChartType();
-            if ( in_array($type, array_keys($types)))
-            {
-                unset($types[$type]);
-            }
-        }
-        foreach($types as $type => $metaData)
-        {
-            $config = new ChartConfig(
-                null,
-                new \DateTime(),
-                $this->user->getSignedInUsername(),
-                $type,
-                'c3js',
-                $metaData
-            );
-            $this->repository->save($config);
-        }
     }
 
     /**

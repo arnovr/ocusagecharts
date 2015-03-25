@@ -28,6 +28,7 @@ use OCA\ocUsageCharts\Entity\Activity\Collections\ActivityDayCollection;
 use OCA\ocUsageCharts\Entity\Activity\ActivityUsageRepository;
 use OCA\ocUsageCharts\Entity\ChartConfig;
 use OCA\ocUsageCharts\Owncloud\User;
+use OCA\ocUsageCharts\Owncloud\Users;
 
 /**
  * @author Arno van Rossum <arno@van-rossum.com>
@@ -50,15 +51,22 @@ class ActivityUsageLastMonthProvider implements DataProviderInterface
     protected $user;
 
     /**
+     * @var Users
+     */
+    protected $users;
+
+    /**
      * @param ChartConfig $chartConfig
      * @param ActivityUsageRepository $repository
      * @param User $user
+     * @param Users $users
      */
-    public function __construct(ChartConfig $chartConfig, ActivityUsageRepository $repository, User $user)
+    public function __construct(ChartConfig $chartConfig, ActivityUsageRepository $repository, User $user, Users $users)
     {
         $this->chartConfig = $chartConfig;
         $this->repository = $repository;
         $this->user = $user;
+        $this->users = $users;
     }
 
     /**
@@ -71,7 +79,7 @@ class ActivityUsageLastMonthProvider implements DataProviderInterface
         $return = array();
         if ( $this->user->isAdminUser($this->user->getSignedInUsername()) )
         {
-            $users = $this->user->getSystemUsers();
+            $users = $this->users->getSystemUsers();
             foreach($users as $username)
             {
                 $return[$username] = $this->getCollectionByUsername($username);

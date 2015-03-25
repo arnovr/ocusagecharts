@@ -30,6 +30,7 @@ use OCA\ocUsageCharts\Entity\ChartConfig;
 use OCA\ocUsageCharts\Entity\Storage\StorageUsageRepository;
 use OCA\ocUsageCharts\Owncloud\Storage;
 use OCA\ocUsageCharts\Owncloud\User;
+use OCA\ocUsageCharts\Owncloud\Users;
 
 /**
  * @author Arno van Rossum <arno@van-rossum.com>
@@ -70,6 +71,11 @@ class DataProviderFactoryTest extends \PHPUnit_Framework_TestCase
      */
     protected $helper;
 
+    /**
+     * @var Users
+     */
+    protected $users;
+
     public function setUp()
     {
         $this->config = $this
@@ -108,9 +114,13 @@ class DataProviderFactoryTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
+        $this->users = $this
+            ->getMockBuilder('\OCA\ocUsageCharts\Owncloud\User')
+            ->disableOriginalConstructor()
+            ->getMock();
 
 
-        $this->factory = new DataProviderFactory($this->repository, $this->activityRepository, $this->user, $this->storage, $this->helper);
+        $this->factory = new DataProviderFactory($this->repository, $this->activityRepository, $this->user, $this->storage, $this->helper, $this->users);
     }
 
     public function testGetDataProviderByConfig()

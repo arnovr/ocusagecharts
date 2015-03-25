@@ -33,7 +33,9 @@ use OCA\ocUsageCharts\Entity\ChartConfigRepository;
 use OCA\ocUsageCharts\Entity\Storage\StorageUsageRepository;
 use OCA\ocUsageCharts\Owncloud\Storage;
 use OCA\ocUsageCharts\Owncloud\User;
+use OCA\ocUsageCharts\Owncloud\Users;
 use OCA\ocUsageCharts\Service\ChartConfigService;
+use OCA\ocUsageCharts\Service\ChartCreator;
 use OCA\ocUsageCharts\Service\ChartDataProvider;
 use OCA\ocUsageCharts\Service\ChartService;
 use OCA\ocUsageCharts\Service\ChartUpdaterService;
@@ -66,6 +68,10 @@ class Chart extends App
      */
     private function registerOwncloudDependencies()
     {
+        // Plural form
+        $this->container->registerService('OwncloudUsers', function() {
+            return new Users();
+        });
         $this->container->registerService('OwncloudUser', function() {
             return new User();
         });
@@ -110,7 +116,9 @@ class Chart extends App
                 $c->query('AppName'),
                 $c->query('Request'),
                 $c->query('ChartService'),
-                $c->query('ChartConfigService')
+                $c->query('ChartConfigService'),
+                $c->query('ChartCreator'),
+                $c->query('OwncloudUser')
             );
         });
         $this->container->registerService('ChartApiController', function($c) {
@@ -151,7 +159,13 @@ class Chart extends App
             return new ChartUpdaterService(
                 $c->query('ChartDataProvider'),
                 $c->query('ChartConfigService'),
-                $c->query('OwncloudUser')
+                $c->query('OwncloudUsers')
+            );
+        });
+        $this->container->registerService('ChartCreator', function($c) {
+            return new ChartCreator(
+                $c->query('ChartConfigRepository'),
+                $c->query('OwncloudUsers')
             );
         });
         $this->container->registerService('ChartConfigService', function($c) {

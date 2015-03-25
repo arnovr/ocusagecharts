@@ -24,7 +24,7 @@
 namespace OCA\ocUsageCharts\Service;
 
 use OCA\ocUsageCharts\Entity\ChartConfig;
-use OCA\ocUsageCharts\Owncloud\User;
+use OCA\ocUsageCharts\Owncloud\Users;
 
 /**
  * @author Arno van Rossum <arno@van-rossum.com>
@@ -42,20 +42,20 @@ class ChartUpdaterService
     private $configService;
 
     /**
-     * @var User
+     * @var Users
      */
-    private $user;
+    private $users;
 
     /**
      * @param ChartDataProvider $dataProvider
      * @param ChartConfigService $configService
-     * @param User $user
+     * @param Users $users
      */
-    public function __construct(ChartDataProvider $dataProvider, ChartConfigService $configService, User $user)
+    public function __construct(ChartDataProvider $dataProvider, ChartConfigService $configService, Users $users)
     {
         $this->dataProvider = $dataProvider;
         $this->configService = $configService;
-        $this->user = $user;
+        $this->users = $users;
     }
 
     /**
@@ -63,7 +63,7 @@ class ChartUpdaterService
      */
     public function updateChartsForUsers()
     {
-        $users = $this->user->getSystemUsers();
+        $users = $this->users->getSystemUsers();
         foreach($users as $userName)
         {
             $this->updateChartsForUser($userName);

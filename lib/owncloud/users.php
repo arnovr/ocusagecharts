@@ -21,22 +21,17 @@
  * THE SOFTWARE.
  */
 
-use OCA\ocUsageCharts\AppInfo\Chart;
+namespace OCA\ocUsageCharts\Owncloud;
 
-
-\OCP\Util::addSCript('ocusagecharts', 'personal');
-
-$l = \OCP\Util::getL10N('ocusagecharts');
-
-$app = new Chart();
-$container = $app->getContainer();
-$user = $container->query('OwncloudUser');
-$chartCreator = $container->query('ChartCreator');
-$chartCreator->createDefaultConfigFor($user->getSignedInUsername());
-
-$chartService = $container->query('ChartService');
-$chartConfigs = $chartService->getCharts();
-$template = new \OCP\Template('ocusagecharts', 'personal');
-$template->assign('charts', $chartConfigs);
-
-return $template->fetchPage();
+class Users
+{
+    /**
+     * Return all users from the current system
+     *
+     * @return array
+     */
+    public function getSystemUsers()
+    {
+        return \OC_User::getUsers();
+    }
+}
