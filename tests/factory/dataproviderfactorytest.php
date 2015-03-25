@@ -115,7 +115,7 @@ class DataProviderFactoryTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         $this->users = $this
-            ->getMockBuilder('\OCA\ocUsageCharts\Owncloud\User')
+            ->getMockBuilder('\OCA\ocUsageCharts\Owncloud\Users')
             ->disableOriginalConstructor()
             ->getMock();
 
