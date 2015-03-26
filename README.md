@@ -42,6 +42,21 @@ Install
 - Enable app Charts
 - App is installed, check menu for Charts
 
+FAQ
+===
+- The charts won't populate for some users?
+By default a user had to been logged in and open the charts app to be tracked.
+You could add all users to your charts by running the following command on your server
+./occ ocusagecharts:createdefaultcharts
+Pay attention, this adds ALL owncloud users to the charts application! 
+The charts app is not designed for many users! ( will be in the future )
+
+- The charts app won't populate at all
+The chart app makes use of the owncloud cron, if that cron doesn't run, the chart will not fill up with data.
+You could setup the cron accordingly:
+https://doc.owncloud.org/server/8.0/admin_manual/configuration_server/background_jobs_configuration.html
+I would suggest using the owncloud "cron" setup.
+
 Product reference
 =================
 - ocUsagechart official release channel: http://apps.owncloud.com/content/show.php/Usage+Charts+%28+owncloud+7+%29?content=166746
