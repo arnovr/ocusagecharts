@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2014 - Arno van Rossum <arno@van-rossum.com>
+ * Copyright (c) 2015 - Arno van Rossum <arno@van-rossum.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,22 +21,40 @@
  * THE SOFTWARE.
  */
 
+namespace OCA\ocUsageCharts\Command;
+
 use OCA\ocUsageCharts\AppInfo\Chart;
+use OCA\ocUsageCharts\Service\ChartCreator;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * @author Arno van Rossum <arno@van-rossum.com>
+ */
+class CreateChartsCommand extends Command
+{
+    public function __construct()
+    {
+        parent::__construct();
+    }
 
-\OCP\Util::addSCript('ocusagecharts', 'personal');
+    protected function configure()
+    {
+        $this
+            ->setName('ocusagecharts:createdefaultcharts')
+            ->setDescription('Add all default charts for all owncloud users in ocusagecharts');
 
-$l = \OCP\Util::getL10N('ocusagecharts');
+    }
 
-$app = new Chart();
-$container = $app->getContainer();
-$user = $container->query('OwncloudUser');
-$chartCreator = $container->query('ChartCreator');
-$chartCreator->createDefaultConfigFor($user->getSignedInUsername());
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        $app = new Chart();
+        $container = $app->getContainer();
 
-$chartService = $container->query('ChartService');
-$chartConfigs = $chartService->getCharts();
-$template = new \OCP\Template('ocusagecharts', 'personal');
-$template->assign('charts', $chartConfigs);
-
-return $template->fetchPage();
+        /** @var ChartCreator */
+        $chartCreator= $container->query('ChartCreator');
+        $chartCreator->createDefaultChartsForSystemUsers();
+    }
+}

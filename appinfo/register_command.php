@@ -21,22 +21,4 @@
  * THE SOFTWARE.
  */
 
-use OCA\ocUsageCharts\AppInfo\Chart;
-
-
-\OCP\Util::addSCript('ocusagecharts', 'personal');
-
-$l = \OCP\Util::getL10N('ocusagecharts');
-
-$app = new Chart();
-$container = $app->getContainer();
-$user = $container->query('OwncloudUser');
-$chartCreator = $container->query('ChartCreator');
-$chartCreator->createDefaultConfigFor($user->getSignedInUsername());
-
-$chartService = $container->query('ChartService');
-$chartConfigs = $chartService->getCharts();
-$template = new \OCP\Template('ocusagecharts', 'personal');
-$template->assign('charts', $chartConfigs);
-
-return $template->fetchPage();
+$application->add(new OCA\ocUsageCharts\Command\CreateChartsCommand());

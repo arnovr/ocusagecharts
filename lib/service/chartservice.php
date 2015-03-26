@@ -73,7 +73,7 @@ class ChartService
     public function getCharts()
     {
         $charts = array();
-        $chartConfigs = $this->config->getCharts();
+        $chartConfigs = $this->config->getChartsForLoggedInUser();
         foreach($chartConfigs as $config)
         {
             $charts[] = $this->getChartByConfig($config);

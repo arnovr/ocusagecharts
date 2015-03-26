@@ -69,7 +69,7 @@ class ChartServiceTest extends \PHPUnit_Framework_TestCase
             $this->configMock,
             new \OCA\ocUsageCharts\Entity\ChartConfig(101, new \DateTime(), 'test1', 'StorageUsageCurrent', 'c3js')
         );
-        $this->configService->method('getCharts')->willReturn($configs);
+        $this->configService->method('getChartsForLoggedInUser')->willReturn($configs);
         $charts = $this->chartService->getCharts();
         $this->assertCount(count($configs), $charts);
         foreach($charts as $adapter)

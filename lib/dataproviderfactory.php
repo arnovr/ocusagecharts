@@ -35,6 +35,7 @@ use OCA\ocUsageCharts\Entity\Storage\StorageUsageRepository;
 use OCA\ocUsageCharts\Exception\ChartDataProviderException;
 use OCA\ocUsageCharts\Owncloud\Storage;
 use OCA\ocUsageCharts\Owncloud\User;
+use OCA\ocUsageCharts\Owncloud\Users;
 
 /**
  * @author Arno van Rossum <arno@van-rossum.com>
@@ -67,19 +68,25 @@ class DataProviderFactory
     private $chartUsageHelper;
 
     /**
+     * @var Users
+     */
+    private $users;
+    /**
      * @param StorageUsageRepository $repository
      * @param ActivityUsageRepository $activityUsageRepository
      * @param User $user
      * @param Storage $storage
      * @param ChartUsageHelper $chartUsageHelper
+     * @param Users $users
      */
-    public function __construct(StorageUsageRepository $repository, ActivityUsageRepository $activityUsageRepository, User $user, Storage $storage, ChartUsageHelper $chartUsageHelper)
+    public function __construct(StorageUsageRepository $repository, ActivityUsageRepository $activityUsageRepository, User $user, Storage $storage, ChartUsageHelper $chartUsageHelper, Users $users)
     {
         $this->repository = $repository;
         $this->user = $user;
         $this->storage = $storage;
         $this->activityUsageRepository = $activityUsageRepository;
         $this->chartUsageHelper = $chartUsageHelper;
+        $this->users = $users;
     }
 
     /**
@@ -101,7 +108,7 @@ class DataProviderFactory
                 $provider = new StorageUsagePerMonthProvider($config, $this->repository, $this->user, $this->storage, $this->chartUsageHelper);
                 break;
             case 'ActivityUsageLastMonth':
-                $provider = new ActivityUsageLastMonthProvider($config, $this->activityUsageRepository, $this->user);
+                $provider = new ActivityUsageLastMonthProvider($config, $this->activityUsageRepository, $this->user, $this->users);
                 break;
             case 'ActivityUsagePerMonth':
                 $provider = new ActivityUsagePerMonthProvider($config, $this->activityUsageRepository, $this->user, $this->chartUsageHelper);
