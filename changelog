@@ -1,3 +1,8 @@
+3.4.3:
+- https://github.com/arnovr/ocusagecharts/issues/15, When a user did not login, the charts will not update.
+A cron has been added to fill up the chartconfig with system users. It has been fixed this way, because this should be chosen behavior.
+The cron is: ./occ ocusagecharts:createdefaultcharts
+
 3.4.2:
 - Fixed: Undefined index: DATE at apps/ocusagecharts/lib/entity/activity/collections/activitydaycollection.php#42	
 - https://github.com/arnovr/ocusagecharts/issues/49 , database error when not using mysql
