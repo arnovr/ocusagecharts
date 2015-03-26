@@ -140,7 +140,8 @@ class Chart extends App
                 $c->query('ActivityUsageRepository'),
                 $c->query('OwncloudUser'),
                 $c->query('OwncloudStorage'),
-                $c->query('ChartUsageHelper')
+                $c->query('ChartUsageHelper'),
+                $c->query('OwncloudUsers')
             );
         });
         $this->container->registerService('ChartUsageHelper', function() {
