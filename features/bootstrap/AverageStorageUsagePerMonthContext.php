@@ -22,8 +22,11 @@
  */
 
 use Behat\Behat\Tester\Exception\PendingException;
-use OCA\ocUsageCharts\Owncloud\User;
-use OCA\ocUsageCharts\Service\StorageUsageService;
+use OCA\ocUsageCharts\Entity\Storage\StorageUsageRepository;
+use OCA\ocUsageCharts\Storage\Converters\AverageStorageUsagePerMonth;
+use OCA\ocUsageCharts\Storage\Repository\StorageRepository;
+use OCA\ocUsageCharts\Storage\StorageUsage;
+use PHPUnit_Framework_Assert as PHPUnit;
 
 class AverageStorageUsagePerMonthContext extends FeatureContext
 {
@@ -33,7 +36,7 @@ class AverageStorageUsagePerMonthContext extends FeatureContext
     private $storageUsageService;
 
     /**
-     * @var
+     * @var string
      */
     private $response;
 
@@ -42,11 +45,9 @@ class AverageStorageUsagePerMonthContext extends FeatureContext
      */
     public function iTryToRetrieveAverageStorageUsagePerMonth()
     {
-        $user = new User();
-        $this->storageUsageService = new StorageUsageService();
-        $this->response = $this->storageUsageService->averageUsagePerMonth($user);
-
-        PHPUnit_Framework_Assert::assertInstanceOf('', $this->response);
+        $repository = new StorageUsageRepository(Mockery::mock('\OCP\IDb'));
+        $this->storageUsageService = new StorageUsage($repository);
+        $this->response = $this->storageUsageService->getStorage(new AverageStorageUsagePerMonth());
     }
 
     /**
@@ -54,7 +55,8 @@ class AverageStorageUsagePerMonthContext extends FeatureContext
      */
     public function iSeeJsonDataWithTheAverageStorageUsagePerMonthForUser()
     {
-        throw new PendingException();
+        $expectedResponse = file_get_contents('features/bootstrap/responses/AverageStoragePerMonth.json');
+        PHPUnit::assertEquals($expectedResponse, $this->response);
     }
 
     /**

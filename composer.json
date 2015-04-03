@@ -4,7 +4,22 @@
     "require-dev": {
         "behat/behat": "3",
         "phpunit/phpunit": "4.4.*",
-        "mockery/mockery": "0.9.*"
+        "mockery/mockery": "0.9.*",
+        "owncloud/core": "8.0.2"
+    },
+    "repositories": {
+      "owncloud": {
+        "type": "package",
+        "package": {
+          "name": "owncloud/core",
+          "version": "8.0.2",
+          "source": {
+            "url": "https://github.com/owncloud/core.git",
+            "type": "git",
+            "reference": "8db687a1cddd13c2a6fb6b16038d20275bd31e17"
+          }
+        }
+      }
     },
     "license": "MIT",
     "authors": [
@@ -24,7 +39,8 @@
         "psr-0": {
         },
         "classmap": [
-            "lib"
+            "lib",
+            "vendor/owncloud/core/lib"
         ]
     }
 }

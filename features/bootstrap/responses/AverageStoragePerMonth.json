@@ -4,29 +4,13 @@
     "datasequences": [
       {
         "title": "2015-01-01",
+        "x": "time",
+        "y": "storage",
         "datapoints": [
-          { "title": "testuser1", "value": 0.01 },
-          { "title": "testuser2", "value": 62.4 },
-          { "title": "testuser3", "value": 102.12 },
-          { "title": "testuser4", "value": 20.12 }
-        ]
-      },
-      {
-        "title": "2014-10-01",
-        "datapoints": [
-          { "title": "testuser1", "value": 0.01 },
-          { "title": "testuser2", "value": 62.16 },
-          { "title": "testuser3", "value": 102.12 },
-          { "title": "testuser4", "value": 20.12 }
-        ]
-      },
-      {
-        "title": "2014-11-01",
-        "datapoints": [
-          { "title": "testuser1", "value": 0.01 },
-          { "title": "testuser2", "value": 65.4 },
-          { "title": "testuser3", "value": 82.54 },
-          { "title": "testuser4", "value": 32.2 }
+          { "title": "testuser1", "x": 1, "y": 0.01 },
+          { "title": "testuser2", "x": 2, "y": 62.4 },
+          { "title": "testuser3", "x": 3, "y": 102.12 },
+          { "title": "testuser4", "x": 4, "y": 20.12 }
         ]
       }
     ]

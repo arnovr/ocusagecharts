@@ -60,11 +60,21 @@ class StorageUsageRepository extends Mapper
     }
 
     /**
+     * @param \DateTime $created
+     * @return [StorageUsage]
+     */
+    public function findAllStorageUsage() {
+        $created = new \DateTime("-2 month");
+        $sql = 'SELECT * FROM `oc_uc_storageusage` WHERE `created` > ? ORDER BY created DESC';
+        return $this->findEntities($sql, array( $created->format('Y-m-d H:i:s')));
+    }
+
+    /**
      * @param string $userName
      * @param integer $limit
      * @return array
      */
-    public function find($userName, $limit = 30) {
+    public function findByUsername($userName, $limit = 30) {
         $sql = 'SELECT * FROM `oc_uc_storageusage` WHERE `username` = ? ORDER BY created DESC LIMIT ' . $limit;
         return $this->findEntities($sql, array($userName));
     }
@@ -137,7 +147,7 @@ class StorageUsageRepository extends Mapper
         }
         else
         {
-            $return = $this->find($username, $limit);
+            $return = $this->findByUsername($username, $limit);
         }
 
         return $return;

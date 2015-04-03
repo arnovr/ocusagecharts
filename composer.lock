@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f86d8b8dc84c84cc9590730243f12278",
+    "hash": "7c4e280d66511afd461cc09cb670616e",
     "packages": [],
     "packages-dev": [
         {
@@ -343,6 +343,16 @@
                 "testing"
             ],
             "time": "2015-04-02 19:54:00"
+        },
+        {
+            "name": "owncloud/core",
+            "version": "8.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/owncloud/core.git",
+                "reference": "8db687a1cddd13c2a6fb6b16038d20275bd31e17"
+            },
+            "type": "library"
         },
         {
             "name": "phpunit/php-code-coverage",

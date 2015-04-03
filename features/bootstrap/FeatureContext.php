@@ -1,5 +1,6 @@
 <?php
 use Behat\Behat\Context\SnippetAcceptingContext;
+use OCA\ocUsageCharts\Entity\User;
 use PHPUnit_Framework_Assert as PHPUnit;
 
 /**
