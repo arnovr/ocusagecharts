@@ -1,0 +1,30 @@
+{
+    "name": "arnovr/usagecharts",
+    "description": "Storage Usage / Activity Chart",
+    "require-dev": {
+        "behat/behat": "3",
+        "phpunit/phpunit": "4.4.*",
+        "mockery/mockery": "0.9.*"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "arnovr",
+            "email": "arno@van-rossum.com"
+        }
+    ],
+    "scripts": {
+        "post-install-cmd": [
+        ]
+    },
+    "require": {
+
+    },
+    "autoload": {
+        "psr-0": {
+        },
+        "classmap": [
+            "lib"
+        ]
+    }
+}
