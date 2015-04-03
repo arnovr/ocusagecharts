@@ -20,11 +20,7 @@ rm -f .travis.yml
 rm -f .scrutinizer.yml
 rm -rf .idea
 rm -rf tests/
-rm -rf package.sh
-rm -rf composer.json
-rm -rf composer.lock
-rm -rf behat.yml
-rm -rf features
+rm -rf package.sh 
 cd ../
 zip -r "$zipfile" "$version"
 

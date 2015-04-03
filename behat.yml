@@ -1,9 +1,0 @@
-# behat.yml
-
-default:
-    suites:
-        user_graphs:
-            paths:    [ %paths.base%/features/graphs/user ]
-            filters: { role: user }
-            contexts:
-               - AverageStorageUsagePerMonthContext
