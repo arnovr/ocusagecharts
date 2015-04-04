@@ -23,8 +23,7 @@
 
 use Behat\Behat\Tester\Exception\PendingException;
 use OCA\ocUsageCharts\Entity\Storage\StorageUsageRepository;
-use OCA\ocUsageCharts\Storage\Converters\AverageStorageUsagePerMonth;
-use OCA\ocUsageCharts\Storage\Repository\StorageRepository;
+use OCA\ocUsageCharts\Storage\DataConverters\AverageStorageUsagePerMonthConverter;
 use OCA\ocUsageCharts\Storage\StorageUsage;
 use PHPUnit_Framework_Assert as PHPUnit;
 
@@ -41,13 +40,19 @@ class AverageStorageUsagePerMonthContext extends FeatureContext
     private $response;
 
     /**
+     * @var OCP\IDb|Mockery\MockInterface
+     */
+    private $db;
+
+    /**
      * @When /^i try to retrieve Average storage usage per month$/
      */
     public function iTryToRetrieveAverageStorageUsagePerMonth()
     {
-        $repository = new StorageUsageRepository(Mockery::mock('\OCP\IDb'));
+        $this->db = Mockery::mock('\OCP\IDb');
+        $repository = new StorageUsageRepository($this->db);
         $this->storageUsageService = new StorageUsage($repository);
-        $this->response = $this->storageUsageService->getStorage(new AverageStorageUsagePerMonth());
+        $this->response = $this->storageUsageService->getStorage(new AverageStorageUsagePerMonthConverter());
     }
 
     /**
