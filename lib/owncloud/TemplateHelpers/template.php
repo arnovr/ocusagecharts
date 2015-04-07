@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2014 - Arno van Rossum <arno@van-rossum.com>
+ * Copyright (c) 2015 - Arno van Rossum <arno@van-rossum.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,24 +20,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+namespace OCA\ocUsageCharts\Owncloud\TemplateHelpers;
 
-namespace OCA\ocUsageCharts\DataProviders\Storage;
 
-use OCA\ocUsageCharts\Entity\ChartConfig;
-use OCA\ocUsageCharts\Entity\Storage\StorageUsageRepository;
-use OCA\ocUsageCharts\Owncloud\Storage;
-use OCA\ocUsageCharts\Owncloud\User;
-
-/**
- * @author Arno van Rossum <arno@van-rossum.com>
- */
-interface DataProviderStorageInterface
+class Template
 {
+    private $helper;
+    private $template;
+
     /**
-     * @param ChartConfig $chartConfig
-     * @param StorageUsageRepository $repository
-     * @param User $user
-     * @param Storage $storage
+     * @param ChartViewHelper $helper
+     * @param string $template
      */
-    public function __construct(ChartConfig $chartConfig, StorageUsageRepository $repository, User $user, Storage $storage);
+    public function __construct(ChartViewHelper $helper, $template)
+    {
+        $this->helper = $helper;
+        $this->template = $template;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTemplate()
+    {
+        return $this->template;
+    }
 }

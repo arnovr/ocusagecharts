@@ -34,7 +34,6 @@ interface ChartTypeAdapterInterface
     /**
      * @param ChartConfig $config
      * @param User $user
-     * @return ChartTypeAdapterInterface
      */
     public function __construct(ChartConfig $config, User $user);
 
