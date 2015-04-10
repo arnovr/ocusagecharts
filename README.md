@@ -57,6 +57,11 @@ You could setup the cron accordingly:
 https://doc.owncloud.org/server/8.0/admin_manual/configuration_server/background_jobs_configuration.html
 I would suggest using the owncloud "cron" setup.
 
+- 500 Error [issue 53](https://github.com/arnovr/ocusagecharts/issues/53)
+External dependencies are not included in github repo. Please download the latest version of d3 and c3.
+Create folder structure; Inside `/owncloud/apps/ocusagecharts/js` create two folders `c3` and `d3`. Place dependencies inside. 
+
+
 Product reference
 =================
 - ocUsagechart official release channel: http://apps.owncloud.com/content/show.php/Usage+Charts+%28+owncloud+7+%29?content=166746
