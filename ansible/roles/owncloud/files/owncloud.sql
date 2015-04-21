@@ -561,7 +561,7 @@ CREATE TABLE `oc_users` (
 
 LOCK TABLES `oc_users` WRITE;
 /*!40000 ALTER TABLE `oc_users` DISABLE KEYS */;
-INSERT INTO `oc_users` VALUES ('vagrant',NULL,'$2a$08$41rHzH4bZq.UjxVj58/hru3LqdUkzRNMJ1FgoI/yYQJxFEjtjoqSW ');
+INSERT INTO `oc_users` VALUES ('vagrant',NULL,'$2a$08$41rHzH4bZq.UjxVj58/hru3LqdUkzRNMJ1FgoI/yYQJxFEjtjoqSW');
 /*!40000 ALTER TABLE `oc_users` ENABLE KEYS */;
 UNLOCK TABLES;
 
