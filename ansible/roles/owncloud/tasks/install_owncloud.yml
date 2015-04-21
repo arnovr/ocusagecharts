@@ -8,3 +8,6 @@
 - name: install owncloud
   template: src=config.php.j2 dest=/var/www/owncloud/config/config.php
   sudo: yes
+
+- name: Change owner for owncloud directory
+  file: path=/var/www/owncloud owner=www-data group=www-data
