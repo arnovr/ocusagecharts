@@ -67,3 +67,16 @@ Build Status
 ============
 [![Build Status](https://travis-ci.org/arnovr/ocusagecharts.svg?branch=master)](https://travis-ci.org/arnovr/ocusagecharts)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/arnovr/ocusagecharts/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/arnovr/ocusagecharts/?branch=master)
+
+Vagrant
+=======
+When using vagrant up, the following information would come in handy:
+
+SSH Box:
+IP: 192.168.12.12
+Username: debian
+Password: debian
+Owncloud:
+url: http://ocusagecharts.box
+username: vagrant
+password: vagrant
