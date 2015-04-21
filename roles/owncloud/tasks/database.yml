@@ -1,0 +1,6 @@
+- mysql_db: name=owncloud state=present
+- copy: src=owncloud.sql dest=/tmp
+- mysql_db: name=owncloud state=import target=/tmp/owncloud.sql
+
+- name: Create owncloud database user
+  mysql_user: user=vagrant host=localhost password=vagrant login_user=root login_password={{ mysql_root_password }} priv=owncloud.*:SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,ALTER state=present

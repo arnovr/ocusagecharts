@@ -1,0 +1,20 @@
+- name: Configure webservers
+  hosts: webservers
+  remote_user: debian
+  sudo: yes
+  roles: 
+    - web
+
+- name: Configure database servers
+  hosts: dbservers
+  remote_user: debian
+  sudo: yes
+  roles: 
+    - db
+
+- name: Configure owncloud
+  hosts: webservers
+  remote_user: debian
+  sudo: yes
+  roles:
+    - owncloud

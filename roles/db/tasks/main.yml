@@ -1,0 +1,17 @@
+- name: Install mysql server and python-mysqldb
+  apt: pkg={{ item }} state=installed
+  with_items:
+    - mysql-server
+    - python-mysqldb
+
+- name: Set mysql password for root
+  mysql_user: name=root host={{ item }} password={{ mysql_root_password }} priv=*.*:ALL,GRANT
+  with_items:
+   - 127.0.0.1
+   - ::1
+   - localhost
+  sudo: yes
+
+- name: Copy my.cnf to /root/.my.cnf
+  template: src=my.cnf.j2 dest=/root/.my.cnf owner=root group=root mode=0600
+  sudo: yes

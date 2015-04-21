@@ -1,0 +1,9 @@
+[dbservers]
+192.168.12.12
+
+[webservers]
+192.168.12.12
+
+[dbservers:vars]
+mysql_root_password=powertothemall
+

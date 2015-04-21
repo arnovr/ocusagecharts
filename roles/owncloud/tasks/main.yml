@@ -1,0 +1,4 @@
+- include: requirements.yml
+- include: package.yml
+- include: database.yml
+- include: setup.yml
