@@ -1,6 +1,0 @@
-# not working :(
-#
-#- raw: echo "vagrant" | sudo /var/www/owncloud/occ user:resetpassword vagrant
-
-- raw: chmod +x /var/www/owncloud/occ
-- raw: sudo /var/www/owncloud/occ app:enable ocusagecharts

@@ -3,6 +3,8 @@
 
 - name: Unpack owncloud
   unarchive: src=/tmp/owncloud.tar.bz2 dest=/var/www copy=no creates=/tmp/unpacked
+  sudo: yes
 
 - name: install owncloud
   template: src=config.php.j2 dest=/var/www/owncloud/config/config.php
+  sudo: yes

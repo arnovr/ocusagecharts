@@ -15,6 +15,5 @@
 - name: Configure owncloud
   hosts: webservers
   remote_user: debian
-  sudo: yes
   roles:
     - owncloud
