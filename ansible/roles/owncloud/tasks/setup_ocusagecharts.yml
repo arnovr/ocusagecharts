@@ -9,19 +9,28 @@
     - curl
     - git
 
+
+- name: Check if npm is installed
+  command: npm --version
+  register: npm_check
+
 - name: Retrieve setup script for npm
   get_url: url=https://deb.nodesource.com/setup dest=/tmp/setupnpm
+  when: npm_check.stdout.find('1.') != -1
 
 - name: Run setup script for npm
   raw: sudo bash /tmp/setupnpm
+  when: npm_check.stdout.find('1.') != -1
 
 - name: install npm
   apt: pkg=npm state=present
   sudo: yes
+  when: npm_check.stdout.find('1.') != -1
 
 - name: Install bower through npm
   npm: name=bower global=yes
   sudo: yes
+  when: npm_check.stdout.find('1.') != -1
 
 - name: Install required bower packages for ocusagecharts
   raw: cd /var/www/owncloud/apps/ocusagecharts && sudo bower -s install --allow-root | xargs echo
