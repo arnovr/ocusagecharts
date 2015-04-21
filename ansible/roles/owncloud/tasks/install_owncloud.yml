@@ -10,5 +10,5 @@
   sudo: yes
 
 - name: Change owner for owncloud directory
-  file: path=/var/www/owncloud owner=www-data group=www-data
+  file: path=/var/www/owncloud owner=www-data group=www-data state=directory recurse=yes
   sudo: yes
