@@ -24,6 +24,7 @@
 namespace OCA\ocUsageCharts\Storage\DataConverters;
 
 use JsonSerializable;
+use OCA\ocUsageCharts\Entity\Storage\StorageUsage;
 
 class AverageStorageUsagePerMonthConverter implements DataConverterInterface {
 
@@ -33,6 +34,30 @@ class AverageStorageUsagePerMonthConverter implements DataConverterInterface {
      */
     public function convert(array $storageEntities)
     {
-        return $storageEntities;
+        $dataSequences = array(
+            'title' => 'Average Storage Usage Per Month',
+            'x' => 'date',
+            'y' => 'storage',
+            'datasequences' => array()
+        );
+        foreach($storageEntities as $storageUsage)
+        {
+            $dataSequences['datasequences'][] = $this->formatStorageUsage($storageUsage);
+        }
+        return json_encode($dataSequences);
+    }
+
+    /**
+     * @param StorageUsage $storageUsage
+     * @return array
+     */
+    private function formatStorageUsage(StorageUsage $storageUsage)
+    {
+        $data = array(
+            'title' => $storageUsage->getUsername(),
+            'x'     => $storageUsage->getDate()->format("Y-m-d"),
+            'y'     => $storageUsage->getUsage()
+        );
+        return $data;
     }
 }

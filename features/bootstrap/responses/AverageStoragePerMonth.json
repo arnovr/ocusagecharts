@@ -1,18 +1,11 @@
 {
-  "graph": {
-    "title": "Average Storage Usage Per Month",
-    "datasequences": [
-      {
-        "title": "2015-01-01",
-        "x": "time",
-        "y": "storage",
-        "datapoints": [
-          { "title": "testuser1", "x": 1, "y": 0.01 },
-          { "title": "testuser2", "x": 2, "y": 62.4 },
-          { "title": "testuser3", "x": 3, "y": 102.12 },
-          { "title": "testuser4", "x": 4, "y": 20.12 }
-        ]
-      }
-    ]
-  }
+  "title": "Average Storage Usage Per Month",
+  "x": "date",
+  "y": "storage",
+  "datasequences": [
+      { "title": "testuser1", "x": "2015-01-01", "y": 10 },
+      { "title": "testuser2", "x": "2014-05-20", "y": 5 },
+      { "title": "testuser3", "x": "2015-02-01", "y": 20 },
+      { "title": "testuser4", "x": "2015-03-01", "y": 40 }
+  ]
 }
