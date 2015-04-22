@@ -1,0 +1,14 @@
+- name: Download owncloud
+  get_url: url=https://download.owncloud.org/community/owncloud-7.0.5.tar.bz2 dest=/tmp/owncloud.tar.bz2
+
+- name: Unpack owncloud
+  unarchive: src=/tmp/owncloud.tar.bz2 dest=/var/www copy=no creates=/tmp/unpacked
+  sudo: yes
+
+- name: install owncloud
+  template: src=config.php.j2 dest=/var/www/owncloud/config/config.php
+  sudo: yes
+
+- name: Change owner for owncloud directory
+  file: path=/var/www/owncloud owner=www-data group=www-data state=directory recurse=yes
+  sudo: yes

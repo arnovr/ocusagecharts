@@ -1,0 +1,33 @@
+# not working :(
+#
+#- raw: echo "vagrant" | sudo /var/www/owncloud/occ user:resetpassword vagrant
+
+- name: install required packages
+  apt: pkg={{ item }} state=present
+  sudo: yes
+  with_items:
+    - curl
+    - git
+
+- name: Retrieve setup script for npm
+  get_url: url=https://deb.nodesource.com/setup dest=/tmp/setupnpm
+
+- name: Run setup script for npm
+  raw: sudo bash /tmp/setupnpm
+
+- name: install npm
+  apt: pkg=npm state=present
+  sudo: yes
+
+- name: Install bower through npm
+  npm: name=bower global=yes
+  sudo: yes
+
+- name: Install required bower packages for ocusagecharts
+  raw: cd /var/www/owncloud/apps/ocusagecharts && sudo bower -s install --allow-root | xargs echo
+
+- name: Make ./occ executable
+  raw: sudo chmod +x /var/www/owncloud/occ
+
+- name: Enable application ocusagecharts
+  raw: sudo /var/www/owncloud/occ app:enable ocusagecharts

@@ -1,0 +1,7 @@
+- name: Create default data directory
+  file: path=/home/www-data/data state=directory mode=0770 owner=www-data group=www-data
+  sudo: yes
+
+- name: Create .ocdata
+  file: path=/home/www-data/data/.ocdata state=touch mode=0770 owner=www-data group=www-data
+  sudo: yes

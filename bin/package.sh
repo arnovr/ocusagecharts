@@ -1,4 +1,5 @@
 #!/bin/bash
+cd ../
 version=`cat appinfo/version`
 version="ocusagecharts_$version"
 zipfile="$version.zip"

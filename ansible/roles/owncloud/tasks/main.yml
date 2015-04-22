@@ -1,0 +1,4 @@
+- include: install_owncloud.yml
+- include: setup_datadirectory.yml
+- include: setup_database.yml
+- include: setup_ocusagecharts.yml
