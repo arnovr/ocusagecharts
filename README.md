@@ -1,4 +1,4 @@
-gitocUsageCharts
+ocUsageCharts
 =============
 ocUsageCharts is an application for owncloud 7 and 8. 
 This application gives you the ability to display various statistics about your users within owncloud. 
@@ -38,6 +38,7 @@ Install
 Product reference
 =================
 - ocUsageCharts official release channel: https://apps.owncloud.com/content/show.php/Storage+Usage+%2B+Activity+Charts?content=166746
+- ocUsageCharts wiki: https://github.com/arnovr/ocusagecharts/wiki
 - C3.js: http://c3js.org/ - https://github.com/masayuki0812/c3
 - D3.js: https://github.com/mbostock/d3
 
