@@ -55,6 +55,7 @@ SSH Box:
 - IP: 192.168.12.12
 - Username: debian
 - Password: debian
+
 Owncloud:
 - url: http://ocusagecharts.box
 - username: vagrant
