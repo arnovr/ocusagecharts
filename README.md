@@ -1,8 +1,7 @@
 ocUsageCharts
 =============
-ocUsageCharts is created due to the fact that the original usage_charts is no longer updated to work properly with owncloud 7.
-This application is from the base up designed for Owncloud 7.
-ocUsageCharts gives the ability to display various statistics about your users within owncloud.
+ocUsageCharts is an application for owncloud 7 and 8. 
+This application gives you the ability to display various statistics about your users within owncloud. 
 These statistics include storage usage charts and activities charts.
 
 Graphs
@@ -20,13 +19,6 @@ Graphs
     - An Activity chart over the last month for all users
     - An Activity chart with activities over the last months for all users
 
-Future ideas
-============
-- Improve User Interface to handle a lot of users
-- Graphs:
-    - Files downloaded
-    - Option to use alternative for C3.js
-
 Requirements
 ============
 - Cronjobs must run every day!
@@ -35,35 +27,36 @@ Requirements
 
 Install
 =======
-- Download all files to owncloud/apps/ocusagecharts directory
-- Login as admin on owncloud
+- Download ocUsageCharts from: https://apps.owncloud.com/content/show.php/Storage+Usage+%2B+Activity+Charts?content=166746
+- Extract all files to owncloud/apps/ocusagecharts
+- Login as administrator on your owncloud instance
 - Press Apps in the menu
-- Open app Charts
-- Enable app Charts
-- App is installed, check menu for Charts
-
-FAQ
-===
-- The charts won't populate for some users?
-By default a user had to been logged in and open the charts app to be tracked.
-You could add all users to your charts by running the following command on your server
-./occ ocusagecharts:createdefaultcharts
-Pay attention, this adds ALL owncloud users to the charts application! 
-The charts app is not designed for many users! ( will be in the future )
-
-- The charts app won't populate at all
-The chart app makes use of the owncloud cron, if that cron doesn't run, the chart will not fill up with data.
-You could setup the cron accordingly:
-https://doc.owncloud.org/server/8.0/admin_manual/configuration_server/background_jobs_configuration.html
-I would suggest using the owncloud "cron" setup.
+- Select "Charts" app in the menu
+- Enable app "Charts"
+- App is installed, check menu for "Charts"
 
 Product reference
 =================
-- ocUsagechart official release channel: http://apps.owncloud.com/content/show.php/Usage+Charts+%28+owncloud+7+%29?content=166746
+- ocUsageCharts official release channel: https://apps.owncloud.com/content/show.php/Storage+Usage+%2B+Activity+Charts?content=166746
+- ocUsageCharts wiki: https://github.com/arnovr/ocusagecharts/wiki
 - C3.js: http://c3js.org/ - https://github.com/masayuki0812/c3
-- usage_charts: http://apps.owncloud.com/content/show.php/Usage+Charts?content=164956 - https://github.com/alanv72/usage_charts ( a fork from StorageCharts/ocStorage )
+- D3.js: https://github.com/mbostock/d3
 
 Build Status
 ============
 [![Build Status](https://travis-ci.org/arnovr/ocusagecharts.svg?branch=master)](https://travis-ci.org/arnovr/ocusagecharts)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/arnovr/ocusagecharts/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/arnovr/ocusagecharts/?branch=master)
+
+Vagrant
+=======
+When using vagrant up, the following information would come in handy:
+
+SSH Box:
+- IP: 192.168.12.12
+- Username: debian
+- Password: debian
+
+Owncloud:
+- url: http://ocusagecharts.box
+- username: vagrant
+- password: vagrant

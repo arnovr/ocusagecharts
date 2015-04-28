@@ -1,4 +1,8 @@
 #!/bin/bash
+# I needed something quick to build a release with
+# The script is crap, but it works for me. :)
+# So bleh bleh bleh
+cd ../
 version=`cat appinfo/version`
 version="ocusagecharts_$version"
 zipfile="$version.zip"
@@ -20,7 +24,10 @@ rm -f .travis.yml
 rm -f .scrutinizer.yml
 rm -rf .idea
 rm -rf tests/
-rm -rf package.sh 
+rm -rf bin/
+rm -rf vendor
+rm -rf Vagrantfile
+rm -rf ansible
 cd ../
 zip -r "$zipfile" "$version"
 

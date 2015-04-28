@@ -1,3 +1,6 @@
 js/c3
 js/d3
 .idea
+src/*
+.vagrant
+vendor
