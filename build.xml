@@ -11,7 +11,7 @@
         </apply>
     </target>
     <target name="unittests">
-        <exec executable="vendor/bin/phpunit" failonerror="true">
+        <exec executable="phpunit" failonerror="true">
             <arg line="--configuration=tests/phpunit.xml"/>
             <arg line="--coverage-clover=build/artifacts/logs/clover.xml"/>
         </exec>

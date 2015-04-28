@@ -10,6 +10,7 @@ env:
     - DB=sqlite
 
 before_install:
+  - composer install
   - wget https://raw.githubusercontent.com/owncloud/administration/master/travis-ci/before_install.sh
   - bash ./before_install.sh ocusagecharts $CORE_BRANCH $DB
   - cd ../core
