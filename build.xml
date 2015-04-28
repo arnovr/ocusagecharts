@@ -7,6 +7,7 @@
             <arg value="-l" />
             <fileset dir=".">
                 <include name="**/*.php" />
+                <exclude name="vendor/*.php">
             </fileset>
         </apply>
     </target>
