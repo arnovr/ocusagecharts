@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2014 - Arno van Rossum <arno@van-rossum.com>
+ * Copyright (c) 2015 - Arno van Rossum <arno@van-rossum.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,24 +20,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+namespace OCA\ocUsageCharts\Owncloud\TemplateHelpers;
 
-namespace OCA\ocUsageCharts\DataProviders\Storage;
 
-use OCA\ocUsageCharts\Entity\ChartConfig;
-use OCA\ocUsageCharts\Entity\Storage\StorageUsageRepository;
-use OCA\ocUsageCharts\Owncloud\Storage;
-use OCA\ocUsageCharts\Owncloud\User;
-
-/**
- * @author Arno van Rossum <arno@van-rossum.com>
- */
-interface DataProviderStorageInterface
+class TemplateDto
 {
-    /**
-     * @param ChartConfig $chartConfig
-     * @param StorageUsageRepository $repository
-     * @param User $user
-     * @param Storage $storage
-     */
-    public function __construct(ChartConfig $chartConfig, StorageUsageRepository $repository, User $user, Storage $storage);
+    public $template;
+    public $requestToken;
+    public $dateFormat;
+    public $dataType;
+    public $chartType;
+
+    public function __construct($template, $requestToken, $dateFormat = '%Y-%m-%d', $dataType = 'line', $chartType = 'defaultChart')
+    {
+        $this->template = $template;
+        $this->requestToken = $requestToken;
+        $this->dateFormat = $dateFormat;
+        $this->dataType = $dataType;
+        $this->chartType = $chartType;
+    }
 }

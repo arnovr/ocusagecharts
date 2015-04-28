@@ -1,4 +1,7 @@
 #!/bin/bash
+# I needed something quick to build a release with
+# The script is crap, but it works for me. :)
+# So bleh bleh bleh
 cd ../
 version=`cat appinfo/version`
 version="ocusagecharts_$version"
@@ -26,6 +29,10 @@ rm -rf composer.json
 rm -rf composer.lock
 rm -rf behat.yml
 rm -rf features
+rm -rf bin/
+rm -rf vendor
+rm -rf Vagrantfile
+rm -rf ansible
 cd ../
 zip -r "$zipfile" "$version"
 
