@@ -23,26 +23,20 @@
 namespace OCA\ocUsageCharts\Owncloud\TemplateHelpers;
 
 
-class Template
+class TemplateDto
 {
-    private $helper;
-    private $template;
+    public $template;
+    public $requestToken;
+    public $dateFormat;
+    public $dataType;
+    public $chartType;
 
-    /**
-     * @param ChartViewHelper $helper
-     * @param string $template
-     */
-    public function __construct(ChartViewHelper $helper, $template)
+    public function __construct($template, $requestToken, $dateFormat = '%Y-%m-%d', $dataType = 'line', $chartType = 'defaultChart')
     {
-        $this->helper = $helper;
         $this->template = $template;
-    }
-
-    /**
-     * @return string
-     */
-    public function getTemplate()
-    {
-        return $this->template;
+        $this->requestToken = $requestToken;
+        $this->dateFormat = $dateFormat;
+        $this->dataType = $dataType;
+        $this->chartType = $chartType;
     }
 }

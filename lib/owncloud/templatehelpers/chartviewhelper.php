@@ -32,11 +32,18 @@ class ChartViewHelper
      */
     private $chart;
 
+    /**
+     * @param ChartConfig $chart
+     */
     public function __construct(ChartConfig $chart)
     {
         $this->chart = $chart;
     }
 
+    /**
+     * @param $requestToken
+     * @return string
+     */
     public function getUrl($requestToken)
     {
         if ( !$requestToken )
@@ -46,6 +53,10 @@ class ChartViewHelper
         return \OCP\Util::linkToRoute('ocusagecharts.chart_api.load_chart', array('id' => $this->chart->getId(), 'requesttoken' => $requestToken));
     }
 
+    /**
+     * @param $language
+     * @return string
+     */
     public function getTitle($language)
     {
         return $language->t($this->chart->getChartType());

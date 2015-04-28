@@ -1,27 +1,20 @@
 <?php
 use OCA\ocUsageCharts\Owncloud\TemplateHelpers\ChartViewHelper;
+use OCA\ocUsageCharts\Owncloud\TemplateHelpers\TemplateDto;
+use OCA\ocUsageCharts\Owncloud\TemplateHelpers\TemplateParser;
 
 $chartConfig = $_['chart']->getConfig();
-$chartViewHelper = new ChartViewHelper($chartConfig);
 
-$label = $chartViewHelper->getLabel($l);
-$shortLabel = $chartViewHelper->getShortLabel();
-$url = $chartViewHelper->getUrl($_['requesttoken']);
-$title = $chartViewHelper->getTitle($l);
+$templateDto = new TemplateDto(
+    $this->inc(strtolower($chartConfig->getChartProvider()) . '/template'),
+    $_['requesttoken'],
+    '%Y-%m-%d',
+    'line',
+    'defaultChart');
 
-$chartType = 'defaultChart';
-
-$template = '
-<h1>[title]</h1>
-<div
-    class="chart [charttype]"
-    id="chart"
-    data-url="[url]"
-    data-type="line"
-    data-format="%Y-%m-%d"
-    data-label="[label]"
-    data-shortlabel="[shortlabel]"
->
-<div class="icon-loading" style="height: 60px;"></div>
-</div>';
-
+$templateParser = new TemplateParser(
+    new ChartViewHelper($chartConfig),
+    $templateDto,
+    $l
+);
+echo $templateParser->getTemplate();
