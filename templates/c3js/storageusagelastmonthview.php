@@ -1,21 +1,20 @@
 <?php
-use OCA\ocUsageCharts\Entity\ChartConfig;
+use OCA\ocUsageCharts\Owncloud\TemplateHelpers\ChartViewHelper;
+use OCA\ocUsageCharts\Owncloud\TemplateHelpers\TemplateDto;
+use OCA\ocUsageCharts\Owncloud\TemplateHelpers\TemplateParser;
 
-$label = $l->t('sizes_gb');
-$shortLabel = 'gb';
-/** @var ChartConfig $chartConfig */
 $chartConfig = $_['chart']->getConfig();
-$meta = json_decode($chartConfig->getMetaData());
-if ( !empty($meta) )
-{
-    $label = $l->t('sizes_' . $meta->size);
-    $shortLabel = $meta->size;
-}
 
+$templateDto = new TemplateDto(
+    $this->inc(strtolower($chartConfig->getChartProvider()) . '/template'),
+    $_['requesttoken'],
+    '%Y-%m-%d',
+    'line',
+    'defaultChart');
 
-$url =\OCP\Util::linkToRoute('ocusagecharts.chart_api.load_chart', array('id' => $chartConfig->getId(), 'requesttoken' => $_['requesttoken']));
-echo '
-<h1>';
-p($l->t($chartConfig->getChartType()));
-echo '</h1>
-<div class="chart defaultChart" id="chart" data-url="' . $url . '" data-type="line" data-format="%Y-%m-%d" data-shortlabel="' . $shortLabel . '" data-label="' . $label . '"><div class="icon-loading" style="height: 60px;"></div></div>';
+$templateParser = new TemplateParser(
+    new ChartViewHelper($chartConfig),
+    $templateDto,
+    $l
+);
+echo $templateParser->getTemplate();
