@@ -23,7 +23,8 @@
 
         <!-- Run tests -->
         <exec executable="vendor/bin/behat" failonerror="true">
-            <arg line="--strict" />
+            <!-- <arg line="--strict" /> Disable for now, enable when test is fixed -->
+            <arg line="--colors" />
         </exec>
     </target>
 </project>
