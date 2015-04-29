@@ -5,6 +5,7 @@
     - php5-mysql
     - php5-gd
     - apache2
+    - ant
 
 - name: Remove default virtual host
   file: path=/etc/apache2/sites-enabled/000-default state=absent
