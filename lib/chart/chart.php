@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2015 - Arno van Rossum <arno@van-rossum.com>
+ * Copyright (c) 2014 - Arno van Rossum <arno@van-rossum.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,37 +21,51 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\Storage;
+namespace OCA\ocUsageCharts\Chart;
 
-use JsonSerializable;
-use OCA\ocUsageCharts\Entity\Storage\StorageUsageRepository;
+use OCA\ocUsageCharts\Entity\ChartConfig;
+use OCA\ocUsageCharts\Entity\User;
 use OCA\ocUsageCharts\Storage\DataConverters\DataConverterInterface;
+use OCA\ocUsageCharts\Storage\Storage;
 
 /**
- * Class StorageUsage
- * @package OCA\ocUsageCharts\Storage
+ * A chart is a graphical representation of data, in which
+ * "the data is represented by symbols, such as bars in a bar chart, lines in a line chart, or slices in a pie chart."
+ *
+ * This class represents it's graphical counterfeit
+ *
+ * Class Chart
+ * @package OCA\ocUsageCharts\Chart
  */
-class StorageUsage {
+class Chart
+{
     /**
-     * @var StorageUsageRepository
+     * @var Storage
      */
-    private $repository;
+    private $storage;
 
     /**
-     * @param StorageUsageRepository $repository
+     * @param Storage $storage
      */
-    public function __construct(StorageUsageRepository $repository)
+    public function __construct(Storage $storage)
     {
-        $this->repository = $repository;
+        $this->storage = $storage;
     }
 
     /**
-     * @param DataConverterInterface $converter
-     * @return JsonSerializable
+     * Probably needs to be refactored when activities want to use this method
+     *
+     * @param User $user
+     * @param DataConverterInterface $dataConverterInterface
+     * @param ChartConfig $chartConfig
+     * @return \JsonSerializable
      */
-    public function getStorage(DataConverterInterface $converter)
+    public function getStorage(User $user, DataConverterInterface $dataConverterInterface, ChartConfig $chartConfig)
     {
-        $storage = $this->repository->findAllStorageUsage();
-        return $converter->convert($storage);
+        if (!$user->isLoggedIn())
+        {
+            throw new \InvalidArgumentException("User is not logged in");
+        }
+        return $this->storage->getUsage($dataConverterInterface);
     }
 }

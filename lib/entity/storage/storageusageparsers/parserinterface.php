@@ -26,7 +26,7 @@ namespace OCA\ocUsageCharts\Entity\Storage\StorageUsageParsers;
 interface ParserInterface {
     /**
      * @param \OC_DB_StatementWrapper $entities
-     * @return [StorageUsage]
+     * @return [Storage]
      */
     public function parse(\OC_DB_StatementWrapper $entities);
 }

@@ -27,7 +27,7 @@ use JsonSerializable;
 
 interface DataConverterInterface {
     /**
-     * @param [StorageUsage]
+     * @param [Storage]
      * @return JsonSerializable
      */
     public function convert(array $storageEntities);

@@ -21,16 +21,21 @@
  * THE SOFTWARE.
  */
 
-use Behat\Behat\Tester\Exception\PendingException;
+use OCA\ocUsageCharts\Chart\Chart;
 use OCA\ocUsageCharts\Storage\DataConverters\AverageStorageUsagePerMonthConverter;
-use OCA\ocUsageCharts\Storage\StorageUsage;
+use OCA\ocUsageCharts\Storage\Storage;
 use OCA\ocUsageCharts\Entity\Storage\StorageUsage as StorageUsageEntity;
 use PHPUnit_Framework_Assert as PHPUnit;
+use OCA\ocUsageCharts\Entity\ChartConfig;
 
 class AverageStorageUsagePerMonthContext extends FeatureContext
 {
     /**
-     * @var StorageUsage
+     * @var Chart
+     */
+    private $chart;
+    /**
+     * @var Storage
      */
     private $storageUsage;
 
@@ -44,6 +49,62 @@ class AverageStorageUsagePerMonthContext extends FeatureContext
      */
     private $storageUsageRepository;
 
+    /**
+     * @var ChartConfig
+     */
+    private $chartConfig;
+
+    /**
+     * @Given /^I have a chart$/
+     */
+    public function iHaveAChart()
+    {
+        $this->setUpStorageUsage();
+        $this->chartConfig = new ChartConfig(1, new DateTime(), $this->user->getName(), 'StorageUsagePerMonth', null, null);
+    }
+
+    /**
+     * @When /^i try to retrieve Average storage usage per month$/
+     */
+    public function iTryToRetrieveAverageStorageUsagePerMonth()
+    {
+        try {
+            $this->response = $this->chart->getStorage($this->user, new AverageStorageUsagePerMonthConverter(), $this->chartConfig);
+        }
+        catch(\InvalidArgumentException $e)
+        {
+            $this->response = null;
+        }
+    }
+
+    /**
+     * @Then /^I see json data with the average storage usage per month for user$/
+     */
+    public function iSeeJsonDataWithTheAverageStorageUsagePerMonthForUser()
+    {
+        PHPUnit::assertJsonStringEqualsJsonFile('features/bootstrap/responses/AverageStoragePerMonthForUser.json', $this->response);
+    }
+
+    /**
+     * @Then /^I see json data with the average storage usage per month for administrator$/
+     */
+    public function iSeeJsonDataWithTheAverageStorageUsagePerMonthForAdministrator()
+    {
+        PHPUnit::assertJsonStringEqualsJsonFile('features/bootstrap/responses/AverageStoragePerMonthForAdministrator.json', $this->response);
+    }
+
+    /**
+     * @Then /^I get an empty response$/
+     */
+    public function iGetAnEmptyResponse()
+    {
+        PHPUnit::assertNull($this->response);
+    }
+
+    /**
+     * Setup some data entities to return
+     * @return array
+     */
     private function stubData()
     {
         return array(
@@ -54,10 +115,7 @@ class AverageStorageUsagePerMonthContext extends FeatureContext
         );
     }
 
-    /**
-     * @When /^i try to retrieve Average storage usage per month$/
-     */
-    public function iTryToRetrieveAverageStorageUsagePerMonth()
+    private function setUpStorageUsage()
     {
         $this->storageUsageRepository = Mockery::mock('\OCA\ocUsageCharts\Entity\Storage\StorageUsageRepository');
         $this->storageUsageRepository
@@ -67,24 +125,8 @@ class AverageStorageUsagePerMonthContext extends FeatureContext
             )
             ->once();
 
-        $this->storageUsage = new StorageUsage($this->storageUsageRepository);
-        $this->response = $this->storageUsage->getStorage(new AverageStorageUsagePerMonthConverter());
-    }
-
-    /**
-     * @Then /^I see json data with the average storage usage per month for user$/
-     */
-    public function iSeeJsonDataWithTheAverageStorageUsagePerMonthForUser()
-    {
-        PHPUnit::assertJsonStringEqualsJsonFile('features/bootstrap/responses/AverageStoragePerMonth.json', $this->response);
-    }
-
-    /**
-     * @Then /^I get an access denied$/
-     */
-    public function iGetAnAccessDenied()
-    {
-        throw new PendingException();
+        $this->storageUsage = new Storage($this->storageUsageRepository);
+        $this->chart = new Chart($this->storageUsage);
     }
 
 }

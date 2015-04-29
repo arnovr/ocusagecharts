@@ -62,7 +62,7 @@ class StorageUsageRepository extends Mapper
     }
 
     /**
-     * @return [StorageUsage]
+     * @return [Storage]
      */
     public function findAllStorageUsage() {
         $created = new \DateTime();

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2014 - Arno van Rossum <arno@van-rossum.com>
+ * Copyright (c) 2015 - Arno van Rossum <arno@van-rossum.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,73 +21,37 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\Entity;
+namespace OCA\ocUsageCharts\Storage;
+
+use JsonSerializable;
+use OCA\ocUsageCharts\Entity\Storage\StorageUsageRepository;
+use OCA\ocUsageCharts\Storage\DataConverters\DataConverterInterface;
 
 /**
- * Class User
- * @package OCA\ocUsageCharts\Entity
+ * Class Storage
+ * @package OCA\ocUsageCharts\Storage
  */
-class User {
+class Storage {
     /**
-     * @var boolean
+     * @var StorageUsageRepository
      */
-    private $loggedIn = false;
+    private $repository;
 
     /**
-     * @var string
+     * @param StorageUsageRepository $repository
      */
-    private $name;
-
-    /**
-     * @var boolean
-     */
-    private $administrator;
-
-    /**
-     * @param $name
-     */
-    public function __construct($name)
+    public function __construct(StorageUsageRepository $repository)
     {
-        $this->name = $name;
+        $this->repository = $repository;
     }
 
     /**
-     * @return void
+     * @param DataConverterInterface $converter
+     * @return JsonSerializable
      */
-    public function login()
+    public function getUsage(DataConverterInterface $converter)
     {
-        $this->loggedIn = true;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function isLoggedIn()
-    {
-        return $this->loggedIn;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * @return void
-     */
-    public function isAnAdministrator()
-    {
-        $this->administrator = true;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function isAdministrator()
-    {
-        return $this->administrator;
+        $storage = $this->repository->findAllStorageUsage();
+        return $converter->convert($storage);
     }
 }

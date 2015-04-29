@@ -11,14 +11,14 @@ class FeatureContext implements SnippetAcceptingContext
     /**
      * @var User
      */
-    private $user;
+    protected $user;
 
     /**
      * @Given /^I am a user$/
      */
     public function iAmAUser()
     {
-        $this->user = new User();
+        $this->user = new User('testuser1');
     }
 
     /**
@@ -38,4 +38,12 @@ class FeatureContext implements SnippetAcceptingContext
         PHPUnit::assertFalse($this->user->isLoggedIn());
     }
 
+    /**
+     * @Given /^I am administrator$/
+     */
+    public function iAmAdministrator()
+    {
+        $this->user->isAnAdministrator();
+        PHPUnit::assertTrue($this->user->isAdministrator());
+    }
 }

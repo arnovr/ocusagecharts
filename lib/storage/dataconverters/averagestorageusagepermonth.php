@@ -29,7 +29,7 @@ use OCA\ocUsageCharts\Entity\Storage\StorageUsage;
 class AverageStorageUsagePerMonthConverter implements DataConverterInterface {
 
     /**
-     * @param [StorageUsage]
+     * @param [Storage]
      * @return JsonSerializable
      */
     public function convert(array $storageEntities)
