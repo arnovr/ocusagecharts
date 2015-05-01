@@ -25,6 +25,7 @@ namespace OCA\ocUsageCharts\Entity\Storage;
 
 use OCA\ocUsageCharts\Entity\Storage\StorageUsageParsers\ParserDecorator;
 use OCA\ocUsageCharts\Entity\Storage\StorageUsageParsers\PerMonthEntityParser;
+use OCA\ocUsageCharts\Entity\User;
 use OCP\AppFramework\Db\Mapper;
 use \OCP\IDb;
 
@@ -62,13 +63,24 @@ class StorageUsageRepository extends Mapper
     }
 
     /**
-     * @return [Storage]
+     * @param User $user
+     * @return array [Storage]
      */
-    public function findAllStorageUsage() {
+    public function findAllStorageUsage(User $user) {
         $created = new \DateTime();
         $created->sub(new \DateInterval('P2M'));
-        $sql = 'SELECT * FROM `oc_uc_storageusage` WHERE `created` > ? ORDER BY created DESC';
-        return $this->findEntities($sql, array( $created->format('Y-m-d H:i:s')));
+        $parameters = array($created->format('Y-m-d H:i:s'));
+
+        $sql = 'SELECT * FROM `oc_uc_storageusage` WHERE `created` > ? ';
+
+        // When user is not an adminsitrator, show only for it's own user
+        if ( !$user->isAdministrator() ) {
+            $sql .= 'AND `username` > ?';
+            $parameters[] = $user->getName();
+        }
+
+        $sql .= 'ORDER BY created DESC';
+        return $this->findEntities($sql, $parameters);
     }
 
     /**

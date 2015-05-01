@@ -25,6 +25,7 @@ namespace OCA\ocUsageCharts\Storage;
 
 use JsonSerializable;
 use OCA\ocUsageCharts\Entity\Storage\StorageUsageRepository;
+use OCA\ocUsageCharts\Entity\User;
 use OCA\ocUsageCharts\Storage\DataConverters\DataConverterInterface;
 
 /**
@@ -47,11 +48,12 @@ class Storage {
 
     /**
      * @param DataConverterInterface $converter
+     * @param User $user
      * @return JsonSerializable
      */
-    public function getUsage(DataConverterInterface $converter)
+    public function getUsage(DataConverterInterface $converter, User $user)
     {
-        $storage = $this->repository->findAllStorageUsage();
+        $storage = $this->repository->findAllStorageUsage($user);
         return $converter->convert($storage);
     }
 }

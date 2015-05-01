@@ -55,17 +55,15 @@ class Chart
     /**
      * Probably needs to be refactored when activities want to use this method
      *
-     * @param User $user
      * @param DataConverterInterface $dataConverterInterface
-     * @param ChartConfig $chartConfig
      * @return \JsonSerializable
      */
-    public function getStorage(User $user, DataConverterInterface $dataConverterInterface, ChartConfig $chartConfig)
+    public function getStorage(DataConverterInterface $dataConverterInterface, User $user)
     {
         if (!$user->isLoggedIn())
         {
             throw new \InvalidArgumentException("User is not logged in");
         }
-        return $this->storage->getUsage($dataConverterInterface);
+        return $this->storage->getUsage($dataConverterInterface, $user);
     }
 }

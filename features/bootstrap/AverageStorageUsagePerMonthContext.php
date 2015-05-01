@@ -69,7 +69,7 @@ class AverageStorageUsagePerMonthContext extends FeatureContext
     public function iTryToRetrieveAverageStorageUsagePerMonth()
     {
         try {
-            $this->response = $this->chart->getStorage($this->user, new AverageStorageUsagePerMonthConverter(), $this->chartConfig);
+            $this->response = $this->chart->getStorage(new AverageStorageUsagePerMonthConverter(), $this->user);
         }
         catch(\InvalidArgumentException $e)
         {
@@ -107,12 +107,18 @@ class AverageStorageUsagePerMonthContext extends FeatureContext
      */
     private function stubData()
     {
-        return array(
+        $data = array(
             new StorageUsageEntity(DateTime::createFromFormat("Y-m-d", '2015-01-01'), 10, 'testuser1'),
             new StorageUsageEntity(DateTime::createFromFormat("Y-m-d", '2014-05-20'), 5, 'testuser2'),
             new StorageUsageEntity(DateTime::createFromFormat("Y-m-d", '2015-02-01'), 20, 'testuser3'),
             new StorageUsageEntity(DateTime::createFromFormat("Y-m-d", '2015-03-01'), 40, 'testuser4'),
         );
+
+        if (!$this->user->isAdministrator())
+        {
+            return array($data[0]);
+        }
+        return $data;
     }
 
     private function setUpStorageUsage()

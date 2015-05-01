@@ -76,6 +76,7 @@ class User {
     }
 
     /**
+     * Tell that the user is an administrator
      * @return void
      */
     public function isAnAdministrator()
