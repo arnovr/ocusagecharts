@@ -2,8 +2,8 @@
 
 default:
     suites:
-        user_graphs:
-            paths:    [ %paths.base%/features/graphs/user ]
+        graphs_storage:
+            paths:    [ %paths.base%/features/graphs/storage ]
             filters: { role: user }
             contexts:
-               - AverageStorageUsagePerMonthContext
+               - StorageUsageContext

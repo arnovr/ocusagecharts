@@ -1,0 +1,12 @@
+{
+  "title":"Average Storage Usage Per Month",
+  "x":"date",
+  "y":"usage",
+  "datasequences":[
+    {"title":"testuser1", "date":"2015-01", "usage":10.5},
+    {"title":"testuser1", "date":"2015-02", "usage":13},
+    {"title":"testuser1", "date":"2015-03", "usage":11},
+    {"title":"testuser1", "date":"2015-04", "usage":12.5},
+    {"title":"testuser1", "date":"2015-05", "usage":16.78}
+  ]
+}

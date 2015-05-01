@@ -26,7 +26,20 @@ namespace OCA\ocUsageCharts\Storage\DataConverters;
 use JsonSerializable;
 use OCA\ocUsageCharts\Entity\Storage\StorageUsage;
 
-class AverageStorageUsagePerMonthConverter implements DataConverterInterface {
+class AveragePerMonthConverter implements DataConverterInterface
+{
+    /**
+     * @var DateSorter
+     */
+    private $dateSorter;
+
+    /**
+     * @param DateSorter $dateSorter
+     */
+    public function __construct(DateSorter $dateSorter)
+    {
+        $this->dateSorter = $dateSorter;
+    }
 
     /**
      * @param [Storage]
@@ -37,27 +50,62 @@ class AverageStorageUsagePerMonthConverter implements DataConverterInterface {
         $dataSequences = array(
             'title' => 'Average Storage Usage Per Month',
             'x' => 'date',
-            'y' => 'storage',
+            'y' => 'usage',
             'datasequences' => array()
         );
+
+        $filledArray = array();
+
+        /* @var StorageUsage $storageUsage */
         foreach($storageEntities as $storageUsage)
         {
-            $dataSequences['datasequences'][] = $this->formatStorageUsage($storageUsage);
+            $key = $storageUsage->getDate()->format("Y-m") . '_' . $storageUsage->getUsername();
+            if ( !isset($filledArray[$key]))
+            {
+                $filledArray[$key] = array();
+            }
+            $filledArray[$key][] = $storageUsage;
         }
+
+        $dataSequences['datasequences'] = $this->dateSorter->sort(
+            $this->calculateAveragePerMonth($filledArray)
+        );
+
         return json_encode($dataSequences);
     }
 
     /**
-     * @param StorageUsage $storageUsage
+     * @param $filledArray
      * @return array
      */
-    private function formatStorageUsage(StorageUsage $storageUsage)
+    private function calculateAveragePerMonth($filledArray)
     {
-        $data = array(
-            'title' => $storageUsage->getUsername(),
-            'x'     => $storageUsage->getDate()->format("Y-m-d"),
-            'y'     => $storageUsage->getUsage()
-        );
-        return $data;
+        $return = array();
+
+        foreach($filledArray as $date_username => $storageUsages)
+        {
+            list($date, $username) = explode('_', $date_username);
+
+            $usage = $this->getAverageUsage($storageUsages);
+
+            $return[] = array(
+                'title' => $username,
+                'date' => $date,
+                'usage' => $usage
+            );
+        }
+        return $return;
+    }
+
+    private function getAverageUsage($storageUsages)
+    {
+        $usage = 0;
+        /* @var StorageUsage $storageUsage */
+        foreach($storageUsages as $storageUsage)
+        {
+            $usage += $storageUsage->getUsage();
+        }
+
+        return round(($usage / count($storageUsages)), 2);
     }
 }

@@ -1,7 +1,7 @@
 Feature: Average storage usage per month
   In order to show the average storage usage per month
   As a user
-  I need to be able to retrieve data which includes data about the average storage
+  I need to be able to retrieve storage usage which includes information about the average storage
 
   Scenario:
     Given I am a user
