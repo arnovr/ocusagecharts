@@ -49,7 +49,7 @@ Build Status
 
 Vagrant
 =======
-When using vagrant, for some development, the following information helps you to log into owncloud: 
+When you are using vagrant for development, the following information helps you to log into owncloud: 
 
 Owncloud:
 - url: http://ocusagecharts.box
