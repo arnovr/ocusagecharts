@@ -16,7 +16,7 @@
   raw: sudo bash /tmp/setupnpm
 
 - name: install npm
-  apt: pkg=npm state=present
+  apt: pkg=nodejs state=present
   sudo: yes
 
 - name: Install bower through npm

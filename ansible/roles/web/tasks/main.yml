@@ -7,7 +7,7 @@
     - apache2
 
 - name: Remove default virtual host
-  file: path=/etc/apache2/sites-enabled/000-default state=absent
+  file: path=/etc/apache2/sites-enabled/000-default.conf state=absent
 
 - name: Copy apache owncloud configuration
   template: src=apache2-owncloud.conf dest=/etc/apache2/sites-enabled/owncloud.conf

@@ -49,12 +49,7 @@ Build Status
 
 Vagrant
 =======
-When using vagrant up, the following information would come in handy:
-
-SSH Box:
-- IP: 192.168.12.12
-- Username: debian
-- Password: debian
+When you are using vagrant for development, the following information helps you to log into owncloud: 
 
 Owncloud:
 - url: http://ocusagecharts.box

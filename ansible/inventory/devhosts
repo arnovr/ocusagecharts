@@ -6,4 +6,3 @@
 
 [dbservers:vars]
 mysql_root_password=powertothemall
-
