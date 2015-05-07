@@ -1,3 +1,7 @@
+[![Stories in Ready](https://badge.waffle.io/arnovr/ocusagecharts.png?label=ready&title=Ready)](https://waffle.io/arnovr/ocusagecharts)
+[![Build Status](https://travis-ci.org/arnovr/ocusagecharts.svg?branch=master)](https://travis-ci.org/arnovr/ocusagecharts)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/arnovr/ocusagecharts/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/arnovr/ocusagecharts/?branch=master)
+
 ocUsageCharts
 =============
 ocUsageCharts is an application for owncloud 7 and 8. 
@@ -41,11 +45,6 @@ Product reference
 - ocUsageCharts wiki: https://github.com/arnovr/ocusagecharts/wiki
 - C3.js: http://c3js.org/ - https://github.com/masayuki0812/c3
 - D3.js: https://github.com/mbostock/d3
-
-Build Status
-============
-[![Build Status](https://travis-ci.org/arnovr/ocusagecharts.svg?branch=master)](https://travis-ci.org/arnovr/ocusagecharts)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/arnovr/ocusagecharts/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/arnovr/ocusagecharts/?branch=master)
 
 Vagrant
 =======
