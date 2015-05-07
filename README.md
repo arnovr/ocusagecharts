@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/arnovr/ocusagecharts.png?label=ready&title=Ready)](https://waffle.io/arnovr/ocusagecharts)
 ocUsageCharts
 =============
 ocUsageCharts is an application for owncloud 7 and 8. 
