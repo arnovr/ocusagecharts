@@ -2,6 +2,7 @@ language: php
 php:
   - 5.4
   - 5.5
+  - 5.6
 
 env:
   global:
@@ -10,6 +11,7 @@ env:
     - DB=sqlite
 
 before_install:
+  - composer install
   - wget https://raw.githubusercontent.com/owncloud/administration/master/travis-ci/before_install.sh
   - bash ./before_install.sh ocusagecharts $CORE_BRANCH $DB
   - cd ../core
@@ -18,15 +20,16 @@ before_install:
 script:
   # Test lint
   - cd apps/ocusagecharts
-  - sh -c "if [ '$DB' = 'sqlite' ]; then ant test; fi"
+  - sh -c "if [ '$DB' = 'sqlite' ]; then ant codesyntax; fi"
 
   # Run phpunit tests
-  - cd tests
-  - phpunit --configuration phpunit.xml --coverage-clover=coverage.clover
+  - ant unittests
 
   # Create coverage report
   - wget https://scrutinizer-ci.com/ocular.phar
   - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
+
+  - ant behat
 
 # try in future
 #after_success:

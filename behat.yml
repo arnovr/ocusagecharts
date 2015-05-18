@@ -1,0 +1,9 @@
+# behat.yml
+
+default:
+    suites:
+        graphs_storage:
+            paths:    [ %paths.base%/features/graphs/storage ]
+            filters: { role: user }
+            contexts:
+               - StorageUsageContext

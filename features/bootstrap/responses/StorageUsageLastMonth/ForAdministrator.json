@@ -1,0 +1,11 @@
+{
+  "title": "Storage Usage Last Month",
+  "x": "date",
+  "y": "usage",
+  "datasequences": [
+      { "title": "testuser1", "date": "2015-01-01", "usage": 10 },
+      { "title": "testuser2", "date": "2014-05-20", "usage": 5 },
+      { "title": "testuser3", "date": "2015-02-01", "usage": 20 },
+      { "title": "testuser4", "date": "2015-03-01", "usage": 40 }
+  ]
+}

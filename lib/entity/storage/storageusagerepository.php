@@ -23,6 +23,9 @@
 
 namespace OCA\ocUsageCharts\Entity\Storage;
 
+use OCA\ocUsageCharts\Entity\Storage\StorageUsageParsers\ParserDecorator;
+use OCA\ocUsageCharts\Entity\Storage\StorageUsageParsers\PerMonthEntityParser;
+use OCA\ocUsageCharts\Entity\User;
 use OCP\AppFramework\Db\Mapper;
 use \OCP\IDb;
 
@@ -60,11 +63,32 @@ class StorageUsageRepository extends Mapper
     }
 
     /**
+     * @param User $user
+     * @return array [Storage]
+     */
+    public function findAllStorageUsage(User $user) {
+        $created = new \DateTime();
+        $created->sub(new \DateInterval('P2M'));
+        $parameters = array($created->format('Y-m-d H:i:s'));
+
+        $sql = 'SELECT * FROM `oc_uc_storageusage` WHERE `created` > ? ';
+
+        // When user is not an adminsitrator, show only for it's own user
+        if ( !$user->isAdministrator() ) {
+            $sql .= 'AND `username` > ?';
+            $parameters[] = $user->getName();
+        }
+
+        $sql .= 'ORDER BY created DESC';
+        return $this->findEntities($sql, $parameters);
+    }
+
+    /**
      * @param string $userName
      * @param integer $limit
      * @return array
      */
-    public function find($userName, $limit = 30) {
+    public function findByUsername($userName, $limit = 30) {
         $sql = 'SELECT * FROM `oc_uc_storageusage` WHERE `username` = ? ORDER BY created DESC LIMIT ' . $limit;
         return $this->findEntities($sql, array($userName));
     }
@@ -137,7 +161,7 @@ class StorageUsageRepository extends Mapper
         }
         else
         {
-            $return = $this->find($username, $limit);
+            $return = $this->findByUsername($username, $limit);
         }
 
         return $return;
@@ -188,34 +212,7 @@ class StorageUsageRepository extends Mapper
         $query = $this->db->prepareQuery($sql . $whereClause);
         $result = $query->execute($params);
 
-        return $this->parsePerMonthEntities($result);
-    }
-
-    /**
-     * Parse the results from the per month entities found
-     *
-     * @param \OC_DB_StatementWrapper $result
-     * @return array
-     */
-    private function parsePerMonthEntities($result)
-    {
-        $entities = array();
-        while($row = $result->fetch()){
-            if ( !isset($entities[$row['username']]))
-            {
-                $entities[$row['username']] = array();
-            }
-            $date = explode(' ', $row['month']);
-            $dateTime = new \Datetime();
-            $dateTime->setDate($date[1], $date[0], 1);
-
-            $entities[$row['username']] = array_merge(
-                $entities[$row['username']],
-                array(new StorageUsage($dateTime, $row['average'], $row['username']))
-            );
-        }
-
-
-        return $entities;
+        $decorator = new ParserDecorator(new PerMonthEntityParser());
+        return $decorator->parse($result);
     }
 }
