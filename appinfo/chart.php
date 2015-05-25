@@ -31,9 +31,11 @@ use OCA\ocUsageCharts\DataProviders\ChartUsageHelper;
 use OCA\ocUsageCharts\Entity\Activity\ActivityUsageRepository;
 use OCA\ocUsageCharts\Entity\ChartConfigRepository;
 use OCA\ocUsageCharts\Entity\Storage\StorageUsageRepository;
+use OCA\ocUsageCharts\Hooks\FileHooks;
 use OCA\ocUsageCharts\Owncloud\Storage;
 use OCA\ocUsageCharts\Owncloud\User;
 use OCA\ocUsageCharts\Owncloud\Users;
+use OCA\ocUsageCharts\Service\ApiConnector;
 use OCA\ocUsageCharts\Service\ChartConfigService;
 use OCA\ocUsageCharts\Service\ChartCreator;
 use OCA\ocUsageCharts\Service\ChartDataProvider;
@@ -60,6 +62,7 @@ class Chart extends App
         $this->registerOwncloudDependencies();
         $this->registerVarious();
         $this->registerServices();
+        $this->registerUsageChartsApi();
     }
 
     /**
@@ -186,6 +189,20 @@ class Chart extends App
             return new ChartDataProvider(
                 $c->query('DataProviderFactory'),
                 $c->query('ChartTypeAdapterFactory')
+            );
+        });
+    }
+
+    private function registerUsageChartsApi()
+    {
+        $this->container->registerService('ApiConnector', function($c) {
+            return new ApiConnector();
+        });
+
+        $this->container->registerService('FileHooks', function($c) {
+            return new FileHooks(
+                $c->query('ServerContainer')->getUserFolder();
+                $c->query('ApiConnector')
             );
         });
     }
