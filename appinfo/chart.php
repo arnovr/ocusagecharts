@@ -196,12 +196,12 @@ class Chart extends App
     private function registerUsageChartsApi()
     {
         $this->container->registerService('ApiConnector', function($c) {
-            return new ApiConnector();
+            return new ApiConnector(new GuzzleHttp\Client());
         });
 
         $this->container->registerService('FileHooks', function($c) {
             return new FileHooks(
-                $c->query('ServerContainer')->getUserFolder();
+                $c->query('ServerContainer')->getUserFolder(),
                 $c->query('ApiConnector')
             );
         });
