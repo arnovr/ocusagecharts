@@ -23,11 +23,10 @@
 
 namespace OCA\ocUsageCharts\Service;
 
-
 use OCA\ocUsageCharts\Dto\ActivityInformation;
 
-class ApiConnector {
-
+class ActivityConnector
+{
     /**
      * @var GuzzleHttp\Client
      */
@@ -38,10 +37,28 @@ class ApiConnector {
      */
     private $url;
 
-    public function __construct(GuzzleHttp\Client $httpClient, $url)
+    /**
+     * @var string
+     */
+    private $username;
+
+    /**
+     * @var string
+     */
+    private $password;
+
+    /**
+     * @param GuzzleHttp\Client $httpClient
+     * @param string $url
+     * @param string $username
+     * @param string $password
+     */
+    public function __construct(GuzzleHttp\Client $httpClient, $url, $username, $password)
     {
         $this->httpClient = $httpClient;
         $this->url = $url;
+        $this->username = $username;
+        $this->password = $password;
     }
 
     /**
@@ -51,7 +68,7 @@ class ApiConnector {
     {
         $url = $this->url . '/api/create/activity';
         $options = [
-            'auth' => ['development', 'test'],
+            'auth' => [$this->username, $this->password],
             'json' => $activityInformation
         ];
         $this->httpClient->post($url, $options);

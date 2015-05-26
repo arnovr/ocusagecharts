@@ -35,7 +35,7 @@ use OCA\ocUsageCharts\Hooks\FileHooks;
 use OCA\ocUsageCharts\Owncloud\Storage;
 use OCA\ocUsageCharts\Owncloud\User;
 use OCA\ocUsageCharts\Owncloud\Users;
-use OCA\ocUsageCharts\Service\ApiConnector;
+use OCA\ocUsageCharts\Service\ActivityConnector;
 use OCA\ocUsageCharts\Service\ChartConfigService;
 use OCA\ocUsageCharts\Service\ChartCreator;
 use OCA\ocUsageCharts\Service\ChartDataProvider;
@@ -195,8 +195,22 @@ class Chart extends App
 
     private function registerUsageChartsApi()
     {
-        $this->container->registerService('ApiConnector', function($c) {
-            return new ApiConnector(new GuzzleHttp\Client());
+        $this->container->registerService('ActivityConnector', function($c) {
+            return new ActivityConnector(
+                new GuzzleHttp\Client(),
+                $c->query('ServerContainer')->getConfig()->getAppValue(
+                    $c->query('AppName'),
+                    'url'
+                ),
+                $c->query('ServerContainer')->getConfig()->getAppValue(
+                    $c->query('AppName'),
+                    'username'
+                ),
+                $c->query('ServerContainer')->getConfig()->getAppValue(
+                    $c->query('AppName'),
+                    'password'
+                )
+            );
         });
 
         $this->container->registerService('FileHooks', function($c) {

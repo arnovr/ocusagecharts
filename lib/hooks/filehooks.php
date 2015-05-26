@@ -24,7 +24,7 @@
 namespace OCA\ocUsageCharts\Hooks;
 
 use OCA\ocUsageCharts\Dto\ActivityInformation;
-use OCA\ocUsageCharts\Service\ApiConnector;
+use OCA\ocUsageCharts\Service\ActivityConnector;
 
 /**
  * Class FileHooks
@@ -37,15 +37,15 @@ class FileHooks {
     private $folder;
 
     /**
-     * @var ApiConnector
+     * @var ActivityConnector
      */
     private $api;
 
     /**
      * @param \OCP\Files\Folder $folder
-     * @param ApiConnector $api
+     * @param ActivityConnector $api
      */
-    public function __construct(\OCP\Files\Folder $folder, ApiConnector $api)
+    public function __construct(\OCP\Files\Folder $folder, ActivityConnector $api)
     {
         $this->folder = $folder;
         $this->api = $api;
@@ -69,9 +69,8 @@ class FileHooks {
      */
     public function createCallback($event)
     {
-
         // listen on user predelete
-        return function(\OCP\Files\Node $node) use ($event){
+        return function(\OCP\Files\Node $node) use ($event) {
             $activityInformation = new ActivityInformation('TODO', $event);
             $this->api->activity($activityInformation);
         };

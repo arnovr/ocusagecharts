@@ -1,4 +1,6 @@
 <?php
+use OCA\ocUsageCharts\AppInfo\Chart;
+
 $selected = ' selected="selected"';
 
 echo '
@@ -37,5 +39,31 @@ foreach($_['charts'] as $chart)
 
 echo '
 </div>
-</div>
 ';
+
+
+
+$app = new Chart();
+$container = $app->getContainer();
+$user = $container->query('OwncloudUser');
+if ( $user->isAdminUser($user->getSignedInUsername()) )
+{
+
+    $appConfig = $container->query('ServerContainer')->getConfig();
+
+    echo '<br /><h2>';
+	p($l->t('apisettings'));
+    echo '</h2>';
+    echo '<form id="apisettings">';
+    p($l->t('url'));
+    echo ': <input type="text" name="url" value="' . $appConfig->getAppValue('ocusagecharts', 'url') . '"/><br />';
+    p($l->t('username'));
+    echo ': <input type="text" name="username" value="' . $appConfig->getAppValue('ocusagecharts', 'username') . '"/><br />';
+    p($l->t('password'));
+    echo ': <input type="password" name="password" value="' . $appConfig->getAppValue('ocusagecharts', 'password') . '" /><br />';
+    echo '<input id="apisettings_submit" type="button" value="' . $l->t('Store credentials') . '">';
+    echo '</form>';
+}
+
+echo '
+</div>';
