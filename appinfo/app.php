@@ -21,6 +21,7 @@
  * THE SOFTWARE.
  */
 
+use OCA\ocUsageCharts\AppInfo\Chart;
 OCP\App::checkAppEnabled('ocusagecharts');
 OCP\App::setActiveNavigationEntry('ocusagecharts');
 OCP\App::registerPersonal('ocusagecharts', 'personal');
@@ -35,3 +36,7 @@ OCP\App::addNavigationEntry(Array(
 \OCP\Util::addStyle('ocusagecharts', 'style');
 
 \OCP\Backgroundjob::registerJob('OCA\ocUsageCharts\Command\UpdateChartsCommand');
+
+$app = new Chart();
+$x = $app->getContainer()->query('FileHooks');//
+$x->register();

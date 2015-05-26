@@ -22,7 +22,7 @@
  */
 
 namespace OCA\ocUsageCharts\Controller;
-use OCA\ocUsageCharts\Service\ChartService;
+use OCA\ocUsageCharts\DataConnector\ChartService;
 use OCP\AppFramework\ApiController;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\IRequest;

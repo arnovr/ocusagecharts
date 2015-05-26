@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\Service;
+namespace OCA\ocUsageCharts\DataConnector;
 
 use OCA\ocUsageCharts\AppInfo\Chart;
 use OCA\ocUsageCharts\ChartTypeAdapterFactory;

@@ -21,14 +21,14 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\Service;
+namespace OCA\ocUsageCharts\DataConnector;
 
 use OCA\ocUsageCharts\Dto\ActivityInformation;
 
 class ActivityConnector
 {
     /**
-     * @var GuzzleHttp\Client
+     * @var \GuzzleHttp\Client
      */
     private $httpClient;
 
@@ -48,12 +48,12 @@ class ActivityConnector
     private $password;
 
     /**
-     * @param GuzzleHttp\Client $httpClient
+     * @param \GuzzleHttp\Client $httpClient
      * @param string $url
      * @param string $username
      * @param string $password
      */
-    public function __construct(GuzzleHttp\Client $httpClient, $url, $username, $password)
+    public function __construct(\GuzzleHttp\Client $httpClient, $url, $username, $password)
     {
         $this->httpClient = $httpClient;
         $this->url = $url;

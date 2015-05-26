@@ -1,0 +1,47 @@
+{
+  "name": "arnovr/usagecharts",
+  "description": "Storage Usage / Activity Chart",
+  "process-timeout": "1000",
+  "require-dev": {
+    "behat/behat": "3",
+    "phpunit/phpunit": "4.4.*",
+    "mockery/mockery": "0.9.*",
+    "owncloud/core": "7.0.5"
+  },
+  "repositories": {
+    "owncloud": {
+      "type": "package",
+      "package": {
+        "name": "owncloud/core",
+        "version": "7.0.5",
+        "source": {
+          "url": "https://github.com/owncloud/core.git",
+          "type": "git",
+          "reference": "8b83580af708fbda38831c7109486aa35508a7fc"
+        }
+      }
+    }
+  },
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "arnovr",
+      "email": "arno@van-rossum.com"
+    }
+  ],
+  "scripts": {
+    "post-install-cmd": [
+    ]
+  },
+  "require": {
+    "guzzlehttp/guzzle": "~6.0"
+  },
+  "autoload": {
+    "psr-0": {
+    },
+    "classmap": [
+      "lib",
+      "vendor/owncloud/core/lib"
+    ]
+  }
+}

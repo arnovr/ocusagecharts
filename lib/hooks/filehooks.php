@@ -24,7 +24,7 @@
 namespace OCA\ocUsageCharts\Hooks;
 
 use OCA\ocUsageCharts\Dto\ActivityInformation;
-use OCA\ocUsageCharts\Service\ActivityConnector;
+use OCA\ocUsageCharts\DataConnector\ActivityConnector;
 
 /**
  * Class FileHooks
@@ -42,37 +42,37 @@ class FileHooks {
     private $api;
 
     /**
-     * @param \OCP\Files\Folder $folder
+     * @param \OC\Files\Node\Root $folder
      * @param ActivityConnector $api
      */
-    public function __construct(\OCP\Files\Folder $folder, ActivityConnector $api)
+    public function __construct(\OC\Files\Node\Root $folder, ActivityConnector $api)
     {
         $this->folder = $folder;
         $this->api = $api;
-
-        $this->register();
     }
 
-    private function register()
+    public function register()
     {
-        $this->folder->listen('\OC\Files', 'postWrite', $this->createCallback('file:write'));
-        $this->folder->listen('\OC\Files', 'postCreate', $this->createCallback('file:create'));
-        $this->folder->listen('\OC\Files', 'postDelete', $this->createCallback('file:delete'));
-        $this->folder->listen('\OC\Files', 'postTouch', $this->createCallback('file:touched'));
-        $this->folder->listen('\OC\Files', 'postCopy', $this->createCallback('file:copied'));
-        $this->folder->listen('\OC\Files', 'postRename', $this->createCallback('file:renamed'));
-    }
-
-    /**
-     * @param string $event
-     * @return callable
-     */
-    public function createCallback($event)
-    {
-        // listen on user predelete
-        return function(\OCP\Files\Node $node) use ($event) {
-            $activityInformation = new ActivityInformation('TODO', $event);
-            $this->api->activity($activityInformation);
+        $api = $this->api;
+        $preListener = function ($node) use (&$api) {
+            var_dump($node);
+            $activityInformation = new ActivityInformation('vagrant', 'something');
+            $api->activity($activityInformation);
         };
+
+        $this->folder->listen('\OC\Files', 'delete', $preListener);
+        /*
+        $this->folder->listen('\OC\Files', 'create', $preListener);
+        $this->folder->listen('\OC\Files', 'postDelete', $preListener);
+        $this->folder->listen('\OC\Files', 'preDelete', $preListener);
+        $this->folder->listen('\OC\Files', 'postTouch',$preListener);
+        $this->folder->listen('\OC\Files', 'postCopy', $preListener);
+        $this->folder->listen('\OC\Files', 'postRename', $preListener);
+        */
+    }
+
+    public static function log($arg1)
+    {
+        var_dump('x');
     }
 }

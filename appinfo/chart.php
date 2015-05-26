@@ -35,14 +35,16 @@ use OCA\ocUsageCharts\Hooks\FileHooks;
 use OCA\ocUsageCharts\Owncloud\Storage;
 use OCA\ocUsageCharts\Owncloud\User;
 use OCA\ocUsageCharts\Owncloud\Users;
-use OCA\ocUsageCharts\Service\ActivityConnector;
-use OCA\ocUsageCharts\Service\ChartConfigService;
-use OCA\ocUsageCharts\Service\ChartCreator;
-use OCA\ocUsageCharts\Service\ChartDataProvider;
-use OCA\ocUsageCharts\Service\ChartService;
-use OCA\ocUsageCharts\Service\ChartUpdaterService;
+use OCA\ocUsageCharts\DataConnector\ActivityConnector;
+use OCA\ocUsageCharts\DataConnector\ChartConfigService;
+use OCA\ocUsageCharts\DataConnector\ChartCreator;
+use OCA\ocUsageCharts\DataConnector\ChartDataProvider;
+use OCA\ocUsageCharts\DataConnector\ChartService;
+use OCA\ocUsageCharts\DataConnector\ChartUpdaterService;
 use \OCP\AppFramework\App;
 use OCP\AppFramework\IAppContainer;
+
+require_once('apps/ocusagecharts/vendor/autoload.php');
 
 /**
  * @author Arno van Rossum <arno@van-rossum.com>
@@ -197,7 +199,7 @@ class Chart extends App
     {
         $this->container->registerService('ActivityConnector', function($c) {
             return new ActivityConnector(
-                new GuzzleHttp\Client(),
+                new \GuzzleHttp\Client(),
                 $c->query('ServerContainer')->getConfig()->getAppValue(
                     $c->query('AppName'),
                     'url'
@@ -215,8 +217,8 @@ class Chart extends App
 
         $this->container->registerService('FileHooks', function($c) {
             return new FileHooks(
-                $c->query('ServerContainer')->getUserFolder(),
-                $c->query('ApiConnector')
+                $c->query('ServerContainer')->getRootFolder(),
+                $c->query('ActivityConnector')
             );
         });
     }

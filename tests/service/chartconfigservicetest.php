@@ -23,7 +23,7 @@
 
 namespace OCA\ocUsageCharts\Tests\Service;
 
-use OCA\ocUsageCharts\Service\ChartConfigService;
+use OCA\ocUsageCharts\DataConnector\ChartConfigService;
 
 class ChartConfigServiceTest extends \PHPUnit_Framework_TestCase
 {
