@@ -19,7 +19,7 @@ before_install:
 script:
   # Test lint
   - cd apps/ocusagecharts
-  - composer install --dev --prefer-dist
+  - composer install --prefer-dist
   - sh -c "if [ '$DB' = 'sqlite' ]; then ant test; fi"
 
   # Run phpunit tests
