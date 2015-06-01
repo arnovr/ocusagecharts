@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2014 - Arno van Rossum <arno@van-rossum.com>
+ * Copyright (c) 2015 - Arno van Rossum <arno@van-rossum.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,25 +22,22 @@
  */
 
 use OCA\ocUsageCharts\AppInfo\Chart;
-OCP\App::checkAppEnabled('ocusagecharts');
-OCP\App::setActiveNavigationEntry('ocusagecharts');
-OCP\App::registerPersonal('ocusagecharts', 'personal');
-OCP\App::registerAdmin('ocusagecharts', 'admin');
-OCP\App::addNavigationEntry(Array(
-    'id'	=> 'ocusagecharts',
-    'order'	=> 60,
-    'href' => \OCP\Util::linkToRoute('ocusagecharts.chart.frontpage'),
-    'icon'	=> OCP\Util::imagePath('ocusagecharts', 'iconchart.png'),
-    'name'	=> \OC_L10N::get('ocusagecharts')->t('ocUsageCharts')
-));
 
-\OCP\Util::addStyle('ocusagecharts', 'style');
-
-\OCP\Backgroundjob::registerJob('OCA\ocUsageCharts\Command\UpdateChartsCommand');
-
-
-require_once('apps/ocusagecharts/vendor/autoload.php');
+\OCP\JSON::checkLoggedIn();
+\OCP\JSON::checkAppEnabled('ocusagecharts');
+\OCP\JSON::callCheck();
+$l = \OCP\Util::getL10N('ocusagecharts');
 
 $app = new Chart();
-$x = $app->getContainer()->query('FileHooks');
-$x->register();
+$container = $app->getContainer();
+$url = @$_POST['url'];
+if ( empty($_POST['url']) || !filter_var($_POST['url'], FILTER_VALIDATE_URL))
+{
+    $url = '';
+}
+$appConfig = $container->query('ServerContainer')->getConfig();
+$appConfig->setAppValue('ocusagecharts', 'url', $url);
+$appConfig->setAppValue('ocusagecharts', 'username', @$_POST['username']);
+$appConfig->setAppValue('ocusagecharts', 'password', @$_POST['password']);
+
+\OCP\JSON::success(array("data" => array( "message" => $l->t('Your settings have been updated.'))));

@@ -22,25 +22,21 @@
  */
 
 use OCA\ocUsageCharts\AppInfo\Chart;
-OCP\App::checkAppEnabled('ocusagecharts');
-OCP\App::setActiveNavigationEntry('ocusagecharts');
-OCP\App::registerPersonal('ocusagecharts', 'personal');
-OCP\App::registerAdmin('ocusagecharts', 'admin');
-OCP\App::addNavigationEntry(Array(
-    'id'	=> 'ocusagecharts',
-    'order'	=> 60,
-    'href' => \OCP\Util::linkToRoute('ocusagecharts.chart.frontpage'),
-    'icon'	=> OCP\Util::imagePath('ocusagecharts', 'iconchart.png'),
-    'name'	=> \OC_L10N::get('ocusagecharts')->t('ocUsageCharts')
-));
-
-\OCP\Util::addStyle('ocusagecharts', 'style');
-
-\OCP\Backgroundjob::registerJob('OCA\ocUsageCharts\Command\UpdateChartsCommand');
 
 
-require_once('apps/ocusagecharts/vendor/autoload.php');
+\OCP\Util::addSCript('ocusagecharts', 'admin');
+
+$l = \OCP\Util::getL10N('ocusagecharts');
 
 $app = new Chart();
-$x = $app->getContainer()->query('FileHooks');
-$x->register();
+$container = $app->getContainer();
+
+$user = $container->query('OwncloudUser');
+if ( !$user->isAdminUser($user->getSignedInUsername()) )
+{
+    return 'Not allowed';
+}
+
+$template = new \OCP\Template('ocusagecharts', 'admin');
+
+return $template->fetchPage();

@@ -45,16 +45,4 @@ foreach($_POST as $key => $value)
         $configService->save($config);
     }
 }
-
-$url = @$_POST['url'];
-if ( empty($_POST['url']) || !filter_var($_POST['url'], FILTER_VALIDATE_URL))
-{
-    $url = '';
-}
-$appConfig = $container->query('ServerContainer')->getConfig();
-$appConfig->setAppValue('ocusagecharts', 'url', $url);
-$appConfig->setAppValue('ocusagecharts', 'username', @$_POST['username']);
-$appConfig->setAppValue('ocusagecharts', 'password', @$_POST['password']);
-
-
 \OCP\JSON::success(array("data" => array( "message" => $l->t('Your settings have been updated.'))));
