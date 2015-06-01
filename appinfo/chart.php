@@ -217,10 +217,14 @@ class Chart extends App
             );
         });
 
-        $this->container->registerService('FileHooks', function($c) {
+        $url = $this->container->query('ServerContainer')->getConfig()->getAppValue(
+            $this->container->query('AppName'),
+            'url'
+        );
+        $this->container->registerService('FileHooks', function($c) use (&$url) {
             return new FileHooks(
-                $c->query('ServerContainer')->getRootFolder(),
-                $c->query('ContentStatisticsClient')
+                $c->query('ContentStatisticsClient'),
+                !empty($url)
             );
         });
     }

@@ -30,11 +30,12 @@ use OCA\ocUsageCharts\Owncloud\User;
  * Class FileHooks
  * @package OCA\ocUsageCharts\Hooks
  */
-class FileHooks {
+class FileHooks
+{
     /**
-     * @var \OCP\Files\Folder
+     * @var boolean
      */
-    private $folder;
+    private static $sendActivity;
 
     /**
      * @var ContentStatisticsClient
@@ -42,12 +43,12 @@ class FileHooks {
     private static $contentStatisticsClient;
 
     /**
-     * @param \OC\Files\Node\Root $folder
      * @param ContentStatisticsClient $contentStatisticsClient
+     * @param boolean $sendActivity
      */
-    public function __construct(\OC\Files\Node\Root $folder, ContentStatisticsClient $contentStatisticsClient)
+    public function __construct(ContentStatisticsClient $contentStatisticsClient, $sendActivity = false)
     {
-        $this->folder = $folder;
+        self::$sendActivity = $sendActivity;
         self::$contentStatisticsClient = $contentStatisticsClient;
     }
 
@@ -77,6 +78,9 @@ class FileHooks {
      */
     public static function logActivity($event)
     {
+        if ( !self::$sendActivity ) {
+            return;
+        }
         $user = new User();
         $activityInformation = new ActivityInformation($user->getSignedInUsername(), 'file:' . $event);
         self::$contentStatisticsClient->activity($activityInformation);

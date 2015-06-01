@@ -47,7 +47,7 @@ foreach($_POST as $key => $value)
 }
 
 $url = @$_POST['url'];
-if ( !empty($_POST['url']) && filter_var($_POST['url'], FILTER_VALIDATE_URL))
+if ( empty($_POST['url']) || !filter_var($_POST['url'], FILTER_VALIDATE_URL))
 {
     $url = '';
 }
