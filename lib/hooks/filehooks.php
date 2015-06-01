@@ -24,7 +24,7 @@
 namespace OCA\ocUsageCharts\Hooks;
 use Arnovr\Statistics\ContentStatisticsClient;
 use Arnovr\Statistics\Dto\ActivityInformation;
-
+use OCA\ocUsageCharts\Owncloud\User;
 
 /**
  * Class FileHooks
@@ -39,7 +39,7 @@ class FileHooks {
     /**
      * @var ContentStatisticsClient
      */
-    private $contentStatisticsClient;
+    private static $contentStatisticsClient;
 
     /**
      * @param \OC\Files\Node\Root $folder
@@ -48,31 +48,47 @@ class FileHooks {
     public function __construct(\OC\Files\Node\Root $folder, ContentStatisticsClient $contentStatisticsClient)
     {
         $this->folder = $folder;
-        $this->contentStatisticsClient = $contentStatisticsClient;
+        self::$contentStatisticsClient = $contentStatisticsClient;
     }
 
+    /**
+     * Register the available hooks for files
+     */
     public function register()
     {
-        $client = $this->contentStatisticsClient;
-        $preListener = function ($node) use (&$client) {
-            var_dump($node);
-            $activityInformation = new ActivityInformation('vagrant', 'something');
-            $client->activity($activityInformation);
-        };
+        $hooks = ['post_write', 'post_delete', 'post_rename', 'post_copy'];
 
-        $this->folder->listen('\OC\Files', 'delete', $preListener);
-        /*
-        $this->folder->listen('\OC\Files', 'create', $preListener);
-        $this->folder->listen('\OC\Files', 'postDelete', $preListener);
-        $this->folder->listen('\OC\Files', 'preDelete', $preListener);
-        $this->folder->listen('\OC\Files', 'postTouch',$preListener);
-        $this->folder->listen('\OC\Files', 'postCopy', $preListener);
-        $this->folder->listen('\OC\Files', 'postRename', $preListener);
-        */
+        foreach($hooks as $hook) {
+            $this->registerFileHook($hook);
+        }
     }
 
-    public static function log($arg1)
+    /**
+     * @param string $event
+     */
+    private function registerFileHook($event)
     {
-        var_dump('x');
+        $method = substr($event, 5); // remove post_
+        \OC_HOOK::connect('OC_Filesystem', $event, 'OCA\ocUsageCharts\Hooks\FileHooks', $method);
+    }
+
+    /**
+     * @param string $event
+     */
+    public static function logActivity($event)
+    {
+        $user = new User();
+        $activityInformation = new ActivityInformation($user->getSignedInUsername(), 'file:' . $event);
+        self::$contentStatisticsClient->activity($activityInformation);
+    }
+
+    /**
+     * Wrapper to capture method name, method is identical to event name
+     * @param string $method
+     * @param string $arguments
+     */
+    public static function __callStatic($method, $arguments)
+    {
+        self::logActivity($method);
     }
 }
