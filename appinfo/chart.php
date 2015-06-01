@@ -45,7 +45,6 @@ use OCA\ocUsageCharts\Service\ChartUpdaterService;
 use \OCP\AppFramework\App;
 use OCP\AppFramework\IAppContainer;
 
-require_once('apps/ocusagecharts/vendor/autoload.php');
 
 /**
  * @author Arno van Rossum <arno@van-rossum.com>

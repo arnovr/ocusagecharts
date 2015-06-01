@@ -37,6 +37,9 @@ OCP\App::addNavigationEntry(Array(
 
 \OCP\Backgroundjob::registerJob('OCA\ocUsageCharts\Command\UpdateChartsCommand');
 
+
+require_once('apps/ocusagecharts/vendor/autoload.php');
+
 $app = new Chart();
-$x = $app->getContainer()->query('FileHooks');//
+$x = $app->getContainer()->query('FileHooks');
 $x->register();
