@@ -34,7 +34,7 @@
     ]
   },
   "require": {
-    "guzzlehttp/guzzle": "~5.0"
+    "arnovr/client-content-statistics": "~0.0.1"
   },
   "autoload": {
     "psr-0": {

@@ -22,6 +22,8 @@
  */
 
 namespace OCA\ocUsageCharts\Hooks;
+use Arnovr\Statistics\ContentStatisticsClient;
+use Arnovr\Statistics\Dto\ActivityInformation;
 
 
 /**
@@ -35,21 +37,27 @@ class FileHooks {
     private $folder;
 
     /**
-     * @param \OC\Files\Node\Root $folder
+     * @var ContentStatisticsClient
      */
-    public function __construct(\OC\Files\Node\Root $folder)
+    private $contentStatisticsClient;
+
+    /**
+     * @param \OC\Files\Node\Root $folder
+     * @param ContentStatisticsClient $contentStatisticsClient
+     */
+    public function __construct(\OC\Files\Node\Root $folder, ContentStatisticsClient $contentStatisticsClient)
     {
         $this->folder = $folder;
+        $this->contentStatisticsClient = $contentStatisticsClient;
     }
 
     public function register()
     {
-        //$api = $this->api;
-        $api = null;
-        $preListener = function ($node) use (&$api) {
+        $client = $this->contentStatisticsClient;
+        $preListener = function ($node) use (&$client) {
             var_dump($node);
-            //$activityInformation = new ActivityInformation('vagrant', 'something');
-            //$api->activity($activityInformation);
+            $activityInformation = new ActivityInformation('vagrant', 'something');
+            $client->activity($activityInformation);
         };
 
         $this->folder->listen('\OC\Files', 'delete', $preListener);

@@ -23,6 +23,8 @@
 
 namespace OCA\ocUsageCharts\AppInfo;
 
+use Arnovr\Statistics\ApiConnection;
+use Arnovr\Statistics\ContentStatisticsClient;
 use OCA\ocUsageCharts\ChartTypeAdapterFactory;
 use OCA\ocUsageCharts\Controller\ChartApiController;
 use OCA\ocUsageCharts\Controller\ChartController;
@@ -196,20 +198,22 @@ class Chart extends App
 
     private function registerUsageChartsApi()
     {
-        $this->container->registerService('ActivityConnector', function($c) {
-            return new ActivityConnector(
-                new \GuzzleHttp\Client(),
+        $this->container->registerService('ContentStatisticsClient', function($c) {
+            return new ContentStatisticsClient(
+                new ApiConnection(
+                    new \GuzzleHttp\Client(),
+                    $c->query('ServerContainer')->getConfig()->getAppValue(
+                        $c->query('AppName'),
+                        'username'
+                    ),
+                    $c->query('ServerContainer')->getConfig()->getAppValue(
+                        $c->query('AppName'),
+                        'password'
+                    )
+                ),
                 $c->query('ServerContainer')->getConfig()->getAppValue(
                     $c->query('AppName'),
                     'url'
-                ),
-                $c->query('ServerContainer')->getConfig()->getAppValue(
-                    $c->query('AppName'),
-                    'username'
-                ),
-                $c->query('ServerContainer')->getConfig()->getAppValue(
-                    $c->query('AppName'),
-                    'password'
                 )
             );
         });
@@ -217,7 +221,7 @@ class Chart extends App
         $this->container->registerService('FileHooks', function($c) {
             return new FileHooks(
                 $c->query('ServerContainer')->getRootFolder(),
-                $c->query('ActivityConnector')
+                $c->query('ContentStatisticsClient')
             );
         });
     }
