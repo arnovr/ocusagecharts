@@ -24,7 +24,7 @@
 namespace OCA\ocUsageCharts\Command;
 
 use OCA\ocUsageCharts\AppInfo\Chart;
-use OCA\ocUsageCharts\DataConnector\ChartCreator;
+use OCA\ocUsageCharts\Service\ChartCreator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;

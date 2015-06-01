@@ -21,12 +21,11 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\DataConnector;
+namespace OCA\ocUsageCharts\Service;
 
 use OCA\ocUsageCharts\Adapters\ChartTypeAdapterInterface;
 use OCA\ocUsageCharts\ChartTypeAdapterFactory;
 use OCA\ocUsageCharts\Entity\ChartConfig;
-use OCA\ocUsageCharts\Exception\ChartServiceException;
 
 /**
  * @author Arno van Rossum <arno@van-rossum.com>

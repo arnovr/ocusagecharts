@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\DataConnector;
+namespace OCA\ocUsageCharts\Service;
 
 use OCA\ocUsageCharts\Entity\ChartConfig;
 use OCA\ocUsageCharts\Owncloud\Users;
