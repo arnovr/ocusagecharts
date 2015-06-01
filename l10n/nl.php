@@ -15,5 +15,7 @@ $TRANSLATIONS = array(
     "ActivityUsageLastMonth"=> "Activiteiten over de afgelopen maand",
     "activities"            => "Activiteiten",
     "ActivityUsagePerMonth" => "Activiteiten per maand",
-    "Activity_title"        => "Activiteiten"
+    "Activity_title"        => "Activiteiten",
+
+    "ApiSettings_title"     => "Api instellingen"
 );
