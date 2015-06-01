@@ -21,13 +21,14 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\DataConnector;
+namespace OCA\ocUsageCharts\Tests\Service;
 
 use OCA\ocUsageCharts\AppInfo\Chart;
 use OCA\ocUsageCharts\ChartTypeAdapterFactory;
 use OCA\ocUsageCharts\DataProviderFactory;
 use OCA\ocUsageCharts\Entity\ChartConfig;
 use OCA\ocUsageCharts\Entity\Storage\StorageUsageRepository;
+use OCA\ocUsageCharts\Service\ChartDataProvider;
 
 class ChartDataProviderTest extends \PHPUnit_Framework_TestCase
 {

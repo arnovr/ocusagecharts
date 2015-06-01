@@ -21,7 +21,9 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\DataConnector;
+namespace OCA\ocUsageCharts\Tests\Service;
+
+use OCA\ocUsageCharts\Service\ChartUpdaterService;
 
 class ChartUpdaterServiceTest extends \PHPUnit_Framework_TestCase
 {

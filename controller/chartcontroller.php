@@ -25,9 +25,9 @@ namespace OCA\ocUsageCharts\Controller;
 
 use OCA\ocUsageCharts\Exception\ChartServiceException;
 use OCA\ocUsageCharts\Owncloud\User;
-use OCA\ocUsageCharts\DataConnector\ChartConfigService;
-use OCA\ocUsageCharts\DataConnector\ChartCreator;
-use OCA\ocUsageCharts\DataConnector\ChartService;
+use OCA\ocUsageCharts\Service\ChartConfigService;
+use OCA\ocUsageCharts\Service\ChartCreator;
+use OCA\ocUsageCharts\Service\ChartService;
 use \OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\RedirectResponse;
 use OCP\AppFramework\Http\TemplateResponse;

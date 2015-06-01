@@ -23,8 +23,6 @@
 
 namespace OCA\ocUsageCharts\Hooks;
 
-use OCA\ocUsageCharts\Dto\ActivityInformation;
-use OCA\ocUsageCharts\DataConnector\ActivityConnector;
 
 /**
  * Class FileHooks
@@ -37,27 +35,21 @@ class FileHooks {
     private $folder;
 
     /**
-     * @var ActivityConnector
-     */
-    private $api;
-
-    /**
      * @param \OC\Files\Node\Root $folder
-     * @param ActivityConnector $api
      */
-    public function __construct(\OC\Files\Node\Root $folder, ActivityConnector $api)
+    public function __construct(\OC\Files\Node\Root $folder)
     {
         $this->folder = $folder;
-        $this->api = $api;
     }
 
     public function register()
     {
-        $api = $this->api;
+        //$api = $this->api;
+        $api = null;
         $preListener = function ($node) use (&$api) {
             var_dump($node);
-            $activityInformation = new ActivityInformation('vagrant', 'something');
-            $api->activity($activityInformation);
+            //$activityInformation = new ActivityInformation('vagrant', 'something');
+            //$api->activity($activityInformation);
         };
 
         $this->folder->listen('\OC\Files', 'delete', $preListener);

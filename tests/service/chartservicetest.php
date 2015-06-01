@@ -21,9 +21,10 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\DataConnector;
+namespace OCA\ocUsageCharts\Tests\Service;
 
 use OCA\ocUsageCharts\ChartTypeAdapterFactory;
+use OCA\ocUsageCharts\Service\ChartService;
 
 class ChartServiceTest extends \PHPUnit_Framework_TestCase
 {
