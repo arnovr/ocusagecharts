@@ -67,11 +67,14 @@ class ChartViewHelper
      */
     public function getShortLabel()
     {
-        $meta = json_decode($this->chart->getMetaData());
-        if ( !empty($meta) && $meta->size ) {
-            return $meta->size;
+        if ( strpos($this->chart->getChartType(), 'Storage') !== false ) {
+            $meta = json_decode($this->chart->getMetaData());
+            if (!empty($meta) && $meta->size) {
+                return $meta->size;
+            }
+            return 'gb';
         }
-        return 'gb';
+        return '';
     }
 
     /**
@@ -80,11 +83,14 @@ class ChartViewHelper
      */
     public function getLabel($language)
     {
-        $meta = json_decode($this->chart->getMetaData());
-        if ( !empty($meta) && $meta->size ) {
-            return $language->t('sizes_' . $meta->size);
+        if ( strpos($this->chart->getChartType(), 'Storage') !== false ) {
+            $meta = json_decode($this->chart->getMetaData());
+            if (!empty($meta) && $meta->size) {
+                return $language->t('sizes_' . $meta->size);
+            }
+            return $language->t('sizes_gb');
         }
-        return $language->t('sizes_gb');
+        return $language->t('activities');
     }
 
 }
