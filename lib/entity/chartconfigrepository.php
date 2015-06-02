@@ -50,7 +50,7 @@ class ChartConfigRepository extends Mapper
      * @return array|ChartConfig[]
      */
     public function findByUsername($userName) {
-        $sql = 'SELECT * FROM `oc_uc_chartconfig` WHERE `username` = ?';
+        $sql = 'SELECT * FROM `*PREFIX*uc_chartconfig` WHERE `username` = ?';
         return $this->findEntities($sql, array($userName));
     }
 
@@ -66,12 +66,12 @@ class ChartConfigRepository extends Mapper
         $id = $config->getId();
         if ( !empty($id) )
         {
-            $query = $this->db->prepareQuery('UPDATE oc_uc_chartconfig SET created = ?, username = ?, charttype = ?, chartprovider = ?, metadata = ? WHERE id = ?');
+            $query = $this->db->prepareQuery('UPDATE *PREFIX*uc_chartconfig SET created = ?, username = ?, charttype = ?, chartprovider = ?, metadata = ? WHERE id = ?');
             $query->execute(Array($config->getDate()->format('Y-m-d H:i:s'), $config->getUsername(), $config->getChartType(), $config->getChartProvider(), $config->getMetaData(), $config->getId()));
         }
         else
         {
-            $query = $this->db->prepareQuery('INSERT INTO oc_uc_chartconfig(created, username, charttype, chartprovider, metadata) VALUES (?,?,?,?,?)');
+            $query = $this->db->prepareQuery('INSERT INTO *PREFIX*uc_chartconfig(created, username, charttype, chartprovider, metadata) VALUES (?,?,?,?,?)');
             $query->execute(Array($config->getDate()->format('Y-m-d H:i:s'), $config->getUsername(), $config->getChartType(), $config->getChartProvider(), $config->getMetaData()));
         }
         return true;
