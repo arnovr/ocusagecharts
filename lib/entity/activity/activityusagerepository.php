@@ -48,7 +48,7 @@ class ActivityUsageRepository extends Mapper
             $username,
             $created->getTimestamp()
         );
-        $sql = 'SELECT * FROM `oc_activity` WHERE `user` = ? AND `timestamp` > ? ORDER BY timestamp DESC';
+        $sql = 'SELECT * FROM `*PREFIX*activity` WHERE `user` = ? AND `timestamp` > ? ORDER BY timestamp DESC';
         return $this->findEntities($sql, $params);
     }
 
@@ -114,7 +114,7 @@ class ActivityUsageRepository extends Mapper
      */
     private function findActivitiesBetweenTimestamp($startTimestamp, $endTimestamp)
     {
-        $sql = 'SELECT user, count(1) as activities, user FROM oc_activity WHERE timestamp >= ? AND timestamp < ? GROUP BY user';
+        $sql = 'SELECT user, count(1) as activities, user FROM *PREFIX*activity WHERE timestamp >= ? AND timestamp < ? GROUP BY user';
         $params = array(
             $startTimestamp, $endTimestamp
         );
@@ -131,7 +131,7 @@ class ActivityUsageRepository extends Mapper
      */
     private function findActivitiesBetweenTimestampAndUser($startTimestamp, $endTimestamp, $username)
     {
-        $sql = 'SELECT user, count(1) as activities, user FROM oc_activity WHERE timestamp >= ? AND timestamp < ? AND user = ? GROUP BY user';
+        $sql = 'SELECT user, count(1) as activities, user FROM *PREFIX*activity WHERE timestamp >= ? AND timestamp < ? AND user = ? GROUP BY user';
         $params = array(
             $startTimestamp, $endTimestamp, $username
         );

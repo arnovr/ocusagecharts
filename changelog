@@ -1,3 +1,6 @@
+3.4.5:
+- https://github.com/arnovr/ocusagecharts/issues/82, bug with database tables, using prefix instead of hardcoded oc_
+
 3.4.4:
 - Hungarian language
 

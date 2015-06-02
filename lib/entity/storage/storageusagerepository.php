@@ -46,7 +46,7 @@ class StorageUsageRepository extends Mapper
      */
     public function save(StorageUsage $usage)
     {
-        $query = $this->db->prepareQuery('INSERT INTO oc_uc_storageusage (created, username, `usage`) VALUES (?,?,?)');
+        $query = $this->db->prepareQuery('INSERT INTO *PREFIX*uc_storageusage (created, username, `usage`) VALUES (?,?,?)');
         $result = $query->execute(Array($usage->getDate()->format('Y-m-d H:i:s'), $usage->getUsername(), $usage->getUsage()));
         /*
          * $query->execute could return integer or OC_DB_StatementWrapper or false
@@ -65,7 +65,7 @@ class StorageUsageRepository extends Mapper
      * @return array
      */
     public function find($userName, $limit = 30) {
-        $sql = 'SELECT * FROM `oc_uc_storageusage` WHERE `username` = ? ORDER BY created DESC LIMIT ' . $limit;
+        $sql = 'SELECT * FROM `*PREFIX*uc_storageusage` WHERE `username` = ? ORDER BY created DESC LIMIT ' . $limit;
         return $this->findEntities($sql, array($userName));
     }
 
@@ -105,7 +105,7 @@ class StorageUsageRepository extends Mapper
      */
     private function findAll($limit = 30, \DateTime $afterCreated = null)
     {
-        $sql = 'SELECT username FROM `oc_uc_storageusage` WHERE `usage` > 0 GROUP BY username';
+        $sql = 'SELECT username FROM `*PREFIX*uc_storageusage` WHERE `usage` > 0 GROUP BY username';
         $query = $this->db->prepareQuery($sql);
         $result = $query->execute();
         $entities = array();
@@ -149,7 +149,7 @@ class StorageUsageRepository extends Mapper
      * @return array
      */
     public function findAfterCreated($userName, \DateTime $created) {
-        $sql = 'SELECT * FROM `oc_uc_storageusage` WHERE `username` = ? AND `created` > ? ORDER BY created DESC';
+        $sql = 'SELECT * FROM `*PREFIX*uc_storageusage` WHERE `username` = ? AND `created` > ? ORDER BY created DESC';
         return $this->findEntities($sql, array($userName, $created->format('Y-m-d H:i:s')));
     }
 
@@ -173,7 +173,7 @@ class StorageUsageRepository extends Mapper
               ) as month,
               avg(`usage`) as average,
               username
-              FROM oc_uc_storageusage';
+              FROM *PREFIX*uc_storageusage';
         $whereClause = ' WHERE `usage` > 0 AND created > ? GROUP BY username, month';
 
         $params = array();
