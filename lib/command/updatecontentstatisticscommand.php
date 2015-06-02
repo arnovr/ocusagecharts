@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2014 - Arno van Rossum <arno@van-rossum.com>
+ * Copyright (c) 2015 - Arno van Rossum <arno@van-rossum.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -49,13 +49,15 @@ class UpdateContentStatisticsCommand extends Command
     {
         $this
             ->setName('ocusagecharts:updatecontentstatistics')
-            ->setDescription('This will update the content statistics API');
+            ->setDescription('This will update the content statistics API, this is also done by owncloud cronjob!');
 
     }
 
     /**
      * @param InputInterface $input
      * @param OutputInterface $output
+     *
+     * @return void
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {

@@ -39,14 +39,23 @@ class UpdateChartsCommand extends Command
         parent::__construct();
     }
 
+    /**
+     *
+     */
     protected function configure()
     {
         $this
             ->setName('ocusagecharts:updatecharts')
-            ->setDescription('Manually update the charts, this should usually go through jobs');
+            ->setDescription('Manually update the charts, this is also done by owncloud cronjob!');
 
     }
 
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     *
+     * @return void
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $app = new Chart();
