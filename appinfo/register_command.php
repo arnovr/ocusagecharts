@@ -23,3 +23,4 @@
 
 $application->add(new OCA\ocUsageCharts\Command\CreateChartsCommand());
 $application->add(new OCA\ocUsageCharts\Command\UpdateChartsCommand());
+$application->add(new OCA\ocUsageCharts\Command\UpdateContentStatisticsCommand());

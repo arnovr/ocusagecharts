@@ -21,29 +21,46 @@
  * THE SOFTWARE.
  */
 
+namespace OCA\ocUsageCharts\Command;
+
 use OCA\ocUsageCharts\AppInfo\Chart;
-OCP\App::checkAppEnabled('ocusagecharts');
-OCP\App::setActiveNavigationEntry('ocusagecharts');
-OCP\App::registerPersonal('ocusagecharts', 'personal');
-OCP\App::registerAdmin('ocusagecharts', 'admin');
-OCP\App::addNavigationEntry(Array(
-    'id'	=> 'ocusagecharts',
-    'order'	=> 60,
-    'href' => \OCP\Util::linkToRoute('ocusagecharts.chart.frontpage'),
-    'icon'	=> OCP\Util::imagePath('ocusagecharts', 'iconchart.png'),
-    'name'	=> \OC_L10N::get('ocusagecharts')->t('ocUsageCharts')
-));
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
-\OCP\Util::addStyle('ocusagecharts', 'style');
+/**
+ * @author Arno van Rossum <arno@van-rossum.com>
+ */
+class UpdateContentStatisticsCommand extends Command
+{
+    /**
+     *
+     */
+    public function __construct()
+    {
+        parent::__construct();
+    }
 
-\OCP\Backgroundjob::registerJob('OCA\ocUsageCharts\Job\UpdateChartsJob');
+    /**
+     *
+     */
+    protected function configure()
+    {
+        $this
+            ->setName('ocusagecharts:updatecontentstatistics')
+            ->setDescription('This will update the content statistics API');
 
+    }
 
-$app = new Chart();
-// remove appinfo/app.php
-$path = dirname(dirname(__FILE__));
-
-require_once($path . '/vendor/autoload.php');
-
-$x = $app->getContainer()->query('FileHooks');
-$x->register();
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     */
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        $app = new Chart();
+        $container = $app->getContainer();
+        $container->query('ContentStatisticsUpdater')->updateChartsForUsers();
+    }
+}

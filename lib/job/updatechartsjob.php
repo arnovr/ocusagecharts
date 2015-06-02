@@ -21,29 +21,17 @@
  * THE SOFTWARE.
  */
 
+namespace OCA\ocUsageCharts\Job;
 use OCA\ocUsageCharts\AppInfo\Chart;
-OCP\App::checkAppEnabled('ocusagecharts');
-OCP\App::setActiveNavigationEntry('ocusagecharts');
-OCP\App::registerPersonal('ocusagecharts', 'personal');
-OCP\App::registerAdmin('ocusagecharts', 'admin');
-OCP\App::addNavigationEntry(Array(
-    'id'	=> 'ocusagecharts',
-    'order'	=> 60,
-    'href' => \OCP\Util::linkToRoute('ocusagecharts.chart.frontpage'),
-    'icon'	=> OCP\Util::imagePath('ocusagecharts', 'iconchart.png'),
-    'name'	=> \OC_L10N::get('ocusagecharts')->t('ocUsageCharts')
-));
 
-\OCP\Util::addStyle('ocusagecharts', 'style');
-
-\OCP\Backgroundjob::registerJob('OCA\ocUsageCharts\Job\UpdateChartsJob');
-
-
-$app = new Chart();
-// remove appinfo/app.php
-$path = dirname(dirname(__FILE__));
-
-require_once($path . '/vendor/autoload.php');
-
-$x = $app->getContainer()->query('FileHooks');
-$x->register();
+/**
+ * @author Arno van Rossum <arno@van-rossum.com>
+ */
+class UpdateChartsJob extends \OC\BackgroundJob\Job
+{
+    public function run($argument) {
+        $app = new Chart();
+        $container = $app->getContainer();
+        $container->query('ChartUpdaterService')->updateChartsForUsers();
+    }
+}

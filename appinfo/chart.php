@@ -42,6 +42,7 @@ use OCA\ocUsageCharts\Service\ChartCreator;
 use OCA\ocUsageCharts\Service\ChartDataProvider;
 use OCA\ocUsageCharts\Service\ChartService;
 use OCA\ocUsageCharts\Service\ChartUpdaterService;
+use OCA\ocUsageCharts\Service\ContentStatisticsUpdater;
 use \OCP\AppFramework\App;
 use OCP\AppFramework\IAppContainer;
 
@@ -226,6 +227,14 @@ class Chart extends App
                 $c->query('ContentStatisticsClient'),
                 !empty($url)
             );
+        });
+
+        $this->container->registerService('ContentStatisticsUpdater', function($c) {
+           return new ContentStatisticsUpdater(
+               $c->query('ContentStatisticsClient'),
+               $c->query('DataProviderFactory'),
+               $c->query('OwncloudUsers')
+           );
         });
     }
 }
