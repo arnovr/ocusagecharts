@@ -69,4 +69,17 @@ class Storage
             'used' => $usedSpace
         );
     }
+
+    /**
+     * @param strubg $userName
+     * @return integer
+     */
+    public function getMaximumStorageUsage($userName)
+    {
+        $view = new FilesView('/' . $userName . '/files');
+        $freeSpace = (int) $view->free_space();
+        $usedSpace = $view->getFileInfo('/')->getSize();
+
+        return ($freeSpace + $usedSpace);
+    }
 }

@@ -97,7 +97,9 @@ abstract class StorageUsageBase implements DataProviderInterface
     public function getChartUsageForUpdate()
     {
         $userName = $this->chartConfig->getUsername();
-        return new StorageUsage(new \Datetime(), $this->storage->getStorageUsage($userName), $userName);
+        $usage = $this->storage->getStorageUsage($userName);
+        $maximumUsage = $this->storage->getMaximumStorageUsage($userName);
+        return new StorageUsage(new \Datetime(), $usage, $userName, $maximumUsage);
     }
 
     /**

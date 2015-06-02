@@ -42,7 +42,7 @@ class StorageUsageTest extends \PHPUnit_Framework_TestCase
     {
         $this->date = new \DateTime();
 
-        $this->storageUsage = new StorageUsage($this->date, 124124124, 'test1');
+        $this->storageUsage = new StorageUsage($this->date, 124124124, 'test1', 10245123345);
     }
     public function testGetDate()
     {
@@ -62,6 +62,7 @@ class StorageUsageTest extends \PHPUnit_Framework_TestCase
             'usage' => 124124124,
             'created' => $this->date->format('Y-m-d H:i:s'),
             'username' => 'test1',
+            'maximumusage' => 10245123345
         );
         $storage = StorageUsage::fromRow($row);
         $this->assertInstanceOf('OCA\ocUsageCharts\Entity\Storage\StorageUsage', $storage);
