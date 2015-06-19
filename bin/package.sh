@@ -25,7 +25,6 @@ rm -f .scrutinizer.yml
 rm -rf .idea
 rm -rf tests/
 rm -rf bin/
-rm -rf vendor
 rm -rf Vagrantfile
 rm -rf ansible
 cd ../
