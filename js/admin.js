@@ -4,6 +4,10 @@ $(document).ready(function() {
         var post = $("#apisettings").serialize();
         $.post(OC.filePath('ocusagecharts', '', 'saveadmin.php'), post, function (data) {
             OC.msg.finishedSaving('#ocusagecharts-msg', data);
+
+            $.get(OC.filePath('ocusagecharts', '', 'checkconnection.php'), function (data) {
+                OC.msg.finishedAction('#connection', data);
+            });
         });
     });
 });
