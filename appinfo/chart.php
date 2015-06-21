@@ -124,7 +124,11 @@ class Chart extends App
                 $c->query('ChartService'),
                 $c->query('ChartConfigService'),
                 $c->query('ChartCreator'),
-                $c->query('OwncloudUser')
+                $c->query('OwncloudUser'),
+                $c->query('ServerContainer')->getConfig()->getAppValue(
+                    $c->query('AppName'),
+                    'url'
+                )
             );
         });
         $this->container->registerService('ChartApiController', function($c) {
