@@ -89,15 +89,6 @@ class ChartDataProviderTest extends \PHPUnit_Framework_TestCase
             ->willReturn($data);
         $this->dataProviderFactory->method('getDataProviderByConfig')->willReturn($provider);
 
-        $usageNumber = 2324235;
-        $created = new \DateTime();
-        $username = 'test1';
-        $usage = $this->getMock('\OCA\ocUsageCharts\Entity\Storage\StorageUsage', array(), array(
-                $created,
-                $usageNumber,
-                $username
-            ));
-
         $result = $this->dataProvider->getChartUsageForUpdate($this->configMock);
         $this->assertEquals($data, $result);
     }
@@ -116,11 +107,13 @@ class ChartDataProviderTest extends \PHPUnit_Framework_TestCase
         $usageNumber = 2324235;
         $created = new \DateTime();
         $username = 'test1';
+        $maximumUsage = 323232022;
         $usage = $this->getMock('\OCA\ocUsageCharts\Entity\Storage\StorageUsage', array(), array(
                 $created,
                 $usageNumber,
-                $username
-            ));
+                $username,
+                $maximumUsage
+        ));
 
         $saved = $this->dataProvider->save($this->configMock, $usage);
         $this->assertTrue($saved);
