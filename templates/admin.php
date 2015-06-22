@@ -26,12 +26,14 @@ if ( $useApi )
 echo '
 <p>
 <input type="checkbox" id="useapi_enabled" name="useapi_enabled" value="1" '. $checked .' />
-<label for="useapi_enabled">Allow charts to use external API</label>
+<label for="useapi_enabled">';
+p($l->t('Allow charts to use external API'));
+echo '</label>
 </p>
 ';
 
 
-p($l->t('host'));
+p($l->t('hostname or IP'));
 echo ': <input type="text" name="url" value="' . substr($appConfig->getAppValue('ocusagecharts', 'url'), 7) . '"/>
 <p class="inlineblock" id="ocusagecharts-connected">
 <span id="connection" class="cronstatus"></span>
