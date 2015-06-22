@@ -86,7 +86,7 @@ class ChartController extends Controller
      *
      * @NoCSRFRequired
      * @NoAdminRequired
-     * @return TemplateResponse
+     * @return TemplateResponse|RedirectResponse
      */
     public function frontpage()
     {
