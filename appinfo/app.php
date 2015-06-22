@@ -48,11 +48,11 @@ require_once($path . '/vendor/autoload.php');
 $x = $app->getContainer()->query('FileHooks');
 $x->register();
 
-$url = $app->getContainer()->query('ServerContainer')->getConfig()->getAppValue(
+$useApi = $app->getContainer()->query('ServerContainer')->getConfig()->getAppValue(
     $app->getContainer()->query('AppName'),
-    'url'
+    'useapi'
 );
 
-if (!empty($url)) {
+if ($useApi) {
     \OCP\Backgroundjob::registerJob('OCA\ocUsageCharts\Job\UpdateContentStatisticsJob');
 }

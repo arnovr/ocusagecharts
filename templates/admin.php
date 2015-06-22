@@ -16,8 +16,23 @@ $user = $container->query('OwncloudUser');
 $appConfig = $container->query('ServerContainer')->getConfig();
 
 echo '<form id="apisettings">';
-p($l->t('url'));
-echo ': <input type="text" name="url" value="' . $appConfig->getAppValue('ocusagecharts', 'url') . '"/>
+$checked = '';
+$useApi = $appConfig->getAppValue('ocusagecharts', 'useapi');
+if ( $useApi )
+{
+    $checked = 'checked="checked"';
+}
+
+echo '
+<p>
+<input type="checkbox" id="useapi_enabled" name="useapi_enabled" value="1" '. $checked .' />
+<label for="useapi_enabled">Allow charts to use external API</label>
+</p>
+';
+
+
+p($l->t('host'));
+echo ': <input type="text" name="url" value="' . substr($appConfig->getAppValue('ocusagecharts', 'url'), 7) . '"/>
 <p class="inlineblock" id="ocusagecharts-connected">
 <span id="connection" class="cronstatus"></span>
 </p>

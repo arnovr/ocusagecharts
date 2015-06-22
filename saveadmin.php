@@ -21,6 +21,8 @@
  * THE SOFTWARE.
  */
 
+use Arnovr\Statistics\ContentStatisticsClient;
+use GuzzleHttp\Exception\RequestException;
 use OCA\ocUsageCharts\AppInfo\Chart;
 
 \OCP\JSON::checkLoggedIn();
@@ -30,13 +32,31 @@ $l = \OCP\Util::getL10N('ocusagecharts');
 
 $app = new Chart();
 $container = $app->getContainer();
+/** @var ContentStatisticsClient $contentStatisticsClient */
+$contentStatisticsClient = $container->query('ContentStatisticsClient');
+
+
 $url = @$_POST['url'];
-if ( empty($_POST['url']) || !filter_var($_POST['url'], FILTER_VALIDATE_URL))
+
+if(empty($url) || ( !filter_var($url, FILTER_VALIDATE_IP) && !filter_var(gethostbyname($url), FILTER_VALIDATE_IP)) )
 {
-    $url = '';
+    \OCP\JSON::error(array("data" => array( "message" => $l->t('Incorrect domainname or ip given'))));
+    exit;
 }
+
+$useApi = false;
+if ( @$_POST['useapi_enabled'] )
+{
+    try {
+        $useApi = $contentStatisticsClient->testConnection();
+    }
+    catch(RequestException $exception) {
+    }
+}
+
 $appConfig = $container->query('ServerContainer')->getConfig();
-$appConfig->setAppValue('ocusagecharts', 'url', $url);
+$appConfig->setAppValue('ocusagecharts', 'useapi', $useApi);
+$appConfig->setAppValue('ocusagecharts', 'url', 'http://' . $url);
 $appConfig->setAppValue('ocusagecharts', 'username', @$_POST['username']);
 $appConfig->setAppValue('ocusagecharts', 'password', @$_POST['password']);
 

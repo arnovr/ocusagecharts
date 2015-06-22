@@ -61,7 +61,7 @@ class ChartController extends Controller
     /**
      * @var false|string
      */
-    private $redirectUrl;
+    private $useApi;
 
     /**
      * @param string $appName
@@ -70,14 +70,15 @@ class ChartController extends Controller
      * @param ChartConfigService $configService
      * @param ChartCreator $chartCreator
      * @param User $user
+     * @param boolean $useApi
      */
-    public function __construct($appName, IRequest $request, ChartService $chartService, ChartConfigService $configService, ChartCreator $chartCreator, User $user, $redirectUrl = false)
+    public function __construct($appName, IRequest $request, ChartService $chartService, ChartConfigService $configService, ChartCreator $chartCreator, User $user, $useApi = false)
     {
         $this->chartService = $chartService;
         $this->configService = $configService;
         $this->chartCreator = $chartCreator;
         $this->user = $user;
-        $this->redirectUrl = $redirectUrl;
+        $this->useApi = $useApi;
         parent::__construct($appName, $request);
     }
 
@@ -90,9 +91,9 @@ class ChartController extends Controller
      */
     public function frontpage()
     {
-        if (!empty($this->redirectUrl)&&$this->user->isAdminUser($this->user->getSignedInUsername())) {
+        if (!empty($this->useApi)&&$this->user->isAdminUser($this->user->getSignedInUsername())) {
             $templateName = 'kibana';
-            return new TemplateResponse($this->appName, $templateName, array('url' => $this->redirectUrl, 'requesttoken' => \OC_Util::callRegister()));
+            return new TemplateResponse($this->appName, $templateName, array('url' => $this->useApi, 'requesttoken' => \OC_Util::callRegister()));
         }
         $this->createDefaultChartsForLoggedInUser();
 

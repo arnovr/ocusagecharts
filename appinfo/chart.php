@@ -127,7 +127,7 @@ class Chart extends App
                 $c->query('OwncloudUser'),
                 $c->query('ServerContainer')->getConfig()->getAppValue(
                     $c->query('AppName'),
-                    'url'
+                    'useapi'
                 )
             );
         });
@@ -222,14 +222,14 @@ class Chart extends App
             );
         });
 
-        $url = $this->container->query('ServerContainer')->getConfig()->getAppValue(
+        $useApi = $this->container->query('ServerContainer')->getConfig()->getAppValue(
             $this->container->query('AppName'),
-            'url'
+            'useapi'
         );
-        $this->container->registerService('FileHooks', function($c) use (&$url) {
+        $this->container->registerService('FileHooks', function($c) use (&$useApi) {
             return new FileHooks(
                 $c->query('ContentStatisticsClient'),
-                !empty($url)
+                $useApi
             );
         });
 
