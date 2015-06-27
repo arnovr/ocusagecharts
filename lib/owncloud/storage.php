@@ -71,7 +71,7 @@ class Storage
     }
 
     /**
-     * @param strubg $userName
+     * @param string $userName
      * @return integer
      */
     public function getMaximumStorageUsage($userName)
