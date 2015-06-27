@@ -46,10 +46,6 @@ use OCA\ocUsageCharts\Service\ContentStatisticsUpdater;
 use \OCP\AppFramework\App;
 use OCP\AppFramework\IAppContainer;
 
-// remove appinfo/file.php, sucks... you know it.
-//$path = dirname(dirname(__FILE__));
-//require_once($path . '/vendor/autoload.php');
-
 /**
  * @author Arno van Rossum <arno@van-rossum.com>
  */
@@ -64,6 +60,12 @@ class Chart extends App
     {
         parent::__construct('ocusagecharts', $urlParams);
         $this->container = $this->getContainer();
+
+        // remove appinfo/file.php, sucks... you know it.
+        // Require after getContainer, else test fails
+        $path = dirname(dirname(__FILE__));
+        require_once($path . '/vendor/autoload.php');
+
         $this->registerRepositories();
         $this->registerOwncloudDependencies();
         $this->registerVarious();
