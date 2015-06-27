@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "728b07b5bd19e5fb2d3dd04722eff6fd",
+    "hash": "cbbffec39f0baa204cfed43f8bd9f25e",
     "packages": [
         {
             "name": "arnovr/client-content-statistics",
-            "version": "v0.0.1",
+            "version": "v0.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/arnovr/client-content-statistics.git",
-                "reference": "78bed6c4a4a9febc34b1d4aacc1948f449c23c2a"
+                "reference": "299c0a3160bb4234c83ee4b41e893edc6e197de2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/arnovr/client-content-statistics/zipball/78bed6c4a4a9febc34b1d4aacc1948f449c23c2a",
-                "reference": "78bed6c4a4a9febc34b1d4aacc1948f449c23c2a",
+                "url": "https://api.github.com/repos/arnovr/client-content-statistics/zipball/299c0a3160bb4234c83ee4b41e893edc6e197de2",
+                "reference": "299c0a3160bb4234c83ee4b41e893edc6e197de2",
                 "shasum": ""
             },
             "require": {
@@ -51,7 +51,7 @@
             "keywords": [
                 "content-statistics"
             ],
-            "time": "2015-06-01 11:53:02"
+            "time": "2015-06-21 19:53:12"
         },
         {
             "name": "guzzlehttp/guzzle",
