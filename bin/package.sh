@@ -10,6 +10,7 @@ zipfile="$version.zip"
 echo $version | xargs mkdir
 cp -Rv * "$version"
 cd "$version"
+rm -rf vendor/
 curl -sS https://getcomposer.org/installer | php
 php composer.phar install --no-dev
 rm composer.phar
