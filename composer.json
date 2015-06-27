@@ -40,6 +40,13 @@
     "psr-0": {
     },
     "classmap": [
+      "lib"
+    ]
+  },
+  "autoload-dev": {
+    "psr-0": {
+    },
+    "classmap": [
       "lib",
       "vendor/owncloud/core/lib"
     ]
