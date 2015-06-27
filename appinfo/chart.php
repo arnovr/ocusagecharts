@@ -47,8 +47,8 @@ use \OCP\AppFramework\App;
 use OCP\AppFramework\IAppContainer;
 
 // remove appinfo/file.php, sucks... you know it.
-$path = dirname(dirname(__FILE__));
-require_once($path . '/vendor/autoload.php');
+//$path = dirname(dirname(__FILE__));
+//require_once($path . '/vendor/autoload.php');
 
 /**
  * @author Arno van Rossum <arno@van-rossum.com>
