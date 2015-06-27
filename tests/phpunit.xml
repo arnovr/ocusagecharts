@@ -12,7 +12,6 @@
     processIsolation            = "false"
     stopOnFailure               = "false"
     syntaxCheck                 = "false"
-    strict                      = "true"
     verbose                     = "true">
 
     <testsuites>
