@@ -23,8 +23,10 @@
 
 namespace OCA\ocUsageCharts\AppInfo;
 
-use Arnovr\Statistics\ApiConnection;
+use Arnovr\Statistics\Api\ApiConnection;
 use Arnovr\Statistics\ContentStatisticsClient;
+use Arnovr\Statistics\Streams\ActivityStream;
+use Arnovr\Statistics\Streams\StorageStream;
 use OCA\ocUsageCharts\ChartTypeAdapterFactory;
 use OCA\ocUsageCharts\Controller\ChartApiController;
 use OCA\ocUsageCharts\Controller\ChartController;
@@ -207,22 +209,30 @@ class Chart extends App
 
     private function registerUsageChartsApi()
     {
-        $this->container->registerService('ContentStatisticsClient', function($c) {
-            return new ContentStatisticsClient(
-                new ApiConnection(
-                    new \GuzzleHttp\Client(),
-                    $c->query('ServerContainer')->getConfig()->getAppValue(
-                        $c->query('AppName'),
-                        'username'
-                    ),
-                    $c->query('ServerContainer')->getConfig()->getAppValue(
-                        $c->query('AppName'),
-                        'password'
-                    )
-                ),
+        $this->container->registerService('ContentStatisticsClientApiConnection', function($c) {
+            new ApiConnection(
+                new \GuzzleHttp\Client(),
                 $c->query('ServerContainer')->getConfig()->getAppValue(
                     $c->query('AppName'),
                     'url'
+                ),
+                $c->query('ServerContainer')->getConfig()->getAppValue(
+                    $c->query('AppName'),
+                    'username'
+                ),
+                $c->query('ServerContainer')->getConfig()->getAppValue(
+                    $c->query('AppName'),
+                    'password'
+                )
+        });
+
+        $this->container->registerService('ContentStatisticsClient', function($c) {
+            return new ContentStatisticsClient(
+                new ActivityStream(
+                    $c->query('ContentStatisticsClientApiConnection')
+                ),
+                new StorageStream(
+                    $c->query('ContentStatisticsClientApiConnection')
                 )
             );
         });
