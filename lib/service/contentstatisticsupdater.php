@@ -25,6 +25,7 @@ namespace OCA\ocUsageCharts\Service;
 
 use Arnovr\Statistics\ContentStatisticsClient;
 use Arnovr\Statistics\Dto\StorageInformation;
+use Arnovr\Statistics\Streams\Storage\Storage;
 use OCA\ocUsageCharts\DataProviderFactory;
 use OCA\ocUsageCharts\Entity\ChartConfig;
 use OCA\ocUsageCharts\Entity\Storage\StorageUsage;
@@ -64,6 +65,7 @@ class ContentStatisticsUpdater
         {
             $this->updateChartsForUser($userName);
         }
+        $this->contentStatisticsClient->push();
     }
 
     /**
@@ -83,18 +85,19 @@ class ContentStatisticsUpdater
     {
         $provider = $this->dataProviderFactory->getDataProviderByConfig($this->getDefaultChartConfig($userName));
         $storageUsage = $provider->getChartUsageForUpdate();
-        $storageInformation = $this->mapStorageUsageToStorageInformation($storageUsage);
 
-        $this->contentStatisticsClient->store($storageInformation);
+        $storage = $this->mapStorageUsageToStorageInformation($storageUsage);
+
+        $this->contentStatisticsClient->commit($storage);
     }
 
     /**
      * @param StorageUsage $storageUsage
-     * @return StorageInformation
+     * @return Storage
      */
     private function mapStorageUsageToStorageInformation(StorageUsage $storageUsage)
     {
-        return new StorageInformation(
+        return new Storage(
             $storageUsage->getUsage(),
             $storageUsage->getUsername(),
             $storageUsage->getMaximumUsage()

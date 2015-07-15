@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-use Arnovr\Statistics\ContentStatisticsClient;
+use Arnovr\Statistics\Api\ApiConnection;
 use GuzzleHttp\Exception\RequestException;
 use OCA\ocUsageCharts\AppInfo\Chart;
 
@@ -33,15 +33,15 @@ $l = \OCP\Util::getL10N('ocusagecharts');
 $app = new Chart();
 $container = $app->getContainer();
 
-/** @var ContentStatisticsClient $contentStatisticsClient */
-$contentStatisticsClient = $container->query('ContentStatisticsClient');
+/** @var ApiConnection $apiConnection */
+$apiConnection = $container->query('ContentStatisticsClientApiConnection');
 
 $data = array('data' => array(
     'status' => 'success'
 ));
 
 try {
-    if ( $contentStatisticsClient->testConnection() )
+    if ( $apiConnection->testConnection() )
     {
         \OCP\JSON::success($data);
         exit;

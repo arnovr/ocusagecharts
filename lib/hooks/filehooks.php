@@ -23,7 +23,7 @@
 
 namespace OCA\ocUsageCharts\Hooks;
 use Arnovr\Statistics\ContentStatisticsClient;
-use Arnovr\Statistics\Dto\ActivityInformation;
+use Arnovr\Statistics\Streams\Activity\Activity;
 use OCA\ocUsageCharts\Owncloud\User;
 
 /**
@@ -82,8 +82,9 @@ class FileHooks
             return;
         }
         $user = new User();
-        $activityInformation = new ActivityInformation($user->getSignedInUsername(), 'file:' . $event);
-        self::$contentStatisticsClient->activity($activityInformation);
+        $activity = new Activity($user->getSignedInUsername(), 'file:' . $event);
+        self::$contentStatisticsClient->commit($activity);
+        self::$contentStatisticsClient->push();
     }
 
     /**
