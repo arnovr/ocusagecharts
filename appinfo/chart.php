@@ -210,7 +210,7 @@ class Chart extends App
     private function registerUsageChartsApi()
     {
         $this->container->registerService('ContentStatisticsClientApiConnection', function($c) {
-            new ApiConnection(
+            return new ApiConnection(
                 new \GuzzleHttp\Client(),
                 $c->query('ServerContainer')->getConfig()->getAppValue(
                     $c->query('AppName'),
@@ -224,6 +224,7 @@ class Chart extends App
                     $c->query('AppName'),
                     'password'
                 )
+            );
         });
 
         $this->container->registerService('ContentStatisticsClient', function($c) {
