@@ -46,8 +46,8 @@ class StorageUsageRepository extends Mapper
      */
     public function save(StorageUsage $usage)
     {
-        $query = $this->db->prepareQuery('INSERT INTO *PREFIX*uc_storageusage (created, username, `usage`) VALUES (?,?,?)');
-        $result = $query->execute(Array($usage->getDate()->format('Y-m-d H:i:s'), $usage->getUsername(), $usage->getUsage()));
+        $query = $this->db->prepareQuery('INSERT INTO *PREFIX*uc_storageusage (created, username, `usage`, maximumusage) VALUES (?,?,?,?)');
+        $result = $query->execute(Array($usage->getDate()->format('Y-m-d H:i:s'), $usage->getUsername(), $usage->getUsage(), $usage->getMaximumUsage()));
         /*
          * $query->execute could return integer or OC_DB_StatementWrapper or false
          * I am expecting an integer with number 1
@@ -211,7 +211,7 @@ class StorageUsageRepository extends Mapper
 
             $entities[$row['username']] = array_merge(
                 $entities[$row['username']],
-                array(new StorageUsage($dateTime, $row['average'], $row['username']))
+                array(new StorageUsage($dateTime, $row['average'], $row['username'], $row['maximumusage']))
             );
         }
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2014 - Arno van Rossum <arno@van-rossum.com>
+ * Copyright (c) 2015 - Arno van Rossum <arno@van-rossum.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,10 +30,13 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
-* @author Arno van Rossum <arno@van-rossum.com>
-*/
-class UpdateChartsCommand extends Command
+ * @author Arno van Rossum <arno@van-rossum.com>
+ */
+class UpdateContentStatisticsCommand extends Command
 {
+    /**
+     *
+     */
     public function __construct()
     {
         parent::__construct();
@@ -45,8 +48,8 @@ class UpdateChartsCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('ocusagecharts:updatecharts')
-            ->setDescription('Manually update the charts, this is also done by owncloud cronjob!');
+            ->setName('ocusagecharts:updatecontentstatistics')
+            ->setDescription('This will update the content statistics API, this is also done by owncloud cronjob!');
 
     }
 
@@ -60,6 +63,6 @@ class UpdateChartsCommand extends Command
     {
         $app = new Chart();
         $container = $app->getContainer();
-        $container->query('ChartUpdaterService')->updateChartsForUsers();
+        $container->query('ContentStatisticsUpdater')->updateChartsForUsers();
     }
 }

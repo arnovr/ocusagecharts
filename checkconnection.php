@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2014 - Arno van Rossum <arno@van-rossum.com>
+ * Copyright (c) 2015 - Arno van Rossum <arno@van-rossum.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,45 +21,37 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\Command;
-
+use Arnovr\Statistics\Api\ApiConnection;
+use GuzzleHttp\Exception\RequestException;
 use OCA\ocUsageCharts\AppInfo\Chart;
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 
-/**
-* @author Arno van Rossum <arno@van-rossum.com>
-*/
-class UpdateChartsCommand extends Command
-{
-    public function __construct()
+\OCP\JSON::checkLoggedIn();
+\OCP\JSON::checkAppEnabled('ocusagecharts');
+\OCP\JSON::callCheck();
+$l = \OCP\Util::getL10N('ocusagecharts');
+
+$app = new Chart();
+$container = $app->getContainer();
+
+/** @var ApiConnection $apiConnection */
+$apiConnection = $container->query('ContentStatisticsClientApiConnection');
+
+$data = array('data' => array(
+    'status' => 'success'
+));
+
+try {
+    if ( $apiConnection->testConnection() )
     {
-        parent::__construct();
-    }
-
-    /**
-     *
-     */
-    protected function configure()
-    {
-        $this
-            ->setName('ocusagecharts:updatecharts')
-            ->setDescription('Manually update the charts, this is also done by owncloud cronjob!');
-
-    }
-
-    /**
-     * @param InputInterface $input
-     * @param OutputInterface $output
-     *
-     * @return void
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
-    {
-        $app = new Chart();
-        $container = $app->getContainer();
-        $container->query('ChartUpdaterService')->updateChartsForUsers();
+        \OCP\JSON::success($data);
+        exit;
     }
 }
+catch(RequestException $exception) {
+}
+
+$data = array('data' => array(
+    'status' => 'error'
+));
+\OCP\JSON::error($data);
+

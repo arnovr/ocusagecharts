@@ -21,38 +21,22 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\Tests\Owncloud;
+use OCA\ocUsageCharts\AppInfo\Chart;
 
 
-use OCA\ocUsageCharts\Owncloud\Storage;
+\OCP\Util::addSCript('ocusagecharts', 'admin');
 
-class StorageTest extends \PHPUnit_Framework_TestCase
+$l = \OCP\Util::getL10N('ocusagecharts');
+
+$app = new Chart();
+$container = $app->getContainer();
+
+$user = $container->query('OwncloudUser');
+if ( !$user->isAdminUser($user->getSignedInUsername()) )
 {
-    /**
-     * @var Storage
-     */
-    private $storage;
-    private $user;
-    public function setUp()
-    {
-        $this->user = $this->getMock('\OCA\ocUsageCharts\Owncloud\User');
-        $this->storage = new Storage($this->user);
-    }
-    /*
-     * This test fails on:
-     * .PHP Fatal error:  Call to a member function getSize() on a non-object in /media/sf_usage_charts/apps/ocusagecharts/lib/owncloud/storage.php on line 66
-     *
-    public function testGetCurrentStorageUsageForSignedInUser()
-    {
-        $result = $this->storage->getCurrentStorageUsageForSignedInUser();
-        $this->assertArrayHasKey('free', $result);
-        $this->assertArrayHasKey('used', $result);
-    }
-    */
-
-    public function testGetStorageUsage()
-    {
-        $result = $this->storage->getStorageUsage('admin');
-        $this->assertInternalType('integer', $result);
-    }
+    return 'Not allowed';
 }
+
+$template = new \OCP\Template('ocusagecharts', 'admin');
+
+return $template->fetchPage();

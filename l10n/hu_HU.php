@@ -15,5 +15,7 @@ $TRANSLATIONS = array(
     "ActivityUsageLastMonth"=> "Tevékenységek száma az előző hónapban",
     "activities"            => "Tevékenységek száma",
     "ActivityUsagePerMonth" => "Tevékenységek száma havi bontásban",
-    "Activity_title"        => "Tevékenységek (Aktivitás)"
+    "Activity_title"        => "Tevékenységek (Aktivitás)",
+
+    "ApiSettings_title"     => "Api settings"
 );

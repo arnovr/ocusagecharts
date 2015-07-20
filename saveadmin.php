@@ -21,6 +21,8 @@
  * THE SOFTWARE.
  */
 
+use Arnovr\Statistics\Api\ApiConnection;
+use GuzzleHttp\Exception\RequestException;
 use OCA\ocUsageCharts\AppInfo\Chart;
 
 \OCP\JSON::checkLoggedIn();
@@ -28,21 +30,34 @@ use OCA\ocUsageCharts\AppInfo\Chart;
 \OCP\JSON::callCheck();
 $l = \OCP\Util::getL10N('ocusagecharts');
 
-
 $app = new Chart();
 $container = $app->getContainer();
-$configService = $container->query('ChartConfigService');
+/** @var ApiConnection $apiConnection */
+$apiConnection = $container->query('ContentStatisticsClientApiConnection');
 
-$validatorKey = 'ocusagecharts-charts-';
 
-foreach($_POST as $key => $value)
+$url = @$_POST['url'];
+
+if(empty($url) || ( !filter_var($url, FILTER_VALIDATE_IP) && !filter_var(gethostbyname($url), FILTER_VALIDATE_IP)) )
 {
-    if ( substr($key, 0, strlen($validatorKey)) === $validatorKey )
-    {
-        $id = substr($key, strlen($validatorKey));
-        $config = $configService->getChartConfigById($id);
-        $config->setMetaData(json_encode(array('size' => $value)));
-        $configService->save($config);
+    \OCP\JSON::error(array("data" => array( "message" => $l->t('Incorrect domainname or ip given'))));
+    exit;
+}
+
+$useApi = false;
+if ( @$_POST['useapi_enabled'] )
+{
+    try {
+        $useApi = $apiConnection->testConnection();
+    }
+    catch(RequestException $exception) {
     }
 }
+
+$appConfig = $container->query('ServerContainer')->getConfig();
+$appConfig->setAppValue('ocusagecharts', 'useapi', $useApi);
+$appConfig->setAppValue('ocusagecharts', 'url', 'http://' . $url);
+$appConfig->setAppValue('ocusagecharts', 'username', @$_POST['username']);
+$appConfig->setAppValue('ocusagecharts', 'password', @$_POST['password']);
+
 \OCP\JSON::success(array("data" => array( "message" => $l->t('Your settings have been updated.'))));

@@ -6,7 +6,8 @@ echo '
 	<h2>';
 	p($l->t('DefaultChartSize'));
     echo '</h2>
-<div><div id="ocusagecharts-msg"></div>
+<div>
+    <div id="ocusagecharts-msg"></div>
 ';
 $allowedType = array('StorageUsageLastMonth', 'StorageUsagePerMonth');
 foreach($_['charts'] as $chart)
@@ -34,7 +35,6 @@ foreach($_['charts'] as $chart)
         <option name="tb"' . ($userSelected == 'tb' ? $selected: '' ) . ' value="tb">' . $l->t('Terabytes') . '</option>
     </select><br />';
 }
-
 echo '
 </div>
 </div>
