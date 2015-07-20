@@ -43,6 +43,8 @@ p($l->t('username'));
 echo ': <input type="text" name="username" value="' . $appConfig->getAppValue('ocusagecharts', 'username') . '"/><br />';
 p($l->t('password'));
 echo ': <input type="password" name="password" value="' . $appConfig->getAppValue('ocusagecharts', 'password') . '" /><br />';
+p($l->t('Kibana dashboard url'));
+echo ': <input type="text" name="dashboard_url" value="' . $appConfig->getAppValue('ocusagecharts', 'dashboard_url') . '"/><br />';
 echo '<input id="apisettings_submit" type="button" value="' . $l->t('Store credentials') . '">';
 echo '</form>';
 echo '

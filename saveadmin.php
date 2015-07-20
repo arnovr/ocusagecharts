@@ -44,6 +44,14 @@ if(empty($url) || ( !filter_var($url, FILTER_VALIDATE_IP) && !filter_var(gethost
     exit;
 }
 
+$dashboardUrl = @$_POST['dashboard_url'];
+if ( !empty($dashboardUrl) && !filter_var($dashboardUrl, FILTER_VALIDATE_URL))
+{
+
+    \OCP\JSON::error(array("data" => array( "message" => $l->t('Dashboard url is incorrect'))));
+    exit;
+}
+
 $useApi = false;
 if ( @$_POST['useapi_enabled'] )
 {
@@ -59,5 +67,6 @@ $appConfig->setAppValue('ocusagecharts', 'useapi', $useApi);
 $appConfig->setAppValue('ocusagecharts', 'url', 'http://' . $url);
 $appConfig->setAppValue('ocusagecharts', 'username', @$_POST['username']);
 $appConfig->setAppValue('ocusagecharts', 'password', @$_POST['password']);
+$appConfig->setAppValue('ocusagecharts', 'dashboard_url', $dashboardUrl);
 
 \OCP\JSON::success(array("data" => array( "message" => $l->t('Your settings have been updated.'))));
