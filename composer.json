@@ -48,7 +48,9 @@
     },
     "classmap": [
       "lib",
-      "vendor/owncloud/core/lib"
+      "vendor/owncloud/core/lib",
+      "tests",
+      "appinfo"
     ]
   }
 }

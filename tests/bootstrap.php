@@ -1,5 +1,6 @@
 <?php
-
+require_once(__DIR__ . '/../vendor/autoload.php');
+/*
 global $RUNTIME_NOAPPS;
 $RUNTIME_NOAPPS = true;
 
@@ -13,3 +14,4 @@ if(!class_exists('PHPUnit_Framework_TestCase')) {
 
 OC_Hook::clear();
 OC_Log::$enabled = false;
+*/

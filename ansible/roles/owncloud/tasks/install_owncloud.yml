@@ -1,5 +1,5 @@
 - name: Download owncloud
-  get_url: url=https://download.owncloud.org/community/owncloud-7.0.5.tar.bz2 dest=/tmp/owncloud.tar.bz2
+  get_url: url=http://download.owncloud.org/community/owncloud-7.0.5.tar.bz2 dest=/tmp/owncloud.tar.bz2
 
 - name: Unpack owncloud
   unarchive: src=/tmp/owncloud.tar.bz2 dest=/var/www copy=no creates=/tmp/unpacked

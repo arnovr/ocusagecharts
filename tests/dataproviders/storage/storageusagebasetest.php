@@ -32,8 +32,6 @@ use OCA\ocUsageCharts\Owncloud\User;
 
 class StorageUsageBaseTest extends \PHPUnit_Framework_TestCase
 {
-    private $container;
-
     /**
      * @var ChartConfig
      */
@@ -61,9 +59,6 @@ class StorageUsageBaseTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $app = new Chart();
-        $this->container = $app->getContainer();
-
         $this->repository = $this
             ->getMockBuilder('OCA\ocUsageCharts\Entity\Storage\StorageUsageRepository')
             ->disableOriginalConstructor()

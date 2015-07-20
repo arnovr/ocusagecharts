@@ -36,7 +36,7 @@ class ChartDataProviderTest extends \PHPUnit_Framework_TestCase
      * @var DataProviderFactory
      */
     private $dataProviderFactory;
-    private $container;
+
     /**
      * @var ChartDataProvider
      */
@@ -55,9 +55,6 @@ class ChartDataProviderTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $app = new Chart();
-        $this->container = $app->getContainer();
-
         $this->storageUsageRepository = $this
             ->getMockBuilder('OCA\ocUsageCharts\Entity\Storage\StorageUsageRepository')
             ->disableOriginalConstructor()->getMock();

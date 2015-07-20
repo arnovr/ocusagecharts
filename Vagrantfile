@@ -7,6 +7,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.hostname = "ocusagecharts.box"
 
   config.vm.synced_folder "./", "/var/www/owncloud/apps/ocusagecharts", owner:  "www-data", group: "www-data"
+  config.vm.synced_folder "../dashboard", "/var/www/owncloud/apps/dashboard", owner:  "www-data", group: "www-data"
+
 
   config.vm.provision "ansible" do |ansible|
     ansible.playbook = "ansible/provision.yml"
