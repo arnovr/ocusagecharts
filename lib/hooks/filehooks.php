@@ -77,7 +77,8 @@ class FileHooks
      */
     private function registerFileHook($event)
     {
-        if ( substr($event, 5) == 'post_' ) {
+        $method = $event;
+        if ( substr($event, 0, 5) == 'post_' ) {
             $method = substr($event, 5); // remove post
         }
         \OC_HOOK::connect('OC_Filesystem', $event, 'OCA\ocUsageCharts\Hooks\FileHooks', $method);
