@@ -10,7 +10,7 @@
         An Activity chart over the last month;
         An Activity chart with activities over the last months;
     </description>
-    <version>3.4.7</version>
+    <version>3.4.8</version>
     <licence>MIT</licence>
     <author>Arno van Rossum, github:arnovr</author>
     <requiremin>7</requiremin>

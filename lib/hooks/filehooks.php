@@ -57,7 +57,15 @@ class FileHooks
      */
     public function register()
     {
-        $hooks = ['post_write', 'post_delete', 'post_rename', 'post_copy'];
+        $hooks = [
+            'post_create',
+            'post_write',
+            'post_delete',
+            'post_rename',
+            'post_copy',
+            'post_update',
+            'read'
+        ];
 
         foreach($hooks as $hook) {
             $this->registerFileHook($hook);
@@ -69,7 +77,9 @@ class FileHooks
      */
     private function registerFileHook($event)
     {
-        $method = substr($event, 5); // remove post_
+        if ( substr($event, 5) == 'post_' ) {
+            $method = substr($event, 5); // remove post
+        }
         \OC_HOOK::connect('OC_Filesystem', $event, 'OCA\ocUsageCharts\Hooks\FileHooks', $method);
     }
 
