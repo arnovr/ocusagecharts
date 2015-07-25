@@ -11,7 +11,7 @@ $url = $appConfig->getAppValue('ocusagecharts', 'dashboard_url');
 
 if ( empty($url) )
 {
-    $url = $appConfig->getAppValue('ocusagecharts', 'dashboard_url') . ':5601/#/dashboard';
+    $url = $appConfig->getAppValue('ocusagecharts', 'url') . '/kibana';
 }
 
 echo '
