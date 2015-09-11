@@ -7,7 +7,7 @@ Feature: Displaying current storage usage
     Given user "ferdinand" uses "15" GB of storage
     And user "dan" uses "5" GB of storage
     And user "elton" uses "80" GB of storage
-    And there is 100 GB of free storage
+    And there is "100" GB of free storage
     When i add "ferdinand" to the chart
     Then the chart slice "ferdinand" should be "7.5%" with "15" GB used storage
     And the chart slice "used by others" should be "42.5%" with "85" GB used storage
