@@ -7,8 +7,8 @@ Feature: Displaying current storage usage
     Given user "ferdinand" uses "15" GB of storage
     And user "dan" uses "5" GB of storage
     And user "elton" uses "80" GB of storage
-    When a user requests storage information for all users
-    Then The chart shows "15%" which represents "15" GB of storage
-    And The chart shows "5%" which represents "5" GB of storage
-    And The chart shows "80%" which represents "80" GB of storage
-    And the overall chart usage should be "100%" which represents "100" GB
+    And there is 100 GB of free storage
+    When i add "ferdinand" to the chart
+    Then the chart slice "ferdinand" should be "7.5%" with "15" GB used storage
+    And the chart slice "used by others" should be "42.5%" with "85" GB used storage
+    And the chart slice "free" should be "50%" with "100" GB used storage
