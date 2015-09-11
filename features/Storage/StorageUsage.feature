@@ -4,9 +4,9 @@ Feature: Displaying current storage usage
   So that i can keep track of storage used
 
   Scenario: Showing current storage information of all users
-    Given user "ferdinand" uses "15" GB of storage
-    And user "dan" uses "5" GB of storage
-    And user "elton" uses "80" GB of storage
+    Given a user named "ferdinand" uses "15" GB of storage
+    And a user named "dan" uses "5" GB of storage
+    And a user named "elton" uses "80" GB of storage
     And there is "100" GB of free storage
     When i add "ferdinand" to the chart
     Then the chart slice "ferdinand" should be "7.5%" with "15" GB used storage

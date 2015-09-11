@@ -9,9 +9,9 @@ use Behat\Behat\Tester\Exception\PendingException;
 class CurrentStorageUsageContext implements Context, SnippetAcceptingContext
 {
     /**
-     * @Given /^user "([^"]*)" uses "([^"]*)" GB of storage$/
+     * @Given /^a user named "([^"]*)" uses "([^"]*)" GB of storage$/
      */
-    public function userUsesGBOfStorage($userName, $gbOfStorage)
+    public function aUserNamedUsesGBOfStorage($userName, $gbOfStorage)
     {
         throw new PendingException();
     }
