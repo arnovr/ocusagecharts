@@ -5,38 +5,51 @@ namespace Domain;
 use Behat\Behat\Context\Context;
 use Behat\Behat\Context\SnippetAcceptingContext;
 use Behat\Behat\Tester\Exception\PendingException;
+use OC\Files\Storage\OwnCloud;
 
 class CurrentStorageUsageContext implements Context, SnippetAcceptingContext
 {
     /**
-     * @Given /^a user named "([^"]*)" uses "([^"]*)" GB of storage$/
+     * CurrentStorageUsageContext constructor.
      */
-    public function aUserNamedUsesGBOfStorage($userName, $gbOfStorage)
+    public function __construct()
     {
-        throw new PendingException();
+        $this->owncloud = new Owncloud();
     }
 
     /**
-     * @Given /^there is "(\d+)" GB of free storage$/
+     * @Given /^an owncloud user named "([^"]*)" was added to owncloud$/
      */
-    public function thereIsGBOfFreeStorage($gbOfStorage)
+    public function anOwncloudUserNamedWasAddedToOwncloud($userName)
     {
-        throw new PendingException();
+        $owncloudUser = Owncloud\User::named($userName);
+        $this->owncloud->add($owncloudUser);
     }
 
     /**
-     * @When /^i add "([^"]*)" to the chart$/
+     * @Given /^"([^"]*)" GB owncloud storage was stored by owncloud user "([^"]*)"$/
      */
-    public function iAddToTheChart($userName)
+    public function gbOwncloudStorageWasStoredByOwncloudUser($gbOfStorage, $userName)
     {
-        throw new PendingException();
+        $owncloudUser = $this->owncloud->getUserNamed($userName);
+        $owncloudStorage = new Owncloud\Storage($gbOfStorage);
+        $owncloudUser->store($owncloudStorage);
     }
 
     /**
-     * @Then /^the chart slice "([^"]*)" should be "([^"]*)" with "([^"]*)" GB used storage$/
+     * @When /^owncloud user "([^"]*)" stores "([^"]*)" GB of owncloud storage$/
      */
-    public function theChartSliceShouldBeWithGBUsedStorage($userName, $percentage, $gbOfStorage)
+    public function owncloudUserFromTheChartStoresGBOfOwncloudStorage($userName, $gbOfStorage)
     {
-        throw new PendingException();
+        $owncloudStorage = new OwnCloud\Storage($gbOfStorage);
+        $this->owncloud->store($userName, $owncloudStorage);
+    }
+
+    /**
+     * @Given /^owncloud has "([^"]*)" GB of free storage left$/
+     */
+    public function owncloudHasGBOfFreeStorageLeft($gbOfStorage)
+    {
+        $this->owncloud->hasFreeStorageLeft($gbOfStorage);
     }
 }
