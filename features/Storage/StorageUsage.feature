@@ -1,6 +1,6 @@
-Feature: Displaying current storage usage
+Feature: Displaying current storage usage in percentage and GB
   As a user
-  I want to see current storage usage of all the users
+  I want to see current storage usage in percentage and GB
   So that i can keep track of storage used
 
   Background:
@@ -13,6 +13,8 @@ Feature: Displaying current storage usage
     And "80" GB owncloud storage was stored by owncloud user "elton"
     And "5" GB owncloud storage was stored by owncloud user "dan"
     And owncloud has "100" GB of free storage left
-    Then the chart slice "ferdinand" should be "7.5%" with "15" GB used storage
-    And the chart slice "used by others" should be "42.5%" with "85" GB used storage
-    And the chart slice "free" should be "50%" with "100" GB used storage
+    When calculating storage usage in percentages and GB
+    Then the percentage for owncloud user "ferdinand" should be "7.5%" with "15" GB used storage
+    And the percentage for owncloud user "elton" should be "40%" with "80" GB used storage
+    And the percentage for owncloud user "dan" should be "2.5%" with "5" GB used storage
+    And the remaining free percentage should be "50%" with "100" GB used storage
