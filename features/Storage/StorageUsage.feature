@@ -9,9 +9,9 @@ Feature: Displaying current storage usage in percentage and GB
     And an owncloud user named "elton" was added to owncloud
 
   Scenario: Showing current storage information of ferdinand
-    Given "15" GB owncloud storage was stored by owncloud user "ferdinand"
-    And "80" GB owncloud storage was stored by owncloud user "elton"
-    And "5" GB owncloud storage was stored by owncloud user "dan"
+    Given "15" GB owncloud storage was measured by owncloud user "ferdinand"
+    And "80" GB owncloud storage was measured by owncloud user "elton"
+    And "5" GB owncloud storage was measured by owncloud user "dan"
     And owncloud has "100" GB of free storage left
     When calculating storage usage in percentages
     Then the percentage for owncloud user "ferdinand" should be "7.5%"

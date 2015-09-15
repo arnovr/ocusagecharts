@@ -29,13 +29,13 @@ class CurrentStorageUsageContext implements Context, SnippetAcceptingContext
     }
 
     /**
-     * @Given /^"([^"]*)" GB owncloud storage was stored by owncloud user "([^"]*)"$/
+     * @Given /^"([^"]*)" GB owncloud storage was measured by owncloud user "([^"]*)"$/
      */
-    public function gbOwncloudStorageWasStoredByOwncloudUser($gbOfStorage, $userName)
+    public function gbOwncloudStorageWasMeasuredByOwncloudUser($gbOfStorage, $userName)
     {
-        $owncloudUser = $this->owncloud->getUserNamed($userName);
+        $owncloudUser = Owncloud\User::named($userName);
         $owncloudStorage = new Owncloud\Storage($gbOfStorage);
-        $owncloudUser->store($owncloudStorage);
+        $owncloudUser->measure($owncloudStorage);
     }
 
     /**
