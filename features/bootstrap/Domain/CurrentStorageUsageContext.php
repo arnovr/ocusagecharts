@@ -4,12 +4,18 @@ namespace Domain;
 
 use Behat\Behat\Context\Context;
 use Behat\Behat\Context\SnippetAcceptingContext;
-use Behat\Behat\Tester\Exception\PendingException;
-use OC\Files\Storage\OwnCloud;
+use OCA\ocUsageCharts\ocUsageCharts\Measurement\Calculator\Percentage;
+use OCA\ocUsageCharts\ocUsageCharts\Measurement\MeasurementResults;
+use OCA\ocUsageCharts\ocUsageCharts\Owncloud;
+use OCA\ocUsageCharts\ValueObject\Measurements\GigaByteMetric;
+use PHPUnit_Framework_Assert;
 
 class CurrentStorageUsageContext implements Context, SnippetAcceptingContext
 {
-    private $percentages;
+    /**
+     * @var MeasurementResults
+     */
+    private $measurementResults;
 
     /**
      * CurrentStorageUsageContext constructor.
@@ -22,29 +28,35 @@ class CurrentStorageUsageContext implements Context, SnippetAcceptingContext
     /**
      * @Given /^an owncloud user named "([^"]*)" was added to owncloud$/
      */
-    public function anOwncloudUserNamedWasAddedToOwncloud($userName)
+    public function anOwncloudUserNamedWasAddedToOwncloud($name)
     {
-        $owncloudUser = Owncloud\User::named($userName);
+        $owncloudUser = Owncloud\User::named($name);
         $this->owncloud->add($owncloudUser);
     }
 
     /**
      * @Given /^"([^"]*)" GB owncloud storage was measured by owncloud user "([^"]*)"$/
+     * @param $name
      */
-    public function gbOwncloudStorageWasMeasuredByOwncloudUser($gbOfStorage, $userName)
+    public function gbOwncloudStorageWasMeasuredByOwncloudUser($gbOfStorage, $name)
     {
-        $owncloudUser = Owncloud\User::named($userName);
-        $owncloudStorage = new Owncloud\Storage($gbOfStorage);
+        $GBs = GigaByteMetric::gigabytes($gbOfStorage);
+        $owncloudUser = $this->owncloud->getUserByName($name);
+        $owncloudStorage = new Owncloud\Storage($GBs);
         $owncloudUser->measure($owncloudStorage);
     }
 
     /**
-     * @Given /^owncloud has "([^"]*)" GB of free storage left$/
+     * @Given /^owncloud has "([^"]*)" GB of free storage space left$/
      */
-    public function owncloudHasGBOfFreeStorageLeft($gbOfStorage)
+    public function owncloudHasGBOfFreeStorageSpaceLeft($gbOfStorage)
     {
-        $this->owncloud->hasFreeStorageLeft(
-            new OwnCloud\Storage($gbOfStorage)
+        $GBs = GigaByteMetric::gigabytes($gbOfStorage);
+
+        $this->owncloud->hasFreeStorageSpaceLeft(
+            new Owncloud\FreeSpace(
+                new Owncloud\Storage($GBs)
+            )
         );
     }
 
@@ -53,27 +65,28 @@ class CurrentStorageUsageContext implements Context, SnippetAcceptingContext
      */
     public function calculatingStorageUsageInPercentages()
     {
-        $this->percentages = $this->owncloud->calculateStorageUsageInPercentage();
+        $this->measurementResults = $this->owncloud->calculateStorageUsageIn(new Percentage());
     }
 
     /**
-     * @Then /^the percentage for owncloud user "([^"]*)" should be "([^"]*)"$/
+     * @Then /^the percentage for owncloud user "([^"]*)" should be "([^"]*)"%$/
      */
-    public function thePercentageForOwncloudUserShouldBe($username, $percentage)
+    public function thePercentageForOwncloudUserShouldBe($name, $percentage)
     {
+        $owncloudUser = $this->owncloud->getUserByName($name);
         $this->shouldBe(
-            $this->percentages->percentageForOwncloudUser($username),
+            $this->measurementResults->forUser($owncloudUser),
             $percentage
         );
     }
 
     /**
-     * @Given /^the remaining percentage should be "([^"]*)"$/
+     * @Given /^the remaining percentage should be "([^"]*)"%$/
      */
     public function theRemainingPercentageShouldBe($percentage)
     {
         $this->shouldBe(
-            $this->percentages->remainingPercentage(),
+            $this->measurementResults->remaining(),
             $percentage
         );
     }

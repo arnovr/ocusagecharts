@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2014 - Arno van Rossum <arno@van-rossum.com>
+ * Copyright (c) 2015 - Arno van Rossum <arno@van-rossum.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,20 +21,31 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\ValueObject\Measurements;
+namespace OCA\ocUsageCharts\ocUsageCharts\Owncloud;
 
-/**
- * @author Arno van Rossum <arno@van-rossum.com>
- */
-class GigaByteMetric extends AbstractByteMetric
+use OCA\ocUsageCharts\ValueObject\Measurements\GigaByteMetric;
+
+class Storage
 {
-    public static function gigabytes($gbOfStorage)
+    /**
+     * @var GigaByteMetric
+     */
+    private $gbOfStorage;
+
+    /**
+     * Storage constructor.
+     * @param GigaByteMetric $gbOfStorage
+     */
+    public function __construct(GigaByteMetric $gbOfStorage)
     {
-        return new self($gbOfStorage * 1024 * 1024 * 1024);
+        $this->gbOfStorage = $gbOfStorage;
     }
 
-    public function getValue()
+    /**
+     * @return integer
+     */
+    public function getBytes()
     {
-        return round($this->bytes / 1024 / 1024 / 1024, 2);
+        return $this->gbOfStorage->getBytes();
     }
 }

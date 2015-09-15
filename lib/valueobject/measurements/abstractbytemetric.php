@@ -47,4 +47,12 @@ abstract class AbstractByteMetric
      * @return float
      */
     abstract public function getValue();
+
+    /**
+     * @return integer
+     */
+    public function getBytes()
+    {
+        return $this->bytes;
+    }
 }

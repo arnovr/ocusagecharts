@@ -9,33 +9,49 @@ use Behat\Behat\Tester\Exception\PendingException;
 class CurrentStorageUsageContext implements Context, SnippetAcceptingContext
 {
     /**
-     * @Given /^a user named "([^"]*)" uses "([^"]*)" GB of storage$/
+     * @Given an owncloud user named :arg1 was added to owncloud
      */
-    public function aUserNamedUsesGBOfStorage($userName, $gbOfStorage)
+    public function anOwncloudUserNamedWasAddedToOwncloud($arg1)
     {
         throw new PendingException();
     }
 
     /**
-     * @Given /^there is "(\d+)" GB of free storage$/
+     * @Given :arg1 GB owncloud storage was measured by owncloud user :arg2
      */
-    public function thereIsGBOfFreeStorage($gbOfStorage)
+    public function gbOwncloudStorageWasMeasuredByOwncloudUser($arg1, $arg2)
     {
         throw new PendingException();
     }
 
     /**
-     * @When /^i add "([^"]*)" to the chart$/
+     * @Given owncloud has :arg1 GB of free storage space left
      */
-    public function iAddToTheChart($userName)
+    public function owncloudHasGbOfFreeStorageSpaceLeft($arg1)
     {
         throw new PendingException();
     }
 
     /**
-     * @Then /^the chart slice "([^"]*)" should be "([^"]*)" with "([^"]*)" GB used storage$/
+     * @When calculating storage usage in percentages
      */
-    public function theChartSliceShouldBeWithGBUsedStorage($userName, $percentage, $gbOfStorage)
+    public function calculatingStorageUsageInPercentages()
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Then the percentage for owncloud user :arg1 should be :arg2%
+     */
+    public function thePercentageForOwncloudUserShouldBe($arg1, $arg2)
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Then the remaining percentage should be :arg1%
+     */
+    public function theRemainingPercentageShouldBe($arg1)
     {
         throw new PendingException();
     }
