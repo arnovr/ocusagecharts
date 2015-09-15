@@ -84,7 +84,7 @@ class CurrentStorageUsageContext implements Context, SnippetAcceptingContext
      */
     private function shouldBe($expectedPercentage, $percentage)
     {
-        PHPUnit_Framework_Assert::equals(
+        PHPUnit_Framework_Assert::assertEquals(
             $expectedPercentage,
             $percentage
         );
