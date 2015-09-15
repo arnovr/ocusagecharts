@@ -9,6 +9,8 @@ use OC\Files\Storage\OwnCloud;
 
 class CurrentStorageUsageContext implements Context, SnippetAcceptingContext
 {
+    private $percentages;
+
     /**
      * CurrentStorageUsageContext constructor.
      */
@@ -37,19 +39,54 @@ class CurrentStorageUsageContext implements Context, SnippetAcceptingContext
     }
 
     /**
-     * @When /^owncloud user "([^"]*)" stores "([^"]*)" GB of owncloud storage$/
-     */
-    public function owncloudUserFromTheChartStoresGBOfOwncloudStorage($userName, $gbOfStorage)
-    {
-        $owncloudStorage = new OwnCloud\Storage($gbOfStorage);
-        $this->owncloud->store($userName, $owncloudStorage);
-    }
-
-    /**
      * @Given /^owncloud has "([^"]*)" GB of free storage left$/
      */
     public function owncloudHasGBOfFreeStorageLeft($gbOfStorage)
     {
-        $this->owncloud->hasFreeStorageLeft($gbOfStorage);
+        $this->owncloud->hasFreeStorageLeft(
+            new OwnCloud\Storage($gbOfStorage)
+        );
+    }
+
+    /**
+     * @When /^calculating storage usage in percentages$/
+     */
+    public function calculatingStorageUsageInPercentages()
+    {
+        $this->percentages = $this->owncloud->calculateStorageUsageInPercentage();
+    }
+
+    /**
+     * @Then /^the percentage for owncloud user "([^"]*)" should be "([^"]*)"$/
+     */
+    public function thePercentageForOwncloudUserShouldBe($username, $percentage)
+    {
+        $this->shouldBe(
+            $this->percentages->percentageForOwncloudUser($username),
+            $percentage
+        );
+    }
+
+    /**
+     * @Given /^the remaining percentage should be "([^"]*)"$/
+     */
+    public function theRemainingPercentageShouldBe($percentage)
+    {
+        $this->shouldBe(
+            $this->percentages->remainingPercentage(),
+            $percentage
+        );
+    }
+
+    /**
+     * @param $expectedPercentage
+     * @param $percentage
+     */
+    private function shouldBe($expectedPercentage, $percentage)
+    {
+        PHPUnit_Framework_Assert::equals(
+            $expectedPercentage,
+            $percentage
+        );
     }
 }
