@@ -1,4 +1,4 @@
-Feature: Displaying current storage usage in percentage and GB
+Feature: Displaying current storage usage in percentage
   As a user
   I want to see current storage usage in percentages
   So that i can keep track of storage used
