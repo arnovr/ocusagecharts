@@ -3,10 +3,9 @@
   "description": "Storage Usage / Activity Chart",
   "process-timeout": "1000",
   "require-dev": {
-    "behat/behat": "3",
     "phpunit/phpunit": "4.4.*",
     "mockery/mockery": "0.9.*",
-    "owncloud/core": "7.0.5"
+    "behat/behat": "^3.0"
   },
   "repositories": {
     "owncloud": {

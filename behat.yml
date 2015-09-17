@@ -1,0 +1,8 @@
+default:
+    suites:
+        domain_features:
+            paths:    [ %paths.base%/features/Storage ]
+            contexts: [ Domain\CurrentStorageUsageContext ]
+        api_features:
+            paths:    [ %paths.base%/features/Storage ]
+            contexts: [ Api\CurrentStorageUsageContext ]

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2014 - Arno van Rossum <arno@van-rossum.com>
+ * Copyright (c) 2015 - Arno van Rossum <arno@van-rossum.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,20 +21,18 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\ValueObject\Measurements;
+namespace OCA\ocUsageCharts\ocUsageCharts\Measurement\Calculator;
 
-/**
- * @author Arno van Rossum <arno@van-rossum.com>
- */
-class GigaByteMetric extends AbstractByteMetric
+
+class Percentage implements CalculatorType
 {
-    public static function gigabytes($gbOfStorage)
+    /**
+     * @param $totalBytes
+     * @param $bytes
+     * @return float
+     */
+    public function calculate($totalBytes, $bytes)
     {
-        return new self($gbOfStorage * 1024 * 1024 * 1024);
-    }
-
-    public function getValue()
-    {
-        return round($this->bytes / 1024 / 1024 / 1024, 2);
+        return round(($bytes / $totalBytes) * 100, 2);
     }
 }
