@@ -1,3 +1,9 @@
+Deprecated
+==========
+This app is deprecated, current development continues on this app:
+https://github.com/arnovr/owncloud-statistics
+
+
 [![Stories in Ready](https://badge.waffle.io/arnovr/ocusagecharts.png?label=ready&title=Ready)](https://waffle.io/arnovr/ocusagecharts)
 [![Build Status](https://travis-ci.org/arnovr/ocusagecharts.svg?branch=master)](https://travis-ci.org/arnovr/ocusagecharts)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/arnovr/ocusagecharts/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/arnovr/ocusagecharts/?branch=master)
