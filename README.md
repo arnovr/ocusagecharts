@@ -1,6 +1,6 @@
 Deprecated
 ==========
-This app is deprecated, current development continues on this app:
+This app is deprecated, the following app is supported:
 https://github.com/arnovr/owncloud-statistics
 
 
