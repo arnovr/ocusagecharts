@@ -27,15 +27,22 @@ use OCA\ocUsageCharts\Service\ChartConfigService;
 
 class ChartConfigServiceTest extends \PHPUnit_Framework_TestCase
 {
+    private $container;
     private $configService;
     private $configRepository;
     private $user;
 
     public function setUp()
     {
+        $app = new \OCA\ocUsageCharts\AppInfo\Chart();
+        $this->container = $app->getContainer();
         $this->configRepository = $chartConfigRepository = $this->getMockBuilder('\OCA\ocUsageCharts\Entity\ChartConfigRepository')
             ->disableOriginalConstructor()
             ->getMock();
+
+        $this->container->registerService('ChartConfigRepository', function($c) use ($chartConfigRepository) {
+            return $chartConfigRepository;
+        });
 
         $this->user = $this->getMock('\OCA\ocUsageCharts\Owncloud\User');
         $this->configService = new ChartConfigService($this->configRepository, $this->user);
@@ -84,7 +91,7 @@ class ChartConfigServiceTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(1, $result);
     }
 
-    public function testSaveSuccess()
+    public function testSaveSucces()
     {
         $configMock = $this
             ->getMockBuilder('OCA\ocUsageCharts\Entity\ChartConfig')

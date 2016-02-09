@@ -6,7 +6,6 @@
         <apply executable="php" failonerror="true">
             <arg value="-l" />
             <fileset dir=".">
-                <exclude name="**/vendor/**" />
                 <include name="**/*.php" />
             </fileset>
         </apply>

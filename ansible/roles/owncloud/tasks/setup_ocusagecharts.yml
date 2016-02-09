@@ -1,3 +1,7 @@
+# not working :(
+#
+#- raw: echo "vagrant" | sudo /var/www/owncloud/occ user:resetpassword vagrant
+
 - name: install required packages
   apt: pkg={{ item }} state=present
   sudo: yes

@@ -23,10 +23,6 @@
 
 namespace OCA\ocUsageCharts\AppInfo;
 
-use Arnovr\Statistics\Api\ApiConnection;
-use Arnovr\Statistics\ContentStatisticsClient;
-use Arnovr\Statistics\Streams\ActivityStream;
-use Arnovr\Statistics\Streams\StorageStream;
 use OCA\ocUsageCharts\ChartTypeAdapterFactory;
 use OCA\ocUsageCharts\Controller\ChartApiController;
 use OCA\ocUsageCharts\Controller\ChartController;
@@ -35,7 +31,6 @@ use OCA\ocUsageCharts\DataProviders\ChartUsageHelper;
 use OCA\ocUsageCharts\Entity\Activity\ActivityUsageRepository;
 use OCA\ocUsageCharts\Entity\ChartConfigRepository;
 use OCA\ocUsageCharts\Entity\Storage\StorageUsageRepository;
-use OCA\ocUsageCharts\Hooks\FileHooks;
 use OCA\ocUsageCharts\Owncloud\Storage;
 use OCA\ocUsageCharts\Owncloud\User;
 use OCA\ocUsageCharts\Owncloud\Users;
@@ -44,7 +39,6 @@ use OCA\ocUsageCharts\Service\ChartCreator;
 use OCA\ocUsageCharts\Service\ChartDataProvider;
 use OCA\ocUsageCharts\Service\ChartService;
 use OCA\ocUsageCharts\Service\ChartUpdaterService;
-use OCA\ocUsageCharts\Service\ContentStatisticsUpdater;
 use \OCP\AppFramework\App;
 use OCP\AppFramework\IAppContainer;
 
@@ -62,17 +56,10 @@ class Chart extends App
     {
         parent::__construct('ocusagecharts', $urlParams);
         $this->container = $this->getContainer();
-
-        // remove appinfo/file.php, sucks... you know it.
-        // Require after getContainer, else test fails
-        $path = dirname(dirname(__FILE__));
-        require_once($path . '/vendor/autoload.php');
-
         $this->registerRepositories();
         $this->registerOwncloudDependencies();
         $this->registerVarious();
         $this->registerServices();
-        $this->registerUsageChartsApi();
     }
 
     /**
@@ -131,11 +118,7 @@ class Chart extends App
                 $c->query('ChartService'),
                 $c->query('ChartConfigService'),
                 $c->query('ChartCreator'),
-                $c->query('OwncloudUser'),
-                $c->query('ServerContainer')->getConfig()->getAppValue(
-                    $c->query('AppName'),
-                    'useapi'
-                )
+                $c->query('OwncloudUser')
             );
         });
         $this->container->registerService('ChartApiController', function($c) {
@@ -204,57 +187,6 @@ class Chart extends App
                 $c->query('DataProviderFactory'),
                 $c->query('ChartTypeAdapterFactory')
             );
-        });
-    }
-
-    private function registerUsageChartsApi()
-    {
-        $this->container->registerService('ContentStatisticsClientApiConnection', function($c) {
-            return new ApiConnection(
-                new \GuzzleHttp\Client(),
-                $c->query('ServerContainer')->getConfig()->getAppValue(
-                    $c->query('AppName'),
-                    'url'
-                ),
-                $c->query('ServerContainer')->getConfig()->getAppValue(
-                    $c->query('AppName'),
-                    'username'
-                ),
-                $c->query('ServerContainer')->getConfig()->getAppValue(
-                    $c->query('AppName'),
-                    'password'
-                )
-            );
-        });
-
-        $this->container->registerService('ContentStatisticsClient', function($c) {
-            return new ContentStatisticsClient(
-                new ActivityStream(
-                    $c->query('ContentStatisticsClientApiConnection')
-                ),
-                new StorageStream(
-                    $c->query('ContentStatisticsClientApiConnection')
-                )
-            );
-        });
-
-        $useApi = $this->container->query('ServerContainer')->getConfig()->getAppValue(
-            $this->container->query('AppName'),
-            'useapi'
-        );
-        $this->container->registerService('FileHooks', function($c) use (&$useApi) {
-            return new FileHooks(
-                $c->query('ContentStatisticsClient'),
-                $useApi
-            );
-        });
-
-        $this->container->registerService('ContentStatisticsUpdater', function($c) {
-           return new ContentStatisticsUpdater(
-               $c->query('ContentStatisticsClient'),
-               $c->query('DataProviderFactory'),
-               $c->query('OwncloudUsers')
-           );
         });
     }
 }
