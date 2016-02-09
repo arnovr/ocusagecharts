@@ -4,4 +4,3 @@ js/d3
 src/*
 .vagrant
 vendor
-composer.phar

@@ -39,11 +39,6 @@ class StorageUsage
     private $usage;
 
     /**
-     * @var integer Kilobytes
-     */
-    private $maximumUsage;
-
-    /**
      * @var string
      */
     private $username;
@@ -53,12 +48,11 @@ class StorageUsage
      * @param integer $usage
      * @param string $username
      */
-    public function __construct(\DateTime $date, $usage, $username, $maximumUsage)
+    public function __construct(\DateTime $date, $usage, $username)
     {
         $this->date = $date;
         $this->usage = $usage;
         $this->username = $username;
-        $this->maximumUsage = $maximumUsage;
     }
 
     /**
@@ -86,19 +80,11 @@ class StorageUsage
     }
 
     /**
-     * return integer
-     */
-    public function getMaximumUsage()
-    {
-        return $this->maximumUsage;
-    }
-
-    /**
      * @param array $row
      * @return StorageUsage
      */
     public static function fromRow($row)
     {
-        return new StorageUsage(new \Datetime($row['created']), $row['usage'], $row['username'], $row['maximumusage']);
+        return new StorageUsage(new \Datetime($row['created']), $row['usage'], $row['username']);
     }
 }

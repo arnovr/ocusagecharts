@@ -45,8 +45,8 @@ class StorageUsageLastMonthAdapterTest extends c3jsBaseTest
     {
         $this->user->expects($this->once())->method('getDisplayName')->willReturn('test1');
         $data = array('test1' => array(
-            new StorageUsage(new \DateTime("-1 day"), 234234, 'test1', 10245123345),
-            new StorageUsage(new \DateTime(), 23423422, 'test1', 10245123345)
+            new StorageUsage(new \DateTime("-1 day"), 234234, 'test1'),
+            new StorageUsage(new \DateTime(), 23423422, 'test1')
         ));
         $result = $this->adapter->formatData($data);
         $this->assertArrayHasKey('x', $result);

@@ -10,10 +10,6 @@ zipfile="$version.zip"
 echo $version | xargs mkdir
 cp -Rv * "$version"
 cd "$version"
-rm -rf vendor/
-curl -sS https://getcomposer.org/installer | php
-php composer.phar install --no-dev
-rm composer.phar
 rm -rf "$version" #also copied in directory
 cd js/d3
 find ! -name 'd3.min.js' -type f -exec rm -f {} +
@@ -29,6 +25,7 @@ rm -f .scrutinizer.yml
 rm -rf .idea
 rm -rf tests/
 rm -rf bin/
+rm -rf vendor
 rm -rf Vagrantfile
 rm -rf ansible
 cd ../

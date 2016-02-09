@@ -33,12 +33,6 @@
                 <notnull>true</notnull>
                 <length>255</length>
             </field>
-            <field>
-                <name>maximumusage</name>
-                <type>integer</type>
-                <notnull>true</notnull>
-                <length>255</length>
-            </field>
         </declaration>
     </table>
     <table>

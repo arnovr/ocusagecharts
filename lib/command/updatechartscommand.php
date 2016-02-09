@@ -22,42 +22,14 @@
  */
 
 namespace OCA\ocUsageCharts\Command;
-
 use OCA\ocUsageCharts\AppInfo\Chart;
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 
 /**
 * @author Arno van Rossum <arno@van-rossum.com>
 */
-class UpdateChartsCommand extends Command
+class UpdateChartsCommand extends \OC\BackgroundJob\Job
 {
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    /**
-     *
-     */
-    protected function configure()
-    {
-        $this
-            ->setName('ocusagecharts:updatecharts')
-            ->setDescription('Manually update the charts, this is also done by owncloud cronjob!');
-
-    }
-
-    /**
-     * @param InputInterface $input
-     * @param OutputInterface $output
-     *
-     * @return void
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
-    {
+    public function run($argument) {
         $app = new Chart();
         $container = $app->getContainer();
         $container->query('ChartUpdaterService')->updateChartsForUsers();

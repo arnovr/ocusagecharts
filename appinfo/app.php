@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2015 - Arno van Rossum <arno@van-rossum.com>
+ * Copyright (c) 2014 - Arno van Rossum <arno@van-rossum.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,11 +21,9 @@
  * THE SOFTWARE.
  */
 
-use OCA\ocUsageCharts\AppInfo\Chart;
 OCP\App::checkAppEnabled('ocusagecharts');
 OCP\App::setActiveNavigationEntry('ocusagecharts');
 OCP\App::registerPersonal('ocusagecharts', 'personal');
-OCP\App::registerAdmin('ocusagecharts', 'admin');
 OCP\App::addNavigationEntry(Array(
     'id'	=> 'ocusagecharts',
     'order'	=> 60,
@@ -36,17 +34,4 @@ OCP\App::addNavigationEntry(Array(
 
 \OCP\Util::addStyle('ocusagecharts', 'style');
 
-\OCP\Backgroundjob::registerJob('OCA\ocUsageCharts\Job\UpdateChartsJob');
-
-$app = new Chart();
-$x = $app->getContainer()->query('FileHooks');
-$x->register();
-
-$useApi = $app->getContainer()->query('ServerContainer')->getConfig()->getAppValue(
-    $app->getContainer()->query('AppName'),
-    'useapi'
-);
-
-if ($useApi) {
-    \OCP\Backgroundjob::registerJob('OCA\ocUsageCharts\Job\UpdateContentStatisticsJob');
-}
+\OCP\Backgroundjob::registerJob('OCA\ocUsageCharts\Command\UpdateChartsCommand');

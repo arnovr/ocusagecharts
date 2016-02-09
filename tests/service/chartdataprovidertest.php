@@ -21,14 +21,13 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\Tests\Service;
+namespace OCA\ocUsageCharts\Service;
 
 use OCA\ocUsageCharts\AppInfo\Chart;
 use OCA\ocUsageCharts\ChartTypeAdapterFactory;
 use OCA\ocUsageCharts\DataProviderFactory;
 use OCA\ocUsageCharts\Entity\ChartConfig;
 use OCA\ocUsageCharts\Entity\Storage\StorageUsageRepository;
-use OCA\ocUsageCharts\Service\ChartDataProvider;
 
 class ChartDataProviderTest extends \PHPUnit_Framework_TestCase
 {
@@ -36,7 +35,7 @@ class ChartDataProviderTest extends \PHPUnit_Framework_TestCase
      * @var DataProviderFactory
      */
     private $dataProviderFactory;
-
+    private $container;
     /**
      * @var ChartDataProvider
      */
@@ -55,6 +54,9 @@ class ChartDataProviderTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
+        $app = new Chart();
+        $this->container = $app->getContainer();
+
         $this->storageUsageRepository = $this
             ->getMockBuilder('OCA\ocUsageCharts\Entity\Storage\StorageUsageRepository')
             ->disableOriginalConstructor()->getMock();
@@ -86,6 +88,15 @@ class ChartDataProviderTest extends \PHPUnit_Framework_TestCase
             ->willReturn($data);
         $this->dataProviderFactory->method('getDataProviderByConfig')->willReturn($provider);
 
+        $usageNumber = 2324235;
+        $created = new \DateTime();
+        $username = 'test1';
+        $usage = $this->getMock('\OCA\ocUsageCharts\Entity\Storage\StorageUsage', array(), array(
+                $created,
+                $usageNumber,
+                $username
+            ));
+
         $result = $this->dataProvider->getChartUsageForUpdate($this->configMock);
         $this->assertEquals($data, $result);
     }
@@ -104,13 +115,11 @@ class ChartDataProviderTest extends \PHPUnit_Framework_TestCase
         $usageNumber = 2324235;
         $created = new \DateTime();
         $username = 'test1';
-        $maximumUsage = 323232022;
         $usage = $this->getMock('\OCA\ocUsageCharts\Entity\Storage\StorageUsage', array(), array(
                 $created,
                 $usageNumber,
-                $username,
-                $maximumUsage
-        ));
+                $username
+            ));
 
         $saved = $this->dataProvider->save($this->configMock, $usage);
         $this->assertTrue($saved);

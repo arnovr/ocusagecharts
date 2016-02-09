@@ -52,13 +52,6 @@ function loadGraph(url, yLabel, shortLable, graphType, format, appendLabel)
 function loadPie(url)
 {
     c3.generate({
-        pie:{
-          label:{
-            format:function(x){
-              return (Math.round((x/1024) * 100)/100) + ' GB';
-            }
-          }
-        },
         bindto: '#chart',
         size: {
             height: 520

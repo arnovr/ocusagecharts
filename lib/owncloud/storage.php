@@ -69,17 +69,4 @@ class Storage
             'used' => $usedSpace
         );
     }
-
-    /**
-     * @param string $userName
-     * @return integer
-     */
-    public function getMaximumStorageUsage($userName)
-    {
-        $view = new FilesView('/' . $userName . '/files');
-        $freeSpace = (int) $view->free_space();
-        $usedSpace = $view->getFileInfo('/')->getSize();
-
-        return ($freeSpace + $usedSpace);
-    }
 }

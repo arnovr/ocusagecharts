@@ -21,12 +21,12 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\Tests\Service;
-
-use OCA\ocUsageCharts\Service\ChartUpdaterService;
+namespace OCA\ocUsageCharts\Service;
 
 class ChartUpdaterServiceTest extends \PHPUnit_Framework_TestCase
 {
+
+    private $container;
     private $configService;
     private $dataProvider;
     /**
@@ -39,16 +39,27 @@ class ChartUpdaterServiceTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
+        $app = new \OCA\ocUsageCharts\AppInfo\Chart();
+        $this->container = $app->getContainer();
         $this->configService = $configService = $this->getMockBuilder('\OCA\ocUsageCharts\Service\ChartConfigService')
             ->disableOriginalConstructor()
             ->getMock();
 
+        $this->container->registerService('ChartConfigService', function($c) use ($configService) {
+                return $configService;
+            });
 
         $this->dataProvider = $dataProvider = $this->getMockBuilder('\OCA\ocUsageCharts\Service\ChartDataProvider')
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->owncloudUsers = $this->getMock('\OCA\ocUsageCharts\Owncloud\Users');
+        $this->container->registerService('ChartDataProvider', function($c) use ($dataProvider) {
+                return $dataProvider;
+            });
+        $owncloudUsers = $this->owncloudUsers = $this->getMock('\OCA\ocUsageCharts\Owncloud\Users');
+        $this->container->registerService('OwncloudUsers', function($c) use ($owncloudUsers) {
+            return $owncloudUsers;
+        });
 
         $this->configMock = new \OCA\ocUsageCharts\Entity\ChartConfig(100, new \DateTime(), 'test1', 'StorageUsageCurrent', 'c3js');
         $this->chartUpdaterService = new ChartUpdaterService($this->dataProvider, $this->configService, $this->owncloudUsers);

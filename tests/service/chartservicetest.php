@@ -21,13 +21,13 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\Tests\Service;
+namespace OCA\ocUsageCharts\Service;
 
 use OCA\ocUsageCharts\ChartTypeAdapterFactory;
-use OCA\ocUsageCharts\Service\ChartService;
 
 class ChartServiceTest extends \PHPUnit_Framework_TestCase
 {
+    private $container;
     private $configService;
     private $dataProvider;
     /**
@@ -38,13 +38,23 @@ class ChartServiceTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
+        $app = new \OCA\ocUsageCharts\AppInfo\Chart();
+        $this->container = $app->getContainer();
         $this->configService = $configService = $this->getMockBuilder('\OCA\ocUsageCharts\Service\ChartConfigService')
             ->disableOriginalConstructor()
             ->getMock();
 
+        $this->container->registerService('ChartConfigService', function($c) use ($configService) {
+            return $configService;
+        });
+
         $this->dataProvider = $dataProvider = $this->getMockBuilder('\OCA\ocUsageCharts\Service\ChartDataProvider')
         ->disableOriginalConstructor()
         ->getMock();
+
+        $this->container->registerService('ChartDataProvider', function($c) use ($dataProvider) {
+            return $dataProvider;
+        });
 
         $user = $this->getMock('\OCA\ocUsageCharts\Owncloud\User');
 

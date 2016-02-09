@@ -2,7 +2,7 @@
   hosts: webservers
   remote_user: vagrant
   sudo: yes
-  roles:
+  roles: 
     - web
 
 - name: Configure database servers
@@ -17,4 +17,3 @@
   remote_user: vagrant
   roles:
     - owncloud
-    - composer

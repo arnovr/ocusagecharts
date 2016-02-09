@@ -22,7 +22,6 @@
  */
 
 namespace OCA\ocUsageCharts\Service;
-
 use OCA\ocUsageCharts\Entity\ChartConfig;
 use OCA\ocUsageCharts\Entity\ChartConfigRepository;
 use OCA\ocUsageCharts\Owncloud\Users;
