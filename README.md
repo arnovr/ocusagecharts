@@ -45,6 +45,11 @@ Install
 - Enable app "Charts"
 - App is installed, check menu for "Charts"
 
+- 500 Error [issue 53](https://github.com/arnovr/ocusagecharts/issues/53)
+External dependencies are not included in github repo. Please download the latest version of d3 and c3.
+Create folder structure; Inside `/owncloud/apps/ocusagecharts/js` create two folders `c3` and `d3`. Place dependencies inside. 
+
+
 Product reference
 =================
 - ocUsageCharts official release channel: https://apps.owncloud.com/content/show.php/Storage+Usage+%2B+Activity+Charts?content=166746
