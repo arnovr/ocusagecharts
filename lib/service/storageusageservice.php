@@ -21,60 +21,19 @@
  * THE SOFTWARE.
  */
 
-namespace OCA\ocUsageCharts\Owncloud;
+namespace OCA\ocUsageCharts\Service;
+use OCA\ocUsageCharts\Owncloud\User;
 
-class User
+/**
+ * @author Arno van Rossum <arno@van-rossum.com>
+ */
+class StorageUsageService
 {
     /**
-     * @return string
+     * @param User $user
      */
-    public function getSignedInUsername()
+    public function averageUsagePerMonth(User $user)
     {
-        return \OCP\User::getUser();
-    }
 
-    /**
-     * Check if username given is admin
-     *
-     * @param string $username
-     * @return boolean
-     */
-    public function isAdminUser($username)
-    {
-        return \OC_User::isAdminUser($username);
     }
-
-    /**
-     * Return all users from the current system
-     *
-     * @return array
-     */
-    public function getSystemUsers()
-    {
-        return \OC_User::getUsers();
-    }
-
-    /**
-     * Returns the display name for the uid given
-     *
-     * @param string $uid
-     * @return string
-     */
-    public function getDisplayName($uid)
-    {
-        return \OC_User::getDisplayName($uid);
-    }
-
-    /**
-     * @return boolean
-     */
-    public function isLoggedIn()
-    {
-        if ( $this->getSignedInUsername() !== "" )
-        {
-            return true;
-        }
-        return false;
-    }
-
 }
